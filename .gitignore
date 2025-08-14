@@ -1,0 +1,15 @@
+# Ignorar archivos temporales de Drive Upload
+.tmp.driveupload
+
+# Archivos de configuración de VS Code
+.vscode/
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos sensibles y generados por WordPress
+wp-config.php
+/wp-content/uploads/
+/wp-content/upgrade/
+/wp-content/cache/
