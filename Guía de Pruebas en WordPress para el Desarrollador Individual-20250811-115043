@@ -1,0 +1,318 @@
+Loaded cached credentials.
+┬íExcelente iniciativa! Como desarrollador senior de WordPress, me complace guiarte en este proyecto. Crear un plugin para mostrar la cotizaci├│n del d├│lar es un ejercicio fant├ístico que abarca varios conceptos clave del desarrollo en WordPress.
+
+Aqu├¡ tienes una gu├¡a completa, paso a paso, para que construyas tu plugin desde cero.
+
+---
+
+### **Gu├¡a Completa: Crear un Plugin de Cotizaci├│n del D├│lar en WordPress**
+
+#### **Objetivo del Plugin**
+
+Crearemos un plugin que:
+1.  Obtiene la cotizaci├│n del d├│lar (oficial y/o blue) desde una API externa y gratuita.
+2.  Almacena temporalmente (cachea) el resultado para no sobrecargar el sitio ni la API en cada visita.
+3.  Muestra la cotizaci├│n en cualquier p├ígina o entrada mediante un **shortcode** simple (ej: `[cotizacion_dolar]`).
+4.  A├▒ade estilos CSS b├ísicos para que la visualizaci├│n sea agradable y personalizable.
+
+---
+
+#### **Paso 1: Estructura de Archivos del Plugin**
+
+Todo plugin de WordPress necesita una estructura m├¡nima. Dentro de tu carpeta `wp-content/plugins/`, crea una nueva carpeta para nuestro plugin. Un nombre descriptivo es clave.
+
+```
+/wp-content
+ÔööÔöÇÔöÇ /plugins
+    ÔööÔöÇÔöÇ /cotizacion-dolar-wp
+        Ôö£ÔöÇÔöÇ css
+        Ôöé   ÔööÔöÇÔöÇ style.css
+        ÔööÔöÇÔöÇ cotizacion-dolar-wp.php
+```
+
+1.  **`cotizacion-dolar-wp/`**: La carpeta principal de nuestro plugin.
+2.  **`cotizacion-dolar-wp.php`**: Este ser├í nuestro archivo principal. Contendr├í toda la l├│gica PHP.
+3.  **`css/style.css`**: Este archivo contendr├í los estilos para mostrar la cotizaci├│n.
+
+---
+
+#### **Paso 2: El Encabezado del Plugin (Header)**
+
+Para que WordPress reconozca tu archivo PHP como un plugin, necesita un bloque de comentarios especial al inicio. Abre `cotizacion-dolar-wp.php` y pega lo siguiente:
+
+```php
+<?php
+/**
+ * Plugin Name:       Cotizaci├│n D├│lar WP
+ * Plugin URI:        https://ejemplo.com/cotizacion-dolar-wp
+ * Description:       Muestra la cotizaci├│n del d├│lar (Oficial y Blue) obtenida desde una API externa mediante un shortcode.
+ * Version:           1.0.0
+ * Author:            Tu Nombre
+ * Author URI:        https://ejemplo.com
+ * License:           GPL v2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       cotizacion-dolar-wp
+ * Domain Path:       /languages
+ */
+
+// Medida de seguridad: previene el acceso directo al archivo.
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+// Aqu├¡ ir├í el resto de nuestro c├│digo.
+```
+
+**Explicaci├│n:**
+*   **Plugin Name:** El nombre que aparecer├í en el panel de administraci├│n de WordPress.
+*   **Description:** Una breve explicaci├│n de lo que hace.
+*   **Version:** ├Ütil para gestionar actualizaciones.
+*   **Author:** ┬íTu nombre!
+*   **`if ( ! defined( 'ABSPATH' ) )`**: Una l├¡nea de seguridad fundamental. Evita que alguien pueda ejecutar este archivo PHP directamente desde la URL.
+
+Ahora, si vas a "Plugins" en tu panel de WordPress, ya deber├¡as ver "Cotizaci├│n D├│lar WP" en la lista. ┬íPuedes activarlo!
+
+---
+
+#### **Paso 3: Obtener los Datos de una API Externa**
+
+Necesitamos una fuente para los datos. Usaremos **DolarAPI** (`https://dolarapi.com`), que es gratuita, no requiere clave (API Key) y es muy f├ícil de usar.
+
+La l├│gica ser├í:
+1.  Intentar obtener el valor de la cotizaci├│n desde la cach├® de WordPress (Transients).
+2.  Si no est├í en cach├® (o la cach├® ha expirado), hacer una llamada a la API.
+3.  Guardar la nueva cotizaci├│n en la cach├® con un tiempo de expiraci├│n (ej: 1 hora).
+4.  Devolver el valor.
+
+Este enfoque es **crucial para el rendimiento**. No debes llamar a una API externa en cada carga de p├ígina.
+
+A├▒ade el siguiente c├│digo a tu archivo `cotizacion-dolar-wp.php`:
+
+```php
+/**
+ * Obtiene las cotizaciones del d├│lar, usando cach├® (transients) para optimizar.
+ *
+ * @return array Un array con las cotizaciones o un array vac├¡o si hay un error.
+ */
+function cdwp_obtener_cotizaciones() {
+    // 1. Intentar obtener los datos desde el transient (cach├®)
+    $cotizaciones_cacheadas = get_transient( 'cdwp_cotizaciones_dolar' );
+
+    if ( false !== $cotizaciones_cacheadas ) {
+        // Si hay datos en cach├®, los devolvemos directamente.
+        return $cotizaciones_cacheadas;
+    }
+
+    // 2. Si no hay cach├®, hacemos la llamada a la API
+    $api_url = 'https://dolarapi.com/v1/dolares';
+    $response = wp_remote_get( $api_url );
+
+    // Comprobamos si la llamada a la API fue exitosa
+    if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
+        // Si hay un error, devolvemos un array vac├¡o.
+        return [];
+    }
+
+    $body = wp_remote_retrieve_body( $response );
+    $datos = json_decode( $body, true ); // true para obtener un array asociativo
+
+    // Verificamos que los datos decodificados no est├®n vac├¡os
+    if ( empty( $datos ) ) {
+        return [];
+    }
+
+    // 3. Guardamos el resultado en el transient por 1 HORA (3600 segundos)
+    set_transient( 'cdwp_cotizaciones_dolar', $datos, HOUR_IN_SECONDS );
+
+    return $datos;
+}
+```
+
+**Explicaci├│n de las funciones de WordPress usadas:**
+*   **`get_transient()`**: Intenta recuperar un valor de la base de datos que fue guardado temporalmente.
+*   **`set_transient()`**: Guarda un valor en la base de datos con un nombre y un tiempo de expiraci├│n en segundos. `HOUR_IN_SECONDS` es una constante de WordPress muy ├║til.
+*   **`wp_remote_get()`**: La forma correcta y segura en WordPress para hacer peticiones HTTP GET. Es mejor que usar `file_get_contents` o cURL directamente.
+*   **`is_wp_error()`**: Comprueba si el resultado de una operaci├│n de WordPress fue un error.
+*   **`wp_remote_retrieve_body()`**: Extrae el cuerpo (contenido) de la respuesta HTTP.
+
+---
+
+#### **Paso 4: Mostrar los Datos con un Shortcode**
+
+Un shortcode permite al usuario final insertar contenido din├ímico f├ícilmente en sus publicaciones escribiendo algo como `[mi_shortcode]`.
+
+Vamos a crear el shortcode `[cotizacion_dolar]` que mostrar├í los valores de compra y venta del d├│lar oficial y el blue.
+
+A├▒ade este c├│digo al final de `cotizacion-dolar-wp.php`:
+
+```php
+/**
+ * Define el shortcode [cotizacion_dolar] y su salida HTML.
+ *
+ * @param array $atts Atributos del shortcode (no los usaremos en esta versi├│n simple).
+ * @return string El HTML que se mostrar├í.
+ */
+function cdwp_mostrar_cotizacion_shortcode( $atts ) {
+    $cotizaciones = cdwp_obtener_cotizaciones();
+
+    if ( empty( $cotizaciones ) ) {
+        return '<p><em>La cotizaci├│n del d├│lar no est├í disponible en este momento.</em></p>';
+    }
+
+    // Buscamos el d├│lar oficial y el blue en la respuesta
+    $dolar_oficial = null;
+    $dolar_blue = null;
+
+    foreach ( $cotizaciones as $tipo_dolar ) {
+        if ( $tipo_dolar['casa'] === 'oficial' ) {
+            $dolar_oficial = $tipo_dolar;
+        }
+        if ( $tipo_dolar['casa'] === 'blue' ) {
+            $dolar_blue = $tipo_dolar;
+        }
+    }
+
+    // Preparamos el HTML de salida usando un buffer
+    ob_start();
+    ?>
+    <div class="cotizacion-dolar-container">
+        <?php if ( $dolar_oficial ) : ?>
+            <div class="dolar-card">
+                <h3 class="dolar-titulo">D├│lar Oficial</h3>
+                <p class="dolar-valor">Compra: <strong>$<?php echo esc_html( number_format( $dolar_oficial['compra'], 2, ',', '.' ) ); ?></strong></p>
+                <p class="dolar-valor">Venta: <strong>$<?php echo esc_html( number_format( $dolar_oficial['venta'], 2, ',', '.' ) ); ?></strong></p>
+            </div>
+        <?php endif; ?>
+
+        <?php if ( $dolar_blue ) : ?>
+            <div class="dolar-card">
+                <h3 class="dolar-titulo">D├│lar Blue</h3>
+                <p class="dolar-valor">Compra: <strong>$<?php echo esc_html( number_format( $dolar_blue['compra'], 2, ',', '.' ) ); ?></strong></p>
+                <p class="dolar-valor">Venta: <strong>$<?php echo esc_html( number_format( $dolar_blue['venta'], 2, ',', '.' ) ); ?></strong></p>
+            </div>
+        <?php endif; ?>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+
+// Registrar el shortcode en WordPress
+add_shortcode( 'cotizacion_dolar', 'cdwp_mostrar_cotizacion_shortcode' );
+```
+
+**Explicaci├│n:**
+*   **`add_shortcode()`**: Esta funci├│n de WordPress registra nuestro shortcode. Le decimos que cuando encuentre `[cotizacion_dolar]`, debe ejecutar la funci├│n `cdwp_mostrar_cotizacion_shortcode`.
+*   **`ob_start()` y `ob_get_clean()`**: Son funciones de PHP que nos permiten "capturar" todo el HTML que generamos con `echo` o `?>` en una variable de tipo string, que es lo que un shortcode debe devolver.
+*   **`esc_html()`**: Funci├│n de seguridad de WordPress. "Escapa" el texto para prevenir ataques XSS, asegurando que solo se imprima texto plano.
+*   **`number_format()`**: Funci├│n de PHP para formatear los n├║meros con dos decimales y separadores de miles.
+
+---
+
+#### **Paso 5: A├▒adir Estilos CSS**
+
+Nuestro shortcode genera HTML con clases CSS, pero se ver├í muy simple. Necesitamos cargar nuestro archivo `style.css`. La forma correcta en WordPress es "encolar" (enqueue) los estilos.
+
+Primero, crea el archivo `css/style.css` y a├▒ade este contenido:
+
+```css
+/* Estilos para el plugin Cotizaci├│n D├│lar WP */
+.cotizacion-dolar-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    margin: 2em 0;
+}
+
+.dolar-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    flex-grow: 1;
+    min-width: 200px;
+}
+
+.dolar-titulo {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+}
+
+.dolar-valor {
+    margin: 5px 0;
+    font-size: 1em;
+    color: #34495e;
+}
+
+.dolar-valor strong {
+    color: #2980b9;
+}
+```
+
+Ahora, a├▒ade el siguiente c├│digo PHP a `cotizacion-dolar-wp.php` para cargar este archivo CSS:
+
+```php
+/**
+ * Encola la hoja de estilos del plugin.
+ */
+function cdwp_enqueue_styles() {
+    wp_enqueue_style(
+        'cdwp-styles', // Un nombre ├║nico para nuestra hoja de estilos
+        plugin_dir_url( __FILE__ ) . 'css/style.css', // La ruta al archivo CSS
+        [], // Dependencias (ninguna en este caso)
+        '1.0.0' // Versi├│n del archivo
+    );
+}
+
+// Enganchar nuestra funci├│n al hook 'wp_enqueue_scripts'
+add_action( 'wp_enqueue_scripts', 'cdwp_enqueue_styles' );
+```
+
+**Explicaci├│n:**
+*   **`add_action('wp_enqueue_scripts', ...)`**: Le decimos a WordPress que ejecute nuestra funci├│n `cdwp_enqueue_styles` en el momento adecuado del ciclo de carga de la p├ígina (espec├¡ficamente, cuando se cargan los scripts y estilos del front-end).
+*   **`wp_enqueue_style()`**: La funci├│n correcta para registrar y cargar un archivo CSS.
+*   **`plugin_dir_url( __FILE__ )`**: Una funci├│n m├ígica de WordPress que nos da la URL a la carpeta de nuestro plugin, facilitando la referencia a archivos como `css/style.css`.
+
+---
+
+#### **Paso 6: ┬íProbar el Plugin!**
+
+1.  Ve a la secci├│n de "Plugins" en tu WordPress y aseg├║rate de que "Cotizaci├│n D├│lar WP" est├® **activado**.
+2.  Crea una nueva p├ígina o entrada.
+3.  En el editor de contenido, simplemente escribe el shortcode: `[cotizacion_dolar]`
+4.  Publica la p├ígina y vis├¡tala.
+
+Deber├¡as ver dos cajas, una para el D├│lar Oficial y otra para el D├│lar Blue, con sus valores de compra y venta y con los estilos que definimos.
+
+---
+
+### **Mentor├¡a: Pr├│ximos Pasos y Mejoras**
+
+Un buen desarrollador no se detiene aqu├¡. Este plugin es funcional, pero puede mejorar mucho. Aqu├¡ te dejo ideas para llevarlo al siguiente nivel:
+
+1.  **Panel de Opciones:**
+    *   Crea una p├ígina de ajustes en el panel de administraci├│n de WordPress.
+    *   Permite al usuario elegir qu├® cotizaciones mostrar (quiz├ís no quiere el oficial, o quiere a├▒adir el "D├│lar Bolsa").
+    *   Permite al usuario personalizar los colores o el formato desde el panel.
+    *   *Pista: Investiga la **Settings API** de WordPress.*
+
+2.  **Crear un Widget:**
+    *   Adem├ís del shortcode, podr├¡as crear un Widget para que el usuario pueda arrastrar y soltar la cotizaci├│n en la barra lateral (sidebar) o en el pie de p├ígina (footer).
+    *   *Pista: Investiga la **Widgets API** de WordPress.*
+
+3.  **Shortcode con Atributos:**
+    *   Mejora el shortcode para que acepte atributos, por ejemplo: `[cotizacion_dolar tipo="blue"]` para mostrar solo el blue, o `[cotizacion_dolar mostrar="venta"]` para mostrar solo los valores de venta.
+
+4.  **Manejo de Errores Avanzado:**
+    *   ┬┐Qu├® pasa si la API cambia su formato o devuelve un error espec├¡fico? Podr├¡as registrar esos errores en un log o mostrar un mensaje m├ís detallado al administrador del sitio.
+
+5.  **Localizaci├│n (Traducci├│n):**
+    *   Prepara el plugin para ser traducido a otros idiomas. Esto implica usar las funciones de internacionalizaci├│n de WordPress como `__()` y `_e()`.
+    *   *Pista: Busca sobre "WordPress Internationalization" y el `Text Domain` que definimos en el encabezado.*
+
+┬íFelicidades! Has creado un plugin de WordPress completo, funcional y siguiendo las mejores pr├ícticas. Este es el camino correcto para convertirte en un gran desarrollador de WordPress. ┬íSigue experimentando y construyendo
