@@ -73,8 +73,11 @@ function kapi_handle_get_report_request( WP_REST_Request $request ) {
 }
 EOT;
 
-    // Prepare the data for the response.
-    $response_data = [ 'report_content' => $fake_report_structure ];
+    // Prepara los datos para la respuesta en el formato esperado por el frontend.
+    $response_data = [ 
+        'success' => true, 
+        'data' => [ 'report_content' => $fake_report_structure ] 
+    ];
 
     // Return a new WP_REST_Response object.
     return new WP_REST_Response( $response_data, 200 );
