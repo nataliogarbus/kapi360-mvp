@@ -13,3 +13,9 @@ wp-config.php
 /wp-content/uploads/
 /wp-content/upgrade/
 /wp-content/cache/
+
+# Dependencias de Node.js
+node_modules/
+# Local Netlify folder
+.netlify
+"local-9.2.6-windows.exe" 

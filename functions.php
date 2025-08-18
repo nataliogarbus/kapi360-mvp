@@ -1,26 +1,21 @@
 <?php
 /**
  * Tema hijo de Astra para el proyecto Motor de Diagnóstico Digital.
- * Versión: 7.0 (Solución Definitiva - Inyección Directa de CSS y JS)
  */
 
-// Carga los estilos básicos del tema.
+// Carga los estilos del tema padre e hijo.
 add_action( 'wp_enqueue_scripts', function() {
     wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
     wp_enqueue_style( 'child-style', get_stylesheet_directory_uri() . '/style.css', ['parent-style'], wp_get_theme()->get('Version') );
 });
 
-// 1. INYECTAR CSS DIRECTAMENTE EN EL HEADER DE LA PÁGINA
+// Inyecta CSS para el formulario de Spectra directamente en el header.
 add_action('wp_head', function() {
-    // Solo ejecutar en la página del motor de diagnóstico.
-    if ( ! is_page(129) ) {
+    if ( ! is_page('motor-diagnostico') ) {
         return;
     }
     ?>
     <style type="text/css">
-        /* ================================================================== */
-        /* == KAPI: CSS Definitivo para Formulario Spectra (Inyectado)  == */
-        /* ================================================================== */
         .uagb-forms-main-form .uagb-forms-field-label { display: none; }
         .uagb-forms-main-form .uagb-forms-radio-label, .uagb-forms-main-form .uagb-forms-checkbox-label { margin-bottom: 1rem; color: white; }
         .kapi-analysis-options .uagb-forms-checkbox-wrap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
@@ -34,31 +29,35 @@ add_action('wp_head', function() {
     <?php
 });
 
-// 2. INYECTAR JAVASCRIPT "PACIENTE" DIRECTAMENTE EN EL FOOTER
+// Script robusto para la lógica del formulario (se ejecuta en el footer).
 add_action( 'wp_footer', function() {
-    if ( ! is_page(129) ) {
+    if ( ! is_page('motor-diagnostico') ) {
         return;
     }
     ?>
-    <script type="text/javascript">
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const checkInterval = setInterval(function() {
-                const triggerContainer = document.querySelector('.kapi-analysis-trigger');
-                const optionsContainer = document.querySelector('.kapi-analysis-options');
-                if (triggerContainer && optionsContainer) {
+                const autoRadio = document.getElementById('radio-automático-f5916f14');
+                const customRadio = document.getElementById('radio-personalizado-f5916f14');
+                const cardsContainer = document.querySelector('.kapi-analysis-options');
+
+                if (autoRadio && customRadio && cardsContainer) {
                     clearInterval(checkInterval);
-                    const customRadio = triggerContainer.querySelector('input[value="Personalizado"]');
-                    function toggleOptionsVisibility() {
-                        if (customRadio && customRadio.checked) {
-                            optionsContainer.style.display = 'grid'; // Usamos grid para que coincida con el CSS
+
+                    function toggleCardsVisibility() {
+                        if (customRadio.checked) {
+                            cardsContainer.style.display = 'grid';
                         } else {
-                            optionsContainer.style.display = 'none';
+                            cardsContainer.style.display = 'none';
                         }
                     }
-                    triggerContainer.addEventListener('change', toggleOptionsVisibility);
-                    toggleOptionsVisibility();
+
+                    autoRadio.addEventListener('change', toggleCardsVisibility);
+                    customRadio.addEventListener('change', toggleCardsVisibility);
+                    toggleCardsVisibility();
                 }
-            }, 100);
+            }, 200);
         });
     </script>
     <?php

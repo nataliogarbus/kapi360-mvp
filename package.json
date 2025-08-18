@@ -1,0 +1,30 @@
+{
+  "name": "kapi_output",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "start": "netlify dev --port 8080",
+    "serve": "live-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nataliogarbus/kapi_output.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nataliogarbus/kapi_output/issues"
+  },
+  "homepage": "https://github.com/nataliogarbus/kapi_output#readme",
+  "devDependencies": {
+    "eslint": "^9.33.0",
+    "live-server": "^1.2.2",
+    "prettier": "^3.6.2"
+  }
+}

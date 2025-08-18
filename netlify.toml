@@ -1,0 +1,6 @@
+# Redirige las llamadas del frontend local al endpoint PHP en el entorno de WordPress
+[[redirects]]
+  from = "/api/get-report"
+  to = "http://kapi-local.local/wp-content/themes/astra-child/kapi-endpoint.php"
+  status = 200
+  force = true
