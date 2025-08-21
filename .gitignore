@@ -18,4 +18,4 @@ wp-config.php
 node_modules/
 # Local Netlify folder
 .netlify
-"local-9.2.6-windows.exe" 
+local-9.2.6-windows.exe
