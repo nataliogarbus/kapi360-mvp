@@ -60,13 +60,15 @@ const DiagnosticForm: React.FC<DiagnosticFormProps> = ({ isLoading, onSubmit }) 
       <form id="diagnosticoForm" noValidate onSubmit={handleFormSubmit}>
         {/* --- Main Action Group: Visible in Auto and Custom modes --- */}
         {(mode === 'auto' || mode === 'custom') && (
-          <div className="main-action-group">
-            <div className="input-with-icon">
-              <svg className="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          <div className="flex flex-col sm:flex-row items-center bg-white/5 border border-white/20 rounded-lg p-2 gap-2 shadow-lg">
+            <div className="relative flex-grow w-full">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              </div>
               <input 
                 type="text" 
                 id="main-input" 
-                className="form-input-field" 
+                className="w-full bg-transparent text-white text-lg placeholder-gray-400 pl-12 pr-4 py-3 focus:outline-none focus:ring-0 border-0"
                 placeholder="Ingresa tu URL de sitio web" 
                 required 
                 value={url}
@@ -74,9 +76,17 @@ const DiagnosticForm: React.FC<DiagnosticFormProps> = ({ isLoading, onSubmit }) 
                 disabled={isLoading}
               />
             </div>
-            <button type="submit" id="main-cta-button" className={`cta-submit-button ${isLoading ? 'loading' : ''}`} disabled={isLoading || !url}>
-              <span className="button-text">Generar mi Plan de Acción</span>
-              <div className="spinner"></div>
+            <button 
+              type="submit" 
+              id="main-cta-button" 
+              className="w-full sm:w-auto bg-green-400 text-black font-bold uppercase px-8 py-3 rounded-md hover:bg-green-500 transition-all duration-300 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isLoading || !url}
+            >
+              {isLoading ? (
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-black"></div>
+              ) : (
+                <span>Generar mi Plan de Acción</span>
+              )}
             </button>
           </div>
         )}
