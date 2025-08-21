@@ -1,12 +1,20 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const Header = () => {
   return (
     <header className="w-full p-4 absolute top-0 left-0 z-20">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center">
         <Link href="/" className="flex items-center space-x-2">
-            <img src="https://staging2.kapi.com.ar/wp-content/uploads/2025/08/logo-kapi_Mesa-de-trabajo-1-1024x287-1.png" alt="Logo de Kapi" className="h-8" />
+            <Image 
+              src="/logo-kapi-verde.svg" 
+              alt="Logo de Kapi" 
+              width={114} 
+              height={32} 
+              className="h-8 w-auto"
+              priority
+            />
         </Link>
         <div className="hidden md:flex items-center space-x-8">
             <Link href="#servicios" className="text-gray-300 hover:text-white transition-colors duration-300">Servicios</Link>
