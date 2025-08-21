@@ -1,6 +1,17 @@
-'use client';
-
 import React, { useState } from 'react';
+
+// --- Iconos SVG (reutilizados de ReportSection) ---
+const SeoIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"/></svg>;
+const UxIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M7 12h10M7 7h10M7 17h5"/></svg>;
+const ConversionIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>;
+const DefaultIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>;
+
+const getIconForTitle = (title: string) => {
+  if (title.toLowerCase().includes('seo') || title.toLowerCase().includes('mercado')) return <SeoIcon />;
+  if (title.toLowerCase().includes('ux') || title.toLowerCase().includes('plataforma')) return <UxIcon />;
+  if (title.toLowerCase().includes('crecimiento') || title.toLowerCase().includes('redes')) return <ConversionIcon />;
+  return <DefaultIcon />;
+};
 
 // --- Data for Custom Options ---
 const customOptions = [
@@ -88,10 +99,16 @@ const DiagnosticForm: React.FC<DiagnosticFormProps> = ({ isLoading, onSubmit }) 
           <div id="custom-options-wrapper" className="my-4 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left">
             {customOptions.map(option => (
               <div key={option.id}>
-                <input type="checkbox" id={option.id} name="enfoques" value={option.value} className="enfoque-checkbox-input" disabled={isLoading} />
-                <label htmlFor={option.id} className="enfoque-checkbox-label" data-tooltip={option.description}>
-                  <span className="enfoque-title">{option.title}</span>
-                  <span className="enfoque-desc">{option.description}</span>
+                <input type="checkbox" id={option.id} name="enfoques" value={option.value} className="hidden peer" disabled={isLoading} />
+                <label 
+                  htmlFor={option.id} 
+                  className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 flex flex-col items-center text-center cursor-pointer h-full hover:border-cyan-400 peer-checked:border-green-400 peer-checked:ring-2 peer-checked:ring-green-400/50 transition-all duration-300"
+                  title={option.description} // Tooltip con la descripción
+                >
+                  <div className="text-cyan-400 mb-2">
+                    {getIconForTitle(option.title)}
+                  </div>
+                  <span className="font-semibold text-white text-sm">{option.title}</span>
                 </label>
               </div>
             ))}
