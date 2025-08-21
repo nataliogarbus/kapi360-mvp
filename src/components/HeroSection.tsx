@@ -18,7 +18,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="flex-grow flex items-center p-4 mt-16 text-white text-center">
+    <section className="flex-grow flex items-center p-4 mt-24 text-white text-center">
       <div className="max-w-4xl w-full mx-auto">
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight text-shadow-custom flex justify-center items-center h-24">
           <span className="mr-4">Más</span>
