@@ -35,6 +35,7 @@ function getPrompt(url: string, mode: string): string {
         2.  **Puntos Clave:** Identifica los 3 puntos fuertes y los 3 puntos débiles más evidentes en términos de SEO, experiencia de usuario (UX) y potencial de conversión.
         3.  **Insight de Negocio:** Concluye con una recomendación estratégica clave que el cliente podría implementar para mejorar sus resultados de negocio.
         4.  **Formato:** Usa encabezados, listas con viñetas y texto en negrita para que sea fácil de leer.
+        5.  **Rutas Óptimas:** Formatea cada uno de los 3 puntos clave como una 'Ruta Óptima'. Cada ruta debe empezar con un encabezado de nivel 2 y un puntaje. Ejemplo: '## Ruta Óptima: SEO (Puntaje: 75/100)'.
       `;
       break;
     case 'custom':
