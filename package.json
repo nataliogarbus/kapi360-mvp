@@ -11,6 +11,8 @@
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "@supabase/supabase-js": "^2.55.0",
+    "@tsparticles/react": "^3.0.0",
+    "@tsparticles/slim": "^3.9.1",
     "chart.js": "^4.5.0",
     "framer-motion": "^12.23.12",
     "next": "^14.2.32",
