@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animación de Pulso Vital con Efecto Neón</title>
+    <style>
+        /* Estilo base para la demostración */
+        body {
+            background-color: #1A1A1A; /* Fondo oscuro para resaltar el neón */
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /*
+        ============================================================
+        CONTENEDOR DE LA ANIMACIÓN
+        ============================================================
+        - Posicionado para superponerse en la página.
+        - `overflow: hidden` es esencial para ocultar el SVG que se
+          desplaza fuera de la vista y crear el bucle infinito.
+        - `pointer-events: none` para que no interfiera con otros
+          elementes clicables en la página.
+        */
+        .pulse-container {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            transform: translateY(-50%);
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        /*
+        ============================================================
+        ANIMACIÓN @keyframes
+        ============================================================
+        - Anima el SVG de `translateX(0)` a `translateX(-50%)`.
+        - Como el SVG tiene un ancho del 200%, este desplazamiento
+          mueve exactamente una "pantalla" de la animación,
+          resultando en un bucle perfecto y sin saltos.
+        - Usar `transform` es ideal para el rendimiento.
+        */
+        @keyframes scroll-left {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        /*
+        ============================================================
+        ESTILO DEL SVG
+        ============================================================
+        - `width: 200%`: El SVG es el doble de ancho que su contenedor.
+        - `animation`: Aplica el bucle de desplazamiento.
+        - `filter`: ¡LA CLAVE DEL EFECTO NEÓN!
+          - Se usan dos `drop-shadow` para crear un brillo de dos capas:
+            1. Un resplandor interior más nítido (4px).
+            2. Un resplandor exterior más difuso (10px).
+          - Ambos usan el color Verde Menta para crear el brillo.
+        */
+        .pulse-svg {
+            width: 200%;
+            height: 100%;
+            animation: scroll-left 10s linear infinite;
+            filter: drop-shadow(0 0 4px #00DD82) drop-shadow(0 0 10px #00DD82);
+        }
+
+        /*
+        ============================================================
+        ESTILO DE LA LÍNEA (EL PULSO)
+        ============================================================
+        - `stroke`: Color Verde Menta (#00DD82).
+        - `stroke-width`: Grosor de 2px.
+        - `opacity`: Semitransparente para un look más etéreo.
+        - `stroke-linecap` y `stroke-linejoin`: Redondea las esquinas
+          para un trazado más suave y orgánico.
+        */
+        .pulse-line {
+            stroke: #00DD82;
+            stroke-width: 2;
+            opacity: 0.7; /* Ligeramente más opaco para que el núcleo del neón brille */
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 
+    ============================================================
+    CÓDIGO HTML DE LA ANIMACIÓN
+    ============================================================
+    - El `div.pulse-container` actúa como el "monitor" o viewport.
+    - El `svg.pulse-svg` es el lienzo móvil que contiene la animación.
+    - El `path.pulse-line` dibuja la onda del electrocardiograma.
+      La secuencia en el atributo 'd' se duplica para llenar
+      el ancho del 200% del SVG y permitir el bucle infinito.
+    ============================================================
+    -->
+    <div class="pulse-container">
+        <svg class="pulse-svg" preserveAspectRatio="none" viewBox="0 0 2000 100">
+            <path class="pulse-line" d="
+                M0,50 
+                L200,50 L225,35 L250,65 L275,20 L300,75 L325,45 L350,50 
+                L550,50 L575,60 L600,40 L625,50
+                L800,50 L825,30 L850,70 L875,50
+                L1000,50
+                
+                L1200,50 L1225,35 L1250,65 L1275,20 L1300,75 L1325,45 L1350,50 
+                L1550,50 L1575,60 L1600,40 L1625,50
+                L1800,50 L1825,30 L1850,70 L1875,50
+                L2000,50
+            " />
+        </svg>
+    </div>
+    
+</body>
+</html>

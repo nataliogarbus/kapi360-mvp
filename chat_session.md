@@ -146,3 +146,53 @@
 - Iniciar la implementación de la nueva arquitectura de plugin, como se detalla en la nueva **Etapa 7** del `PLAN_KAPI_360.md`.
 
 ---
+
+## Sesión 2025-08-18 (Cuarta Parte) - Refactorización a Plugin y Solución Final
+
+**Estado Inicial:**
+- El proyecto se retomó con la decisión de refactorizar el backend a un plugin dedicado para solucionar un error de corrupción de JSON causado por el tema de WordPress.
+
+**Resumen de Acciones:**
+1.  **Limpieza del Repositorio:** Tras un cuelgue del sistema, se utilizó `git status` para identificar una gran cantidad de archivos sin seguimiento y cambios pendientes. Se procedió a organizar el repositorio, añadiendo todos los archivos relevantes del proyecto (código fuente, configuración, documentación) y creando un commit base para tener un punto de partida limpio y seguro.
+2.  **Depuración de Conexión en Cascada:** Se resolvió una cadena de errores sucesivos para lograr la comunicación entre el frontend y el nuevo backend del plugin:
+    - **Error 1 (`Unexpected token '<'`):** Se diagnosticó que el proxy de Netlify (`netlify.toml`) apuntaba a un archivo PHP antiguo. Se corrigió para que apuntara a la nueva ruta de la API REST de WordPress.
+    - **Error 2 (`404 rest_no_route`):** Se diagnosticó que el plugin, aunque existía en el espacio de trabajo, no estaba instalado en el servidor de WordPress. Se guio al usuario para que copiara la carpeta del plugin a su sitio de LocalWP y lo activara en el panel de administración.
+    - **Error 3 (`formato no esperado`):** Se diagnosticó una discrepancia en la estructura del JSON. El frontend esperaba una envoltura `{ success: true, data: {...} }`, pero el plugin devolvía un objeto plano. Se modificó el archivo PHP del plugin para que la respuesta tuviera la estructura correcta.
+
+**Estado Final de la Sesión:**
+- **¡ÉXITO!** Se ha establecido una conexión completa y funcional entre el frontend y el backend. El flujo de comunicación (Frontend -> Netlify Proxy -> WordPress REST API -> Plugin Kapi) funciona correctamente.
+- La arquitectura del backend ahora es robusta, estable y está desacoplada del tema, siguiendo las mejores prácticas de WordPress.
+- El `PLAN_KAPI_360.md` ha sido actualizado para reflejar la finalización de la Etapa 7.
+- El repositorio de Git está limpio y actualizado con la última versión funcional del código.
+
+---
+
+## Sesión 2025-08-20
+
+**Resumen de Acciones:**
+- **Objetivo:** Refinar la interfaz de usuario y la experiencia del formulario principal basándose en un nuevo boceto y una serie de comentarios iterativos.
+
+- **Implementación Inicial (Basada en Boceto):**
+    1.  Se integraron nuevos estilos CSS desde el boceto del usuario a `style.css`.
+    2.  Se refactorizó el formulario en `index.html` para usar la nueva estructura y clases, pero conservando los campos y la lógica de 4 modos existente.
+    3.  Se actualizó `main.js` para manejar la selección de modo con las nuevas clases de estilo.
+
+- **Ciclo de Feedback y Correcciones:**
+    - **Feedback 1:** La palabra "Liderazgo" persistía en la animación del título.
+    - **Solución 1:** Se corrigió el array de palabras en `setupAnimatedHeadline` en `main.js`, reemplazando "Liderazgo" por "Gestión".
+
+    - **Feedback 2:** El título "Más..." no estaba bien centrado.
+    - **Solución 2:** Se ajustó el CSS en `style.css`, eliminando el ancho fijo del `<span>` animado para permitir un centrado dinámico y correcto.
+
+    - **Feedback 3:** Las tarjetas de "Análisis Personalizado" no mostraban el texto de ayuda al pasar el cursor.
+    - **Solución 3:** Se corrigió la generación de las tarjetas en `main.js` para usar el atributo `data-tooltip` en lugar de `title`, activando así los estilos de tooltip personalizados ya existentes.
+
+    - **Feedback 4:** Los botones de selección de modo ("Automático", etc.) se desplazaban hacia arriba cuando el campo de URL se ocultaba.
+    - **Solución 4:** Se modificó la lógica en `main.js` para que, en lugar de ocultar el campo de URL con `display: none`, se use `visibility: hidden`. Esto hace que el campo sea invisible pero conserve su espacio, evitando que los elementos inferiores se desplacen.
+
+    - **Feedback 5:** Se solicitó un efecto de "máquina de escribir" para el placeholder del campo URL.
+    - **Solución 5:** Se implementó una nueva función `setupPlaceholderAnimation` en `main.js` que anima el texto del placeholder y muestra un cursor parpadeante, deteniéndose cuando el usuario interactúa con el campo.
+
+**Estado Final de la Sesión:**
+- **¡ÉXITO!** Todos los ajustes de refinamiento de la UI/UX solicitados fueron implementados y corregidos. El formulario principal es ahora visualmente más dinámico y funcionalmente más robusto según el feedback.
+- El `PLAN_KAPI_360.md` fue actualizado con una nueva "Etapa 8" que documenta este ciclo de refinamiento.

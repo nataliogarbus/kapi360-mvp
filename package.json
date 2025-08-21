@@ -23,8 +23,12 @@
   },
   "homepage": "https://github.com/nataliogarbus/kapi_output#readme",
   "devDependencies": {
+    "autoprefixer": "^10.4.21",
     "eslint": "^9.33.0",
     "live-server": "^1.2.2",
     "prettier": "^3.6.2"
+  },
+  "dependencies": {
+    "next": "^15.5.0"
   }
 }

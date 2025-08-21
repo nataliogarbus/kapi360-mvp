@@ -26,7 +26,7 @@
         }
         .text-shadow-custom { text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); }
         
-        /* Estilos del Formulario Final */
+        /* --- ESTILOS ANTIGUOS DE FORMULARIO (serán reemplazados por los nuevos) --- */
         .main-selector {
             display: flex;
             justify-content: center;
@@ -50,8 +50,8 @@
         }
         .enfoque-checkbox-input { display: none; }
         .enfoque-checkbox-label {
-            display: flex; flex-direction: column; justify-content: center;
-            padding: 1.5rem 1rem; border: 2px solid var(--kapi-border);
+            display: flex; flex-direction: column; justify-content: center; text-align: center;
+            padding: 1.25rem 1rem; border: 2px solid var(--kapi-border); /* Padding ajustado */
             border-radius: 0.75rem; cursor: pointer; transition: all 0.2s ease-in-out;
             height: 100%; background-color: rgba(30, 30, 30, 0.5);
         }
@@ -59,8 +59,8 @@
         .enfoque-checkbox-input:checked + .enfoque-checkbox-label {
             border-color: var(--kapi-green); background-color: rgba(0, 221, 130, 0.1); transform: translateY(-4px);
         }
-        .enfoque-title { font-weight: 700; color: var(--kapi-text-primary); margin-bottom: 0.25rem; }
-        .enfoque-desc { font-size: 0.9rem; color: var(--kapi-text-secondary); }
+        .enfoque-title { font-weight: 700; color: var(--kapi-text-primary); }
+        .enfoque-desc { display: none; } /* Oculto por defecto, se muestra en tooltip via title attribute */
         .manual-textarea, .consulta-input, .consulta-textarea {
              width: 100%; background-color: rgba(30, 30, 30, 0.5);
              border: 2px solid var(--kapi-border); color: white;
@@ -239,3 +239,194 @@
         #intelligence-panel.open {
             transform: translateX(0);
         }
+
+        /* --- Animated Headline --- */
+        #headline-animated .letter {
+            display: inline-block;
+            opacity: 0; /* Start hidden */
+        }
+
+        #animated-headline-container {
+            display: inline-flex;
+            align-items: baseline;
+            justify-content: center;
+        }
+
+        #headline-animated {
+            display: inline-block;
+            text-align: left;
+            margin-left: 1.5rem;
+        }
+
+/* --- INICIO DE ESTILOS DEL NUEVO FORMULARIO --- */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group > label {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.main-action-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.input-with-icon {
+    position: relative;
+    flex-grow: 1;
+}
+
+.input-with-icon .icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9CA3AF;
+    pointer-events: none;
+}
+
+.form-input-field {
+    background-color: #2B2B2B;
+    border: 1px solid #4A4A4A;
+    color: #E5E7EB;
+    padding: 16px 18px 16px 50px;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+.form-input-field:focus {
+    outline: none;
+    border-color: #0057FF;
+    box-shadow: 0 0 0 3px rgba(0, 87, 255, 0.3);
+}
+
+.cta-submit-button {
+    background-color: transparent;
+    color: var(--kapi-blue);
+    font-weight: 600;
+    font-size: 16px;
+    padding: 14px 24px; /* Ajuste de padding por el borde */
+    border: 2px solid var(--kapi-blue);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+.cta-submit-button:hover {
+    background-color: var(--kapi-blue);
+    color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 87, 255, 0.2);
+}
+
+.spinner { display: none; }
+.cta-submit-button.loading .button-text { display: none; }
+.cta-submit-button.loading .spinner { display: block; }
+
+/* Estilos de .radio-group y .mode-selector-label eliminados para volver al diseño original */
+
+#conditional-options { 
+    display: none; 
+    animation: fadeInDown 0.5s ease; 
+}
+.checkbox-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 12px; 
+}
+.custom-checkbox-label { 
+    display: flex; 
+    align-items: center; 
+    background-color: #2B2B2B; 
+    padding: 12px 16px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    border: 1px solid #4A4A4A; 
+    transition: all 0.3s ease; 
+}
+.custom-checkbox-label:hover { 
+    border-color: #0057FF; 
+}
+.custom-checkbox-label span { 
+    font-size: 14px; 
+}
+.custom-checkbox-display { 
+    width: 20px; 
+    height: 20px; 
+    flex-shrink: 0; 
+    background-color: transparent; 
+    border: 2px solid #6a6a6a; 
+    border-radius: 6px; 
+    margin-right: 12px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    transition: all 0.3s ease; 
+}
+.custom-checkbox-input { 
+    display: none; 
+}
+.custom-checkbox-input:checked + .custom-checkbox-display { 
+    background-color: #0057FF; 
+    border-color: #0057FF; 
+}
+.custom-checkbox-input:checked + .custom-checkbox-display svg { 
+    opacity: 1; 
+}
+.custom-checkbox-display svg { 
+    width: 14px; 
+    height: 14px; 
+    stroke: white; 
+    stroke-width: 3; 
+    opacity: 0; 
+    transition: opacity 0.2s ease; 
+}
+.privacy-text { 
+    text-align: center; 
+    font-size: 13px; 
+    color: #9CA3AF; 
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .main-action-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .cta-submit-button {
+        width: 100%;
+    }
+    .radio-group {
+        grid-template-columns: 1fr 1fr; /* 2 columnas en móvil */
+    }
+    .checkbox-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner { 
+    width: 20px; 
+    height: 20px; 
+    border: 3px solid rgba(255, 255, 255, 0.3); 
+    border-radius: 50%; 
+    border-top-color: #FFFFFF; 
+    animation: spin 1s ease-in-out infinite; 
+}
+
+/* --- FIN DE ESTILOS DEL NUEVO FORMULARIO --- */

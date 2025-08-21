@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Particles.js initialization
     if(document.getElementById('particles-js')) {
         particlesJS('particles-js', {
-            "particles": { "number": {"value": 60, "density": {"enable": true, "value_area": 800}}, "color": {"value": "#ffffff"}, "shape": {"type": "circle"}, "opacity": {"value": 0.4, "random": true, "anim": {"enable": true, "speed": 1, "opacity_min": 0.1, "sync": false}}, "size": {"value": 2, "random": true}, "line_linked": {"enable": true, "distance": 150, "color": "#4A4A4A", "opacity": 0.3, "width": 1}, "move": {"enable": true, "speed": 1.5, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false}},
-            "interactivity": { "detect_on": "window", "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": false}, "resize": true}, "modes": {"grab": {"distance": 140, "line_linked": {"opacity": 0.5}}}},
+            "particles": { "number": {"value": 40, "density": {"enable": true, "value_area": 800}}, "color": {"value": "#ffffff"}, "shape": {"type": "circle"}, "opacity": {"value": 0.3, "random": false, "anim": {"enable": false, "speed": 1, "opacity_min": 0.1, "sync": false}}, "size": {"value": 2, "random": true}, "line_linked": {"enable": true, "distance": 150, "color": "#4A4A4A", "opacity": 0.2, "width": 1}, "move": {"enable": true, "speed": 1, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false}},
+            "interactivity": { "detect_on": "window", "events": {"onhover": {"enable": false, "mode": "repulse"}, "onclick": {"enable": false}, "resize": true}, "modes": {"grab": {"distance": 140, "line_linked": {"opacity": 0.5}}}},
             "retina_detect": true
         });
     }
@@ -14,9 +14,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const customWrapper = document.getElementById('custom-options-wrapper');
         const manualWrapper = document.getElementById('manual-options-wrapper');
         const consultaWrapper = document.getElementById('consulta-options-wrapper');
-        const mainInputWrapper = document.getElementById('main-input-wrapper');
+        const mainActionGroup = document.querySelector('.main-action-group'); // Adaptado al nuevo HTML
         const mainInput = document.getElementById('main-input');
 
+        // Genera dinámicamente las opciones de checkbox para el modo 'Personalizado'
         const options = {
             'Mercado y Competencia': 'Análisis SEO y de la competencia.',
             'Plataforma y UX': 'Rendimiento y experiencia de usuario.',
@@ -26,19 +27,29 @@ document.addEventListener('DOMContentLoaded', function() {
         customWrapper.innerHTML = Object.entries(options).map(([title, desc], index) => `
             <div>
                 <input type="checkbox" id="enfoque${index+1}" name="enfoques" value="${title}" class="enfoque-checkbox-input">
-                <label for="enfoque${index+1}" class="enfoque-checkbox-label">
+                <label for="enfoque${index+1}" class="enfoque-checkbox-label" data-tooltip="${desc}">
                     <span class="enfoque-title">${title}</span>
                     <span class="enfoque-desc">${desc}</span>
                 </label>
             </div>
         `).join('');
 
+        // Añade el listener para manejar la lógica de cambio de modo
         modeSelectors.forEach(selector => {
             selector.addEventListener('change', function() {
+                // --- Lógica de Estilos (del nuevo boceto) ---
+                document.querySelectorAll('.mode-selector-label').forEach(label => {
+                    label.classList.remove('selected');
+                });
+                if (this.nextElementSibling && this.nextElementSibling.tagName === 'LABEL') {
+                    this.nextElementSibling.classList.add('selected');
+                }
+
+                // --- Lógica Funcional (adaptada a la nueva estructura) ---
                 customWrapper.classList.add('hidden');
                 manualWrapper.classList.add('hidden');
                 consultaWrapper.classList.add('hidden');
-                mainInputWrapper.classList.remove('hidden');
+                if (mainActionGroup) mainActionGroup.style.visibility = 'visible';
                 
                 mainInput.placeholder = "Ingresa tu URL de sitio web";
 
@@ -46,12 +57,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     customWrapper.classList.remove('hidden');
                 }
                 if (this.value === 'manual') {
-                    mainInputWrapper.classList.add('hidden');
+                    if (mainActionGroup) mainActionGroup.style.visibility = 'hidden';
                     manualWrapper.classList.remove('hidden');
                 }
                 if (this.value === 'consulta') {
+                    if (mainActionGroup) mainActionGroup.style.visibility = 'hidden';
                     consultaWrapper.classList.remove('hidden');
-                    mainInputWrapper.classList.add('hidden');
                 }
             });
         });
@@ -465,15 +476,181 @@ document.addEventListener('DOMContentLoaded', function() {
 
         registrationForm.addEventListener('submit', (event) => {
             event.preventDefault();
-            if (reportData) {
-                renderDashboard(reportData);
-                renderRecommendedActionPlan(reportData);
-                setupIntelligencePanel(); // Inicializar el panel después de tener los datos
+            
+            const formData = {
+                name: document.getElementById('reg-name').value,
+                title: document.getElementById('reg-title').value,
+                company: document.getElementById('reg-company').value,
+                email: document.getElementById('reg-email').value,
+                phone: document.getElementById('reg-phone').value,
+                city: document.getElementById('reg-city').value,
+                state: document.getElementById('reg-state').value,
+                country: document.getElementById('reg-country').value,
+                website: reportData ? reportData.clientUrl : ''
+            };
+
+            if (!formData.name || !formData.email || !formData.company) {
+                alert('Por favor, completa los campos de Nombre, Empresa y Email.');
+                return;
             }
-            registrationSection.classList.add('hidden');
-            dashboardSection.classList.remove('hidden');
-            dashboardSection.scrollIntoView({ behavior: 'smooth' });
+
+            const submitButton = registrationForm.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.innerHTML;
+            submitButton.innerHTML = 'Enviando...';
+            submitButton.disabled = true;
+
+            fetch('/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw new Error(err.message || 'Error en el servidor.') });
+                }
+                return response.json();
+            })
+            .then(result => {
+                if (reportData) {
+                    renderDashboard(reportData);
+                    renderRecommendedActionPlan(reportData);
+                    setupIntelligencePanel();
+                }
+                registrationSection.classList.add('hidden');
+                dashboardSection.classList.remove('hidden');
+                dashboardSection.scrollIntoView({ behavior: 'smooth' });
+            })
+            .catch(error => {
+                console.error('Error en el registro:', error);
+                alert(`Hubo un problema con el registro: ${error.message}`);
+            })
+            .finally(() => {
+                submitButton.innerHTML = originalButtonText;
+                submitButton.disabled = false;
+            });
         });
     }
     setupReportLogic();
+
+    // --- Lógica de la Animación del Titular con Anime.js ---
+    function setupAnimatedHeadline() {
+        const words = ["Visión", "Control", "Gestión", "Clientes", "Ingresos", "Éxitos", "Ventas", "POTENCIA"];
+        let currentIndex = 0;
+        const headline = document.getElementById('headline-animated');
+        if (!headline) return;
+
+        // Función para dividir el texto en letras envueltas en <span>
+        function splitText(element) {
+            element.innerHTML = element.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+            return element.querySelectorAll('span.letter');
+        }
+
+        function animateWords() {
+            const letters = splitText(headline);
+
+            anime.timeline({ loop: false })
+                .add({
+                    targets: letters,
+                    translateY: [0, -40],
+                    opacity: [1, 0],
+                    easing: "easeInExpo",
+                    duration: 600,
+                    delay: anime.stagger(50),
+                    complete: () => {
+                        // Cambiar la palabra
+                        currentIndex = (currentIndex + 1) % words.length;
+                        headline.textContent = words[currentIndex];
+                        
+                        // Dividir la nueva palabra y animar la entrada
+                        const newLetters = splitText(headline);
+                        anime({
+                            targets: newLetters,
+                            translateY: [40, 0],
+                            opacity: [0, 1],
+                            easing: "easeOutElastic(1, .8)", // Efecto "pesado"
+                            duration: 1200,
+                            delay: anime.stagger(70),
+                            complete: () => {
+                                // Preparar la siguiente animación
+                                setTimeout(animateWords, 2000);
+                            }
+                        });
+                    }
+                });
+        }
+
+        // Iniciar el ciclo de animación
+        setTimeout(animateWords, 2000);
+    }
+    setupAnimatedHeadline();
+
+    // --- Lógica de la Animación del Placeholder ---_V2
+    function setupPlaceholderAnimation() {
+        const input = document.getElementById('main-input');
+        if (!input) return;
+
+        const placeholders = [
+            "https://tuempresa.com",
+            "https://www.tu-competidor.com",
+            "https://www.ejemplo.com.ar"
+        ];
+        let placeholderIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingSpeed = 120;
+        const deletingSpeed = 60;
+        const delay = 2000;
+        const cursor = '|';
+
+        let intervalId;
+
+        function type() {
+            if (document.activeElement === input) return; // Pausar si el input está en foco
+            const currentPlaceholder = placeholders[placeholderIndex];
+            let displayText;
+
+            if (isDeleting) {
+                displayText = currentPlaceholder.substring(0, charIndex--);
+            } else {
+                displayText = currentPlaceholder.substring(0, charIndex++);
+            }
+
+            input.setAttribute('placeholder', displayText + cursor);
+
+            if (!isDeleting && charIndex === currentPlaceholder.length + 1) {
+                isDeleting = true;
+                clearInterval(intervalId);
+                setTimeout(() => {
+                    intervalId = setInterval(type, deletingSpeed);
+                }, delay);
+            } else if (isDeleting && charIndex === -1) {
+                isDeleting = false;
+                placeholderIndex = (placeholderIndex + 1) % placeholders.length;
+                clearInterval(intervalId);
+                intervalId = setInterval(type, typingSpeed);
+            }
+        }
+        
+        input.addEventListener('focus', () => {
+            clearInterval(intervalId);
+            input.setAttribute('placeholder', 'https://');
+        });
+
+        input.addEventListener('blur', () => {
+            if (input.value === '') {
+                input.setAttribute('placeholder', '');
+                charIndex = 0;
+                isDeleting = false;
+                placeholderIndex = 0; // Reiniciar al primer placeholder
+                // Reiniciar animación
+                setTimeout(() => {
+                     intervalId = setInterval(type, typingSpeed);
+                }, 500);
+            }
+        });
+
+        // Iniciar al cargar la página
+        intervalId = setInterval(type, typingSpeed);
+    }
+    setupPlaceholderAnimation();
 });

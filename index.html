@@ -43,34 +43,26 @@
             </header>
             <main class="flex-grow flex items-center p-4 mt-16">
                 <div class="max-w-4xl w-full mx-auto text-center text-white">
-                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight text-shadow-custom">Tu Informe Ejecutivo Confidencial</h1>
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black uppercase tracking-tight text-shadow-custom" id="animated-headline-container">
+                        <span class="headline-static">Más</span> <span id="headline-animated" class="text-[#00DD82]">Visión</span>
+                    </h1>
                     <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto font-light text-gray-200 text-shadow-custom">Generado por IA en 90 segundos. Convertimos los datos de tu web en un plan de acción para directores y gerentes.</p>
                     
                     <div class="mt-10 max-w-3xl mx-auto">
-                        <form id="diagnosticoForm" class="flex flex-col gap-4" novalidate>
-                            <div id="main-input-wrapper" class="flex flex-col sm:flex-row gap-2">
-                                <input type="text" id="main-input" placeholder="Ingresa tu URL de sitio web" required class="w-full flex-grow bg-gray-800/50 border-2 border-gray-600 text-white px-5 py-4 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
-                                <button type="submit" id="main-cta-button" class="form-button w-full sm:w-auto text-base py-4 px-8">Generar mi Plan de Acción</button>
-                            </div>
-                            
-                            <div id="custom-options-wrapper" class="hidden my-4 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left"></div>
-                            
-                            <div id="manual-options-wrapper" class="hidden my-4 flex flex-col items-end gap-4">
-                                <textarea class="manual-textarea" rows="4" placeholder="Describe tu problema o el área que más te preocupa aquí..."></textarea>
-                                <button type="submit" class="form-button w-full sm:w-auto text-base py-3 px-6">Enviar Mensaje</button>
+                        <form id="diagnosticoForm" novalidate>
+                            <!-- LÍNEA DE ACCIÓN PRINCIPAL -->
+                            <div class="main-action-group">
+                                <div class="input-with-icon">
+                                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                                    <input type="text" id="main-input" class="form-input-field" placeholder="Ingresa tu URL de sitio web" required>
+                                </div>
+                                <button type="submit" id="main-cta-button" class="cta-submit-button">
+                                    <span class="button-text">Generar mi Plan de Acción</span>
+                                    <div class="spinner"></div>
+                                </button>
                             </div>
 
-                            <div id="consulta-options-wrapper" class="hidden my-4 flex flex-col gap-4">
-                                <textarea class="consulta-textarea" rows="4" placeholder="Escribe aquí tu consulta..."></textarea>
-                                <div class="flex flex-col md:flex-row gap-4">
-                                    <input type="text" placeholder="Tu nombre" class="consulta-input flex-grow">
-                                    <input type="email" placeholder="Tu email" class="consulta-input flex-grow">
-                                </div>
-                                <div class="flex justify-end">
-                                    <button type="submit" class="form-button w-full sm:w-auto text-base py-3 px-8">Enviar Consulta</button>
-                                </div>
-                            </div>
-
+                            <!-- SELECTOR DE MODO -->
                             <div class="main-selector">
                                 <input type="radio" name="analysis_mode" id="mode-auto" value="auto" class="main-selector-input" checked>
                                 <label for="mode-auto" class="main-selector-label">Automático</label>
@@ -80,6 +72,23 @@
                                 <label for="mode-manual" class="main-selector-label">Manual</label>
                                 <input type="radio" name="analysis_mode" id="mode-consulta" value="consulta" class="main-selector-input">
                                 <label for="mode-consulta" class="main-selector-label">Consulta</label>
+                            </div>
+
+                            <!-- CONTENEDORES PARA OPCIONES ADICIONALES (MANTIENEN SU LÓGICA) -->
+                            <div id="custom-options-wrapper" class="hidden my-4 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left"></div>
+                            <div id="manual-options-wrapper" class="hidden my-4 flex flex-col items-end gap-4">
+                                <textarea class="manual-textarea" rows="4" placeholder="Describe tu problema o el área que más te preocupa aquí..."></textarea>
+                                <button type="submit" class="form-button w-full sm:w-auto text-base py-3 px-6">Enviar Mensaje</button>
+                            </div>
+                            <div id="consulta-options-wrapper" class="hidden my-4 flex flex-col gap-4">
+                                <textarea class="consulta-textarea" rows="4" placeholder="Escribe aquí tu consulta..."></textarea>
+                                <div class="flex flex-col md:flex-row gap-4">
+                                    <input type="text" placeholder="Tu nombre" class="consulta-input flex-grow">
+                                    <input type="email" placeholder="Tu email" class="consulta-input flex-grow">
+                                </div>
+                                <div class="flex justify-end">
+                                    <button type="submit" class="form-button w-full sm:w-auto text-base py-3 px-8">Enviar Consulta</button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -346,6 +355,7 @@
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <script src="src/js/main.js"></script>
 
     <!-- PANEL DE INTELIGENCIA (Inicialmente oculto) -->

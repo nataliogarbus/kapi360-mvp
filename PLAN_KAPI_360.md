@@ -61,8 +61,8 @@ Este plan detalla la implementación del "Laboratorio de Estrategia Kapi" basado
 *Objetivo: Mover el agente de un entorno de prueba local a una configuración lista para producción.*
 
 - [x] **Tarea 6.1:** Reemplazar los datos de muestra en el backend (`kapi-endpoint.php`) con una llamada real a la API de Gemini para generar informes dinámicos.
-- [ ] **Tarea 6.2:** Configurar el envío de datos del formulario de registro a un webhook de SureTriggers.
-- [ ] **Tarea 6.3:** Realizar pruebas de la integración con Gemini y SureTriggers.
+- [x] **Tarea 6.2:** Implementar el envío de notificaciones por email a `nataliogarbus@gmail.com` usando `wp_mail()` al completarse el registro.
+- [x] **Tarea 6.3:** Realizar pruebas de la integración con Gemini y el sistema de notificación por email.
 - [ ] **Tarea 6.4:** Documentar las variables de entorno y claves de API necesarias para el despliegue.
 
 ---
@@ -70,10 +70,23 @@ Este plan detalla la implementación del "Laboratorio de Estrategia Kapi" basado
 ### Etapa 7: Refactorización del Backend a Plugin Dedicado
 *Justificación: Durante la Etapa 6, se detectó un error persistente que corrompía la respuesta JSON del backend. La investigación concluyó que el error se originaba en el tema Astra, no en un plugin. Para solucionar el problema de raíz y seguir las mejores prácticas de WordPress, se decidió desacoplar el endpoint del tema, moviendo la lógica a un plugin dedicado.*
 
-- [ ] **Tarea 7.1:** Crear la estructura de carpetas para el nuevo plugin en `wp-content/plugins/kapi-diagnostics-endpoint`.
-- [ ] **Tarea 7.2:** Crear el archivo principal del plugin (`kapi-diagnostics-endpoint.php`) con la cabecera de WordPress requerida.
-- [ ] **Tarea 7.3:** Implementar el endpoint usando la API REST de WordPress (`register_rest_route`) en lugar de un archivo PHP directo.
-- [ ] **Tarea 7.4:** Migrar la lógica de generación de informes del antiguo `kapi-endpoint.php` a la nueva función de callback de la API REST.
-- [ ] **Tarea 7.5:** Actualizar `netlify.toml` para que el proxy apunte a la nueva ruta de la API REST (ej: `/wp-json/kapi/v1/get_report`).
-- [ ] **Tarea 7.6:** Actualizar la llamada `fetch` en `src/js/main.js` para que coincida con la nueva ruta del proxy.
-- [ ] **Tarea 7.7:** Activar el nuevo plugin y realizar pruebas funcionales completas del nuevo flujo.
+- [x] **Tarea 7.1:** Crear la estructura de carpetas para el nuevo plugin en `wp-content/plugins/kapi-diagnostics-endpoint`.
+- [x] **Tarea 7.2:** Crear el archivo principal del plugin (`kapi-diagnostics-endpoint.php`) con la cabecera de WordPress requerida.
+- [x] **Tarea 7.3:** Implementar el endpoint usando la API REST de WordPress (`register_rest_route`) en lugar de un archivo PHP directo.
+- [x] **Tarea 7.4:** Migrar la lógica de generación de informes del antiguo `kapi-endpoint.php` a la nueva función de callback de la API REST.
+- [x] **Tarea 7.5:** Actualizar `netlify.toml` para que el proxy apunte a la nueva ruta de la API REST (ej: `/wp-json/kapi/v1/get_report`).
+- [x] **Tarea 7.6:** Actualizar la llamada `fetch` en `src/js/main.js` para que coincida con la nueva ruta del proxy.
+- [x] **Tarea 7.7:** Activar el nuevo plugin y realizar pruebas funcionales completas del nuevo flujo.
+
+---
+
+### Etapa 8: Refinamiento de Interfaz y Experiencia de Usuario (UI/UX)
+*Objetivo: Pulir los detalles de la interfaz principal basándose en el feedback directo para mejorar la experiencia de usuario.*
+
+- [x] **Tarea 8.1:** Rediseñar el formulario principal aplicando nuevos estilos visuales (campos de texto, botones, selectores) sin alterar la funcionalidad base.
+- [x] **Tarea 8.2:** Corregir errores de implementación visual post-rediseño, incluyendo:
+    - [x] Reemplazo de palabra en la animación del título ("Liderazgo" por "Gestión").
+    - [x] Ajuste de CSS para el correcto centrado del título animado.
+    - [x] Reubicación de los selectores de modo para asegurar una posición fija y coherente.
+- [x] **Tarea 8.3:** Mejorar la UX de las tarjetas de "Análisis Personalizado", ocultando la descripción y mostrándola en un tooltip al pasar el cursor.
+- [x] **Tarea 8.4:** Implementar un efecto de "máquina de escribir" en el placeholder del campo de URL para una apariencia más dinámica.

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kapi | Interfaz de Diagnóstico Estratégico</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 
+    ============================================================
+    SISTEMA DE DISEÑO Y CONFIGURACIÓN DE UI - KAPI COMMAND
+    ============================================================
+    Este bloque configura Tailwind CSS para usar estrictamente
+    la paleta de colores, tipografía y animaciones personalizadas
+    definidas para la experiencia "Interfaz de Comando".
+    ============================================================
+    -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'electric-blue': '#0057FF',
+                        'electric-blue-dark': '#0044CC',
+                        'mint-green': '#00DD82',
+                        'soft-black': '#1A1A1A',
+                        'card-black': 'rgba(30, 30, 30, 0.5)',
+                        'light-gray': '#E5E7EB',
+                        'medium-gray': '#9CA3AF',
+                        'dark-gray': '#4B5563',
+                    },
+                    fontFamily: {
+                        'sans': ['Poppins', 'sans-serif'],
+                    },
+                    keyframes: {
+                        'input-glow': {
+                            '0%, 100%': { 'box-shadow': '0 0 15px -5px rgba(0, 221, 130, 0.4)' },
+                            '50%': { 'box-shadow': '0 0 25px 0px rgba(0, 221, 130, 0.8)' },
+                        },
+                        'typewriter': {
+                            'from': { 'width': '0' },
+                            'to': { 'width': '100%' }
+                        },
+                        'blink-caret': {
+                            'from, to': { 'border-color': 'transparent' },
+                            '50%': { 'border-color': '#00DD82' },
+                        }
+                    },
+                    animation: {
+                        'input-glow': 'input-glow 4s ease-in-out infinite',
+                        'typewriter': 'typewriter 3.5s steps(40, end), blink-caret .75s step-end infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Estilos base del body aplicando el sistema de diseño */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1A1A1A; /* Negro Suave */
+        }
+    </style>
+</head>
+<body class="bg-soft-black text-medium-gray antialiased">
+
+    <!-- 
+    ============================================================
+    INICIO DE LA SECCIÓN HERO - INTERFAZ DE COMANDO v2.0
+    ============================================================
+    Refinamiento con header, título destacado y prompt de consola mejorado.
+    ============================================================
+    -->
+    <section class="relative min-h-screen flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        
+        <!-- MEJORA 3: HEADER COHERENTE -->
+        <header class="absolute top-0 left-0 right-0 z-20">
+            <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center">
+                <a href="#" aria-label="Página de inicio de Kapi">
+                    <img src="https://placehold.co/100x30/transparent/white?text=KAPI" alt="Logo de Kapi" class="h-8">
+                </a>
+                <div class="hidden md:flex items-center space-x-8 font-sans font-bold text-sm">
+                    <a href="#services" class="text-medium-gray hover:text-light-gray transition-colors">Servicios</a>
+                    <a href="#method" class="text-medium-gray hover:text-light-gray transition-colors">Metodología</a>
+                    <a href="#clients" class="text-medium-gray hover:text-light-gray transition-colors">Clientes</a>
+                    <a href="#contact" class="border border-dark-gray text-light-gray py-2 px-5 rounded-lg hover:bg-dark-gray transition-colors">Agendar Llamada</a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Elementos Gráficos de Soporte: Retícula de Puntos -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-[radial-gradient(#4B5563_1px,transparent_1px)] [background-size:2.5rem_2.5rem] opacity-10"></div>
+        </div>
+
+        <!-- Contenido Principal: La Consola -->
+        <div class="relative z-10 w-full max-w-4xl mx-auto text-center">
+            
+            <!-- MEJORA 1: JUEGO DE COLORES EN EL TÍTULO -->
+            <h1 class="font-sans font-black text-4xl md:text-5xl lg:text-6xl text-light-gray leading-tight">
+                Datos para su <span class="text-mint-green">Directorio</span>, no para sus <span class="text-mint-green">Analistas</span>.
+            </h1>
+            <p class="mt-6 max-w-3xl mx-auto font-sans text-lg text-medium-gray" style="line-height: 1.65;">
+                Obtenga un Diagnóstico Ejecutivo Gratuito de su presencia online, generado por nuestra IA y validado por nuestro equipo de consultores senior.
+            </p>
+
+            <!-- MEJORA 2: PROMPT DE CONSOLA REUBICADO Y MEJORADO -->
+            <div class="mt-12 font-mono text-mint-green text-left max-w-3xl mx-auto text-lg">
+                <span class="opacity-60">KAPI_DIAGNOSTICS_v3.0:></span>
+                <span class="inline-block align-middle overflow-hidden whitespace-nowrap border-r-4 border-r-mint-green animate-typewriter">
+                    Ingrese URL para iniciar diagnóstico...
+                </span>
+            </div>
+
+            <!-- El Formulario como "Consola de Comando" -->
+            <div class="mt-4 w-full max-w-3xl mx-auto bg-card-black border border-dark-gray/50 rounded-2xl p-6 sm:p-8 backdrop-blur-sm">
+                <form id="diagnosticoForm" class="flex flex-col sm:flex-row items-center gap-4" novalidate>
+                    <label for="url-input" class="sr-only">Ingrese la URL de su sitio web</label>
+                    <input 
+                        type="url" 
+                        id="url-input"
+                        name="url"
+                        placeholder="https://" 
+                        required 
+                        class="w-full h-16 px-6 bg-white border-2 border-dark-gray rounded-lg text-soft-black text-lg font-medium placeholder:text-medium-gray/80 focus:outline-none focus:border-transparent animate-input-glow"
+                        style="--tw-shadow-color: #00DD82;"
+                    >
+                    <button 
+                        type="submit" 
+                        class="submit-button group relative w-full sm:w-auto h-16 shrink-0 bg-electric-blue text-white font-sans font-bold text-lg px-8 rounded-lg overflow-hidden transition-all duration-300 hover:bg-electric-blue-dark hover:shadow-2xl hover:shadow-electric-blue/30"
+                    >
+                        <!-- Efecto de barrido en hover -->
+                        <span class="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"></span>
+                        <span class="relative z-10">Generar Diagnóstico</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Prueba Social Integrada -->
+            <div class="mt-12">
+                <p class="font-sans text-sm tracking-widest uppercase text-medium-gray">
+                    CON LA CONFIANZA DE LÍDERES DEL SECTOR INDUSTRIAL Y TECNOLÓGICO
+                </p>
+                <div class="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+                    <img src="https://placehold.co/120x40/transparent/white?text=TechCorp" alt="Logo del cliente TechCorp" class="h-7 grayscale opacity-40 transition-all duration-300 hover:grayscale-0 hover:opacity-100">
+                    <img src="https://placehold.co/120x40/transparent/white?text=InnovaInd" alt="Logo del cliente InnovaInd" class="h-7 grayscale opacity-40 transition-all duration-300 hover:grayscale-0 hover:opacity-100">
+                    <img src="https://placehold.co/120x40/transparent/white?text=QuantumSys" alt="Logo del cliente QuantumSys" class="h-7 grayscale opacity-40 transition-all duration-300 hover:grayscale-0 hover:opacity-100">
+                    <img src="https://placehold.co/120x40/transparent/white?text=NexusData" alt="Logo del cliente NexusData" class="h-7 grayscale opacity-40 transition-all duration-300 hover:grayscale-0 hover:opacity-100">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- FIN DE LA SECCIÓN HERO -->
+
+</body>
+</html>

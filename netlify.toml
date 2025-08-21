@@ -4,3 +4,9 @@
   to = "http://kapi-local.local/wp-json/kapi/v1/get_report" # La ruta correcta de la API REST
   status = 200
   force = true
+
+[[redirects]]
+  from = "/api/register"
+  to = "http://kapi-local.local/wp-json/kapi/v1/register"
+  status = 200
+  force = true

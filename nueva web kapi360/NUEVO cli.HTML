@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kapi 360 - Diagnóstico Ejecutivo IA</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- tsParticles CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-engine@2.12.0/tsparticles.engine.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.min.js"></script>
+
+    <!-- Configuración personalizada para Tailwind CSS -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-bg': '#0A101E',
+                        'light-text': '#E5E7EB',
+                        'medium-text': '#9CA3AF',
+                        'accent-green': '#00DD82',
+                        'accent-blue': '#0057FF',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        mono: ['Roboto Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Estilos personalizados para animaciones -->
+    <style>
+        body {
+            background-color: #0A101E;
+            color: #E5E7EB;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        #tsparticles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Animación de slide vertical (CORREGIDA) */
+        @keyframes slideInUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideOutUp {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(-100%); opacity: 0; }
+        }
+
+        .slide-in-up { animation: slideInUp 0.5s ease-in-out forwards; }
+        .slide-out-up { animation: slideOutUp 0.5s ease-in-out forwards; }
+        
+        /* Animación de placeholder tipo máquina de escribir */
+        .typewriter-placeholder {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: .15em solid #00DD82; /* El cursor */
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #00DD82; }
+        }
+        
+        /* Ocultar placeholder al hacer foco en el input */
+        .url-input:focus ~ .placeholder-container { display: none; }
+        
+        /* Estilo del spinner */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #00DD82;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-dark-bg font-sans">
+
+    <div id="tsparticles"></div>
+
+    <div class="relative min-h-screen flex flex-col justify-between">
+        
+        <main class="flex-grow flex flex-col items-center justify-center text-center px-4 z-10">
+            
+            <!-- Título con palabra fija y contenedor de animación -->
+            <h1 class="text-5xl md:text-7xl font-bold text-light-text flex items-center">
+                <span class="mr-4">Más</span>
+                <div id="animated-text-container" class="relative h-16 md:h-24 w-[650px] text-left overflow-hidden">
+                    <span class="absolute inset-0 flex items-center text-accent-green">Visión. Control. Liderazgo.</span>
+                </div>
+            </h1>
+
+            <p class="mt-6 max-w-2xl text-lg md:text-xl text-medium-text">
+                Obtenga un Diagnóstico Ejecutivo Gratuito de su presencia online, generado por nuestra IA y validado por nuestro equipo de consultores senior.
+            </p>
+
+            <form id="url-form" class="mt-12 w-full max-w-2xl relative flex flex-col sm:flex-row items-center gap-4">
+                <div class="relative w-full">
+                    <input id="url-input" type="url" class="url-input w-full h-14 px-6 bg-gray-800/50 border border-gray-700 rounded-lg text-light-text focus:outline-none focus:ring-2 focus:ring-accent-blue transition-all duration-300" required>
+                    <div class="placeholder-container absolute top-1/2 left-6 -translate-y-1/2 pointer-events-none">
+                        <span class="typewriter-placeholder text-medium-text font-mono">https://ejemplo.com</span>
+                    </div>
+                </div>
+                <button id="generate-button" type="submit" class="w-full sm:w-auto flex-shrink-0 h-14 px-8 bg-accent-blue hover:bg-blue-700 text-white font-bold rounded-lg transition-all duration-300 flex items-center justify-center">
+                    Generar
+                </button>
+                <div id="loading-spinner" class="hidden w-full sm:w-auto h-14 flex items-center justify-center">
+                    <div class="spinner"></div>
+                </div>
+            </form>
+            <div id="success-message" class="hidden mt-4 text-accent-green">
+                ¡Diagnóstico generado! Redirigiendo...
+            </div>
+
+        </main>
+
+        <footer class="w-full py-8 px-4 z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <span class="text-sm font-semibold uppercase tracking-wider text-gray-500">CON LA CONFIANZA DE EMPRESAS LÍDERES</span>
+                <div class="mt-6 flex justify-center items-center gap-8 md:gap-12">
+                    <img src="https://placehold.co/120x40/1a202c/4a5568?text=ClienteA" alt="Logo Cliente A" class="h-8 opacity-60 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+                    <img src="https://placehold.co/120x40/1a202c/4a5568?text=ClienteB" alt="Logo Cliente B" class="h-8 opacity-60 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+                    <img src="https://placehold.co/120x40/1a202c/4a5568?text=ClienteC" alt="Logo Cliente C" class="h-8 opacity-60 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+                    <img src="https://placehold.co/120x40/1a202c/4a5568?text=ClienteD" alt="Logo Cliente D" class="h-8 hidden sm:block opacity-60 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Script para tsParticles ---
+            tsParticles.load("tsparticles", {
+                background: { color: { value: "#0A101E" } },
+                fpsLimit: 60,
+                interactivity: {
+                    events: { onHover: { enable: true, mode: "repulse" }, resize: true },
+                    modes: { repulse: { distance: 100, duration: 0.4 } }
+                },
+                particles: {
+                    color: { value: "#ffffff" },
+                    links: { color: "#ffffff", distance: 150, enable: true, opacity: 0.1, width: 1 },
+                    move: { direction: "none", enable: true, outModes: { default: "out" }, random: false, speed: 1, straight: false },
+                    number: { density: { enable: true, area: 800 }, value: 80 },
+                    opacity: { value: 0.1 },
+                    shape: { type: "circle" },
+                    size: { value: { min: 1, max: 3 } }
+                },
+                detectRetina: true
+            });
+
+            // --- Script para animación de texto (VERSIÓN FINAL Y CORRECTA) ---
+            const animatedTextContainer = document.getElementById('animated-text-container');
+            const phrases = [
+                "Visión. Control. Liderazgo.",
+                "Clientes. Crecimiento. Ventas."
+            ];
+            let phraseIndex = 0;
+
+            setInterval(() => {
+                const currentSpan = animatedTextContainer.querySelector('span');
+                
+                // 1. Animar hacia afuera el span actual
+                currentSpan.classList.add('slide-out-up');
+                
+                // 2. Preparar el siguiente span para animarlo hacia adentro
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                const newSpan = document.createElement('span');
+                newSpan.textContent = phrases[phraseIndex];
+                newSpan.className = 'absolute inset-0 flex items-center text-accent-green slide-in-up';
+                
+                // 3. Cuando la animación de salida termine, eliminar el span antiguo del DOM
+                currentSpan.addEventListener('animationend', () => {
+                    currentSpan.remove();
+                }, { once: true });
+                
+                // 4. Añadir el nuevo span al contenedor para que comience su animación
+                animatedTextContainer.appendChild(newSpan);
+
+            }, 5000); // Cambia de frase cada 5 segundos
+
+
+            // --- Script para el formulario ---
+            const urlForm = document.getElementById('url-form');
+            const generateButton = document.getElementById('generate-button');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const successMessage = document.getElementById('success-message');
+            const urlInput = document.getElementById('url-input');
+            const placeholderContainer = document.querySelector('.placeholder-container');
+
+            urlForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                generateButton.classList.add('hidden');
+                loadingSpinner.classList.remove('hidden');
+                setTimeout(() => {
+                    loadingSpinner.classList.add('hidden');
+                    successMessage.classList.remove('hidden');
+                }, 2000);
+            });
+            
+            urlInput.addEventListener('focus', () => {
+                placeholderContainer.style.display = 'none';
+            });
+            
+            urlInput.addEventListener('blur', () => {
+                if (urlInput.value === '') {
+                    placeholderContainer.style.display = 'block';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
