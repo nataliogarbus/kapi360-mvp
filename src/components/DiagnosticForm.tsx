@@ -92,15 +92,23 @@ const DiagnosticForm: React.FC<DiagnosticFormProps> = ({ isLoading, onSubmit }) 
         )}
 
         {/* --- Mode Selector --- */}
-        <div className="main-selector">
-          <input type="radio" name="analysis_mode" id="mode-auto" value="auto" className="main-selector-input" checked={mode === 'auto'} onChange={() => setMode('auto')} disabled={isLoading} />
-          <label htmlFor="mode-auto" className="main-selector-label">Automático</label>
-          <input type="radio" name="analysis_mode" id="mode-custom" value="custom" className="main-selector-input" checked={mode === 'custom'} onChange={() => setMode('custom')} disabled={isLoading} />
-          <label htmlFor="mode-custom" className="main-selector-label">Personalizado</label>
-          <input type="radio" name="analysis_mode" id="mode-manual" value="manual" className="main-selector-input" checked={mode === 'manual'} onChange={() => setMode('manual')} disabled={isLoading} />
-          <label htmlFor="mode-manual" className="main-selector-label">Manual</label>
-          <input type="radio" name="analysis_mode" id="mode-consulta" value="consulta" className="main-selector-input" checked={mode === 'consulta'} onChange={() => setMode('consulta')} disabled={isLoading} />
-          <label htmlFor="mode-consulta" className="main-selector-label">Consulta</label>
+        <div className="flex justify-center items-center my-8 bg-gray-900/60 border border-slate-700 rounded-full p-1 backdrop-blur-sm">
+          <div>
+            <input type="radio" name="analysis_mode" id="mode-auto" value="auto" className="hidden peer" checked={mode === 'auto'} onChange={() => setMode('auto')} disabled={isLoading} />
+            <label htmlFor="mode-auto" className="px-4 py-2 text-sm font-semibold rounded-full cursor-pointer transition-colors duration-300 text-gray-300 hover:bg-slate-700/50 peer-checked:bg-cyan-500 peer-checked:text-white peer-checked:shadow-lg">Automático</label>
+          </div>
+          <div>
+            <input type="radio" name="analysis_mode" id="mode-custom" value="custom" className="hidden peer" checked={mode === 'custom'} onChange={() => setMode('custom')} disabled={isLoading} />
+            <label htmlFor="mode-custom" className="px-4 py-2 text-sm font-semibold rounded-full cursor-pointer transition-colors duration-300 text-gray-300 hover:bg-slate-700/50 peer-checked:bg-cyan-500 peer-checked:text-white peer-checked:shadow-lg">Personalizado</label>
+          </div>
+          <div>
+            <input type="radio" name="analysis_mode" id="mode-manual" value="manual" className="hidden peer" checked={mode === 'manual'} onChange={() => setMode('manual')} disabled={isLoading} />
+            <label htmlFor="mode-manual" className="px-4 py-2 text-sm font-semibold rounded-full cursor-pointer transition-colors duration-300 text-gray-300 hover:bg-slate-700/50 peer-checked:bg-cyan-500 peer-checked:text-white peer-checked:shadow-lg">Manual</label>
+          </div>
+          <div>
+            <input type="radio" name="analysis_mode" id="mode-consulta" value="consulta" className="hidden peer" checked={mode === 'consulta'} onChange={() => setMode('consulta')} disabled={isLoading} />
+            <label htmlFor="mode-consulta" className="px-4 py-2 text-sm font-semibold rounded-full cursor-pointer transition-colors duration-300 text-gray-300 hover:bg-slate-700/50 peer-checked:bg-cyan-500 peer-checked:text-white peer-checked:shadow-lg">Consulta</label>
+          </div>
         </div>
 
         {/* --- Conditional Rendering for Form Sections --- */}
