@@ -1,20 +1,60 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import ReportCard from './ReportCard';
+import StrategicCompass from './StrategicCompass';
 
 interface ReportSectionProps {
-  report: string; // Ahora el informe es solo una cadena de texto
+  report: string;
 }
 
 const ReportSection: React.FC<ReportSectionProps> = ({ report }) => {
   if (!report) {
-    return null; // No renderizar nada si no hay informe
+    return null;
   }
 
+  // 1. Extraer el puntaje y limpiar el resto del informe
+  const scoreRegex = /\*\*Puntaje General:\*\*\s*(\d+)\/100/;
+  const match = report.match(scoreRegex);
+  const score = match ? parseInt(match[1], 10) : 0;
+  const reportContent = report.replace(scoreRegex, '').trim();
+
+  // 2. Dividir el contenido restante en secciones
+  const reportSections = reportContent.split('## ').filter(section => section.trim() !== '');
+
   return (
-    <section id="report-section" className="bg-gray-800 text-white p-6 sm:p-8 rounded-lg mt-10 mx-4 sm:mx-0">
-      <h2 className="text-3xl font-bold mb-6 text-center text-green-400">Resultados del Diagnóstico</h2>
-      <div className="prose prose-invert max-w-none">
-        <ReactMarkdown>{report}</ReactMarkdown>
+    <section id="report-section" className="mt-10 w-full">
+      <h2 className="text-3xl font-bold mb-8 text-center text-white">Resultados del Diagnóstico</h2>
+      
+      {/* Contenedor para la Brújula Estratégica */}
+      {match && ( // Solo mostrar la brújula si se encontró un puntaje
+        <div className="mb-12">
+          <h3 className="text-center text-2xl font-bold text-white mb-4">Brújula Estratégica</h3>
+          <div className="relative mx-auto" style={{ width: '220px', height: '110px' }}>
+            <StrategicCompass score={score} />
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none" style={{ top: '-20px'}}>
+              <span className="text-5xl font-black text-white">{score}</span>
+              <span className="text-sm font-semibold text-gray-400 tracking-wider">Puntaje General</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div>
+        {reportSections.map((section, index) => (
+          <ReportCard key={index}>
+            <ReactMarkdown
+              components={{
+                h2: ({node, ...props}) => <h2 className="text-2xl font-semibold text-cyan-400 mb-4" {...props} />,
+                p: ({node, ...props}) => <p className="text-slate-300 mb-4" {...props} />,
+                ul: ({node, ...props}) => <ul className="list-disc pl-6 space-y-2" {...props} />,
+                li: ({node, ...props}) => <li className="text-slate-300" {...props} />,
+                strong: ({node, ...props}) => <strong className="text-green-400" {...props} />,
+              }}
+            >
+              {`## ${section}`}
+            </ReactMarkdown>
+          </ReportCard>
+        ))}
       </div>
     </section>
   );

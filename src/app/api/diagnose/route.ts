@@ -21,6 +21,8 @@ function getPrompt(url: string, mode: string): string {
     URL del cliente: ${url}
     Tipo de análisis solicitado: ${mode}
 
+    **REQUERIMIENTO CLAVE:** La primera línea de tu respuesta DEBE ser el puntaje general, en el formato exacto: **Puntaje General:** XX/100. El resto del informe debe continuar después de esta línea.
+
     Por favor, genera un informe conciso y accionable en formato Markdown.
     El tono debe ser profesional, directo y orientado a resultados de negocio (KPIs), no solo a métricas técnicas.
   `;
