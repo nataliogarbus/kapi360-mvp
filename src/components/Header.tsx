@@ -10,9 +10,9 @@ const Header = () => {
             <Image 
               src="/logo-kapi-verde.svg" 
               alt="Logo de Kapi" 
-              width={114} 
-              height={32} 
-              className="h-8 w-auto"
+              width={143} 
+              height={40} 
+              className="h-10 w-auto"
               priority
             />
         </Link>
