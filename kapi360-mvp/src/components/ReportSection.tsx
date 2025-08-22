@@ -32,12 +32,12 @@ const parseReport = (report: string) => {
   };
 
   const parsedQuadrants = quadrantNames.map(name => {
+    const parsedQuadrants = quadrantNames.map(name => {
     const quadrantRegex = new RegExp(
-      `##\s*${name}\s*\(Puntaje:\s*(\d+)\/100` + // Corrected: escaped backslash for newline
-      `[\s\S]*?` + // Corrected: escaped backslash for newline
-      `\*\*Qué es:\*\*\s*([\s\S]*?)\n` + // Corrected: escaped backslash for newline
-      `\*\*Por qué importa:\*\*\s*([\s\S]*?)\n` + // Corrected: escaped backslash for newline
-      `\*\*Coordenadas Clave:\*\*\s*([\s\S]*?)(?=\n##|$)`,
+      `##\s*${name}\s*\(Puntaje:\s*(\d+)\/100\)[\s\S]*?` + // Corregido: Añadido el paréntesis de cierre \)
+      `**Qué es:**\s*([\s\S]*?)\n` + // Corregido: Añadido el paréntesis de cierre \)
+      `**Por qué importa:**\s*([\s\S]*?)\n` + // Corregido: Añadido el paréntesis de cierre \)
+      `**Coordenadas Clave:**\s*([\s\S]*?)(?=\n##|$)`,
       'i'
     );
 
