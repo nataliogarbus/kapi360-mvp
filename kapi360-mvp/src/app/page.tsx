@@ -26,10 +26,10 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [report, setReport] = useState<any | null>(null);
 
-  const handleDiagnose = async (url: string, mode: string) => {
+  // Actualizado para aceptar el `context` del formulario
+  const handleDiagnose = async (url: string, mode: string, context?: string) => {
     setIsLoading(true);
     setError(null);
-    // No reseteamos el report aquí para que no desaparezca mientras carga
 
     try {
       const response = await fetch('/api/diagnose', {
@@ -37,7 +37,7 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ url, mode }),
+        body: JSON.stringify({ url, mode, context }), // Pasamos el contexto a la API
       });
 
       const result = await response.json();
@@ -71,7 +71,7 @@ export default function Home() {
           {isLoading ? (
             <LoadingState />
           ) : (
-            <DiagnosticForm onSubmit={handleDiagnose} />
+            <DiagnosticForm onSubmit={handleDiagnose} isLoading={isLoading} />
           )}
 
           {error && (
