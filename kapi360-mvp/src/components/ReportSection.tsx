@@ -57,7 +57,7 @@ const parseReport = (report: string) => {
     return { title: name, score: 0, bgColor: 'bg-gray-500', queEs: 'No se encontró análisis para este pilar.', porQueImporta: '-', coordenadas: [] };
   });
 
-  const scoreRegex = /\\**Puntaje General:\\**\\s*(\\d+)\\/100/;
+  const scoreRegex = /\*\*Puntaje General:\*\*\s*(\d+)\/100/;
   const scoreMatch = report.match(scoreRegex);
   const generalScore = scoreMatch ? parseInt(scoreMatch[1], 10) : 0;
 
