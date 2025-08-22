@@ -38,3 +38,38 @@
 1. Que el usuario suba los últimos cambios a Git (`git push`).
 2. Que el usuario verifique el fondo de partículas, el botón de WhatsApp, el formulario de contacto (incluido el envío de correos) y el nuevo componente `ValuePath` en la URL de Vercel.
 3. Iniciar una revisión sistemática final de la aplicación contra `maqueta_final.html` para identificar los últimos detalles pendientes.
+
+---
+
+### **Bitácora - Sesión 2025-08-22 (Aclaración de Visión)**
+
+**Fase Actual:** 6 - Refinamiento y Visión Unificada (v2.1)
+**Rol Actual:** Arquitecto de Solución / Desarrollador Full-Stack
+
+**Resumen de la Clarificación:**
+- El usuario proveyó una aclaración fundamental sobre la visión del producto: el **dashboard interactivo ES el informe final**, no una antesala a un bloque de texto.
+- Se definió que la experiencia debe ser unificada, eliminando la sección separada de "Análisis Detallado" en texto plano.
+- Se establecieron los **4 pilares de análisis definitivos** para el informe:
+  1.  `Mercado y Competencia`
+  2.  `Plataforma y UX`
+  3.  `Contenido y Redes`
+  4.  `Crecimiento e IA`
+- Se clarificó el propósito de los **modos de análisis**: `Automático` (los 4 pilares), `Personalizado` (pilares seleccionados), `Manual` (problema específico) y `Consulta` (contacto directo).
+
+**Plan de Acción Acordado (Plan de Optimización a Kapi v2.1):**
+
+- **Fase 1: Actualizar el Núcleo del Dashboard:**
+  - **Tarea 1.1:** Renombrar los cuadrantes a los 4 nuevos pilares en todos los componentes relevantes.
+  - **Tarea 1.2:** Unificar la vista del informe, eliminando la sección de texto plano.
+
+- **Fase 2: Adaptar el Procesamiento de Datos:**
+  - **Tarea 2.1:** Actualizar la función `parseReport` para que busque y extraiga los datos de los 4 nuevos pilares, basándose en una nueva estructura de prompt para la IA.
+
+- **Fase 3: Refinar la Interfaz de Entrada:**
+  - **Tarea 3.1:** Ajustar `DiagnosticForm.tsx` para clarificar y hacer funcionales los 4 modos de análisis.
+
+**Estado Actual:**
+- Se ha actualizado la documentación interna (`GEMINI.md`, `PLAN_KAPI_360.md`, `Chat_session_app.md`) para reflejar esta nueva visión y plan de acción.
+
+**Próximo Paso Acordado:**
+- Iniciar la ejecución de la **Fase 1** del nuevo plan, comenzando por la **Tarea 1.1**: renombrar los cuadrantes en `ReportSection.tsx` y `MapaCentral.tsx`.

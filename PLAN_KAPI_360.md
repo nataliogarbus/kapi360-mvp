@@ -4,61 +4,22 @@ Este plan detalla la implementación del "Laboratorio de Estrategia Kapi" basado
 
 ---
 
-### Etapa 1: Estructura y Estilo Base
-*Objetivo: Establecer la base del proyecto con la nueva maqueta y organización.*
+### Etapa 1 a 5 (Completadas)
+*(Las etapas anteriores documentan el desarrollo inicial hasta la implementación de la arquitectura Next.js/Vercel/Supabase y las primeras versiones del dashboard.)*
 
-- [x] **Tarea 1.1:** Reemplazar `index.html` con la maqueta `kapi-home-final.html`.
-- [x] **Tarea 1.2:** Extraer CSS a `src/css/style.css`.
-- [x] **Tarea 1.3:** Extraer JavaScript a `src/js/main.js`.
-- [x] **Tarea 1.4:** Limpiar `index.html` para enlazar archivos externos.
-- [x] **Tarea 1.5:** Crear `BRIEF_FINAL.md` con el brief detallado del proyecto.
-- [x] **Tarea 1.6:** Crear `src/js/sample-data.json` con una estructura de datos de ejemplo para el informe, simulando la respuesta de OttoKit.
+- [x] Tareas 1.1 a 5.11 completadas.
 
 ---
 
-### Etapa 2: Implementación del Informe - Fase 1 (El Gancho)
-*Objetivo: Mostrar el informe compacto inicial después de que el usuario envíe la URL.*
+### Etapa 6: Refinamiento y Visión Unificada (v2.1)
+*Objetivo: Alinear la aplicación con la visión estratégica definitiva del informe como una herramienta 100% interactiva.*
 
-- [x] **Tarea 2.1:** Modificar `index.html` para añadir la sección (inicialmente oculta) que contendrá el informe.
-- [x] **Tarea 2.2:** Implementar la lógica en `main.js` para que, al enviar el formulario, se oculte el formulario y se muestre una animación de carga.
-- [x] **Tarea 2.3:** Implementar una función en `main.js` que lea los datos de `sample-data.json` y renderice el informe Fase 1 (compacto) en la sección de resultados.
-- [x] **Tarea 2.4:** Implementar el componente "Brújula Estratégica" (gráfico de dona) usando una librería de JS.
-- [x] **Tarea 2.5:** Implementar las 4 tarjetas de "Rutas Óptimas" (solo título y puntuación).
-- [x] **Tarea 2.6:** Implementar el botón "DESBLOQUEAR MI MAPA COMPLETO".
-
----
-
-### Etapa 3: Implementación del Registro - Fase 2
-*Objetivo: Mostrar el dashboard completo después del registro.*
-
-- [x] **Tarea 3.1:** Modificar `index.html` para añadir la estructura del módulo de registro (inicialmente oculta).
-- [x] **Tarea 3.2:** Implementar la lógica en `main.js` para que, tras un registro simulado, se oculte el módulo de registro y se muestre el dashboard.
-
----
-
-### Etapa 4: Implementación del Dashboard - Fase 3
-*Objetivo: Mostrar el dashboard completo después del registro.*
-
-- [x] **Tarea 4.1:** Modificar `index.html` para añadir la estructura del dashboard completo (inicialmente oculta).
-- [x] **Tarea 4.2:** Implementar la lógica en `main.js` para que, tras un registro simulado, se oculte el módulo de registro y se muestre el dashboard.
-- [x] **Tarea 4.3:** Implementar las tarjetas expandibles ("acordeón") para las "Rutas Óptimas".
-- [x] **Tarea 4.4:** Implementar los gráficos de anillo segmentado para cada tarjeta.
-- [x] **Tarea 4.5:** Implementar la sección "Plan de Acción Recomendado".
-- [x] **Tarea 4.6:** Implementar el panel lateral deslizable "Panel de Inteligencia".
-
----
-
-### Etapa 5: Arquitectura Final y Despliegue
-*Objetivo: Implementar la arquitectura final con Next.js, desplegarla en Vercel y confirmar su funcionalidad.*
-
-- [x] **Tarea 5.1:** Desarrollar la aplicación como un proyecto de Next.js (`kapi360-mvp`).
-- [x] **Tarea 5.2:** Crear un endpoint de API (`/api/diagnose`) dentro de Next.js para manejar la lógica de backend.
-- [x] **Tarea 5.3:** Integrar la API de Gemini directamente desde el endpoint de la API para generar los informes.
-- [x] **Tarea 5.4:** Integrar Supabase para almacenar los resultados de los diagnósticos.
-- [x] **Tarea 5.5:** Configurar el proyecto en Vercel para el despliegue continuo desde el repositorio de Git.
-- [x] **Tarea 5.6:** Configurar las variables de entorno (claves de API de Gemini y Supabase) en Vercel.
-- [x] **Tarea 5.7:** Realizar pruebas funcionales de extremo a extremo en el entorno de Vercel para validar el flujo completo.
-- [x] **Tarea 5.8:** Documentar la nueva arquitectura en los archivos `GEMINI.md` y `PLAN_KAPI_360.md`.
-- [x] **Tarea 5.9:** Implementar botón flotante de WhatsApp en el frontend.
-- [x] **Tarea 5.10:** Implementar formulario de contacto con campos extendidos.
-- [x] **Tarea 5.11:** Implementar backend para envío de correos del formulario de contacto.
+- [ ] **Tarea 6.1:** Aclarar la visión del informe: el dashboard interactivo **es** el informe. No hay una sección de "análisis detallado" separada.
+- [ ] **Tarea 6.2:** Actualizar los pilares de análisis a los 4 definidos:
+    - `Mercado y Competencia`
+    - `Plataforma y UX`
+    - `Contenido y Redes`
+    - `Crecimiento e IA`
+- [ ] **Tarea 6.3:** Unificar la vista del informe en `ReportSection.tsx`, eliminando el renderizado de texto plano y dejando solo el dashboard interactivo.
+- [ ] **Tarea 6.4:** Actualizar la función `parseReport` para que busque y extraiga los datos de los nuevos 4 pilares, basándose en la nueva estructura de prompt definida en `GEMINI.md`.
+- [ ] **Tarea 6.5:** Refinar el formulario de `DiagnosticForm.tsx` para que las 4 modalidades de análisis (`Automático`, `Personalizado`, `Manual`, `Consulta`) sean claras y funcionales.
