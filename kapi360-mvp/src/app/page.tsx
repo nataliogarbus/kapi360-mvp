@@ -21,14 +21,6 @@ const LoadingState = () => (
   </div>
 );
 
-// Un componente simple para el estado de carga
-const LoadingState = () => (
-  <div className="text-center my-10">
-    <p className="text-white text-xl mb-4">Nuestros agentes IA están analizando la información. Esto puede tardar hasta 90 segundos.</p>
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
-  </div>
-);
-
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
