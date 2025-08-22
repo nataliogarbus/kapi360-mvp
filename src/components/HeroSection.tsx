@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ValuePath from './ValuePath';
 
 const words = ["Visión", "Control", "Gestión", "Clientes", "Ingresos", "Éxitos", "Ventas", "POTENCIA"];
 
@@ -35,9 +36,8 @@ const HeroSection = () => {
             </motion.span>
           </AnimatePresence>
         </h1>
-        <p className="mt-4 text-lg md:text-xl max-w-3xl mx-auto font-light text-gray-200 text-shadow-custom">
-          Generado por IA en 90 segundos. Convertimos los datos de tu web en un plan de acción para directores y gerentes.
-        </p>
+        {/* Replaced the paragraph with ValuePath component */}
+        <ValuePath />
       </div>
     </section>
   );
