@@ -70,6 +70,31 @@
 
 **Estado Actual:**
 - Se ha actualizado la documentación interna (`GEMINI.md`, `PLAN_KAPI_360.md`, `Chat_session_app.md`) para reflejar esta nueva visión y plan de acción.
+- Se ha depurado una larga cadena de errores de build y de runtime, culminando en un despliegue exitoso de la versión v2.1.
 
 **Próximo Paso Acordado:**
 - Iniciar la ejecución de la **Fase 1** del nuevo plan, comenzando por la **Tarea 1.1**: renombrar los cuadrantes en `ReportSection.tsx` y `MapaCentral.tsx`.
+
+---
+
+### **Bitácora - Sesión 2025-08-22 (Evolución a v2.2 - Visión Detallada)**
+
+**Fase Actual:** 7 - Planificación de la Visión Detallada (v2.2)
+**Rol Actual:** Arquitecto de Solución
+
+**Resumen de Nuevos Requerimientos y Feedback:**
+- **Bug Reportado:** El texto en el efecto `hover` de los cuadrantes no se visualiza correctamente (se queda "encerrado").
+- **Requerimiento 1 (Flujo Principal):** Se confirma el deseo de una interfaz tipo "acordeón". El panel lateral se elimina. Al hacer clic en un cuadrante, este se expande hacia abajo para mostrar los detalles y el plan de acción.
+- **Requerimiento 2 (Micro-Dashboard):** Cada "coordenada" dentro de un pilar debe tener su propia "mini-brújula" con su puntaje individual.
+- **Requerimiento 3 (Planes de Acción Anidados):** Las "Rutas de Solución" (`Lo Hago Yo`, etc.) dentro del acordeón principal deben ser, a su vez, acordeones que se expanden para mostrar el plan de acción detallado para cada modalidad.
+- **Requerimiento 4 (Contenido y Tono):** El tono debe ser profesional, sin tecnicismos innecesarios. Se sugiere usar `hover` para explicar términos complejos, lo cual puede beneficiar al SEO. No nombrar tecnologías específicas a menos que sean muy conocidas.
+- **Requerimiento 5 (Funcionalidad Adicional):**
+    - Añadir un toggle o botón para "ver todo" el plan de acción desplegado.
+    - Implementar una función de "Enviar por correo" que, además, sirva como mecanismo de suscripción a newsletter.
+
+**Estado Actual:**
+- Se ha recibido y analizado el feedback detallado del usuario.
+- El agente se dispone a actualizar el resto de la documentación del proyecto (`PLAN_KAPI_360.md` y `GEMINI.md`) antes de proponer un plan técnico para la implementación de la v2.2.
+
+**Próximo Paso Acordado:**
+- Actualizar la documentación restante para reflejar la visión v2.2.

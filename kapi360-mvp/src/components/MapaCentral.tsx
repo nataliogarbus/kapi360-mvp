@@ -35,9 +35,9 @@ const Quadrant: React.FC<QuadrantProps> = ({ title, score, bgColor, onClick, isH
         <h3 className="text-lg font-bold text-center">{title}</h3>
         <p className="text-4xl font-light mt-2 text-center">{score}</p>
       </div>
-      <div className={`absolute inset-0 bg-black bg-opacity-50 p-4 flex flex-col justify-center items-center transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
-        <h4 className="text-md font-bold mb-2">Coordenadas Clave</h4>
-        <ul className="text-sm list-none text-center space-y-1">
+      <div className={`absolute inset-0 bg-black bg-opacity-70 p-4 flex flex-col justify-center transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+        <h4 className="text-md font-bold mb-2 text-center">Coordenadas Clave</h4>
+        <ul className="text-sm list-disc list-inside space-y-1">
           {coordenadas.map(coord => <li key={coord}>{coord}</li>)}
         </ul>
       </div>
