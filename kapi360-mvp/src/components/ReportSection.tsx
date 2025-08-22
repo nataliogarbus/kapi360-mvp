@@ -1,30 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react'; // Importamos useState
 import ReactMarkdown from 'react-markdown';
 import ReportCard from './ReportCard';
 import StrategicCompass from './StrategicCompass';
-import MapaCentral from './MapaCentral'; // Importamos el nuevo componente
+import MapaCentral from './MapaCentral';
+import PanelDeInteligencia from './PanelDeInteligencia'; // Importamos el panel
+
+// Definimos un tipo para los datos del cuadrante que pasaremos al panel
+interface QuadrantData {
+  title: string;
+  queEs: string;
+  porQueImporta: string;
+}
 
 interface ReportSectionProps {
   report: string;
 }
 
 const ReportSection: React.FC<ReportSectionProps> = ({ report }) => {
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [selectedQuadrant, setSelectedQuadrant] = useState<QuadrantData | null>(null);
+
   if (!report) return null;
 
-  // Extraemos el puntaje general
   const scoreRegex = /\*\*Puntaje General:\*\*\s*(\d+)\/100/;
   const match = report.match(scoreRegex);
   const score = match ? parseInt(match[1], 10) : 0;
   
-  // Limpiamos el contenido del reporte para no mostrar el puntaje dos veces
   const reportContent = report.replace(scoreRegex, '').trim();
   const otherSections = reportContent.split('## ').filter(section => section.trim() !== '');
+
+  // Función para manejar el clic en un cuadrante
+  const handleQuadrantClick = (quadrantData: QuadrantData) => {
+    setSelectedQuadrant(quadrantData);
+    setIsPanelOpen(true);
+  };
+
+  // Función para cerrar el panel
+  const handlePanelClose = () => {
+    setIsPanelOpen(false);
+  };
 
   return (
     <section id="report-section" className="mt-10 w-full max-w-5xl mx-auto">
       <h2 className="text-3xl font-bold mb-8 text-center text-white">Resultados del Diagnóstico</h2>
       
-      {/* Mantenemos la Brújula Estratégica para el puntaje general */}
       {match && (
         <div className="mb-12">
           <h3 className="text-center text-2xl font-bold text-white mb-4">Brújula Estratégica</h3>
@@ -38,10 +57,17 @@ const ReportSection: React.FC<ReportSectionProps> = ({ report }) => {
         </div>
       )}
 
-      {/* Reemplazamos las "Rutas Óptimas" con el nuevo "MapaCentral" */}
+      {/* Pasamos la función de manejo de clics a MapaCentral */}
       <div className="mb-12">
-        <MapaCentral />
+        <MapaCentral onQuadrantClick={handleQuadrantClick} />
       </div>
+
+      {/* Renderizamos el Panel de Inteligencia y le pasamos las props necesarias */}
+      <PanelDeInteligencia 
+        isOpen={isPanelOpen} 
+        onClose={handlePanelClose} 
+        quadrant={selectedQuadrant} 
+      />
 
       {/* Contenedor para el resto del informe (Análisis detallado) */}
       <div>
@@ -65,8 +91,5 @@ const ReportSection: React.FC<ReportSectionProps> = ({ report }) => {
     </section>
   );
 };
-
-export default ReportSection;
-
 
 export default ReportSection;
