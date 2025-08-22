@@ -7,7 +7,6 @@ import DiagnosticForm from "@/components/DiagnosticForm";
 import ReportSection from "@/components/ReportSection";
 import Faq from "@/components/Faq";
 import Footer from "@/components/Footer";
-import ContactForm from "@/components/ContactForm";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +59,6 @@ export default function Home() {
         {report && !isLoading && <ReportSection report={report} />}
       </div>
 
-      <ContactForm />
       <Faq />
       <Footer />
     </main>
