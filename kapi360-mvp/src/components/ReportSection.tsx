@@ -33,65 +33,31 @@ const parseReport = (report: string) => {
     const escapedName = name.replace(/[.*+?^${}()|[\\]/g, '\\$&');
 
     const pattern = 
-      `##\s*${escapedName}\s*\(Puntaje:\s*(\d+)\/100\)[\s\S]*?` + 
-      `\*\*Qué es:\*\*\s*(.+?)\n` + 
-      `[\s\S]*?` + 
-      `\*\*Por qué importa:\*\*\s*(.+?)\n` + 
-      `[\s\S]*?` + 
-      `\*\*Coordenadas Clave:\*\*\s*([\s\S]+?)(?=\n##|import React, { useState, useMemo } from 'react';
-import ReactMarkdown from 'react-markdown';
-import ReportCard from './ReportCard';
-import StrategicCompass from './StrategicCompass';
-import MapaCentral from './MapaCentral';
-import PanelDeInteligencia from './PanelDeInteligencia';
-
-// --- TIPOS DE DATOS ---
-interface QuadrantData {
-  title: string;
-  score: number;
-  bgColor: string;
-  queEs: string;
-  porQueImporta: string;
-  coordenadas: string[];
-}
-
-interface ReportSectionProps {
-  report: string;
-}
-
-// --- LÓGICA DE PARSEO (VERSIÓN FINAL Y ROBUSTA) ---
-const parseReport = (report: string) => {
-  const quadrantNames = ['Mercado y Competencia', 'Plataforma y UX', 'Contenido y Redes', 'Crecimiento e IA'];
-  const bgColors: { [key: string]: string } = {
-    'Mercado y Competencia': 'bg-indigo-600',
-    'Plataforma y UX': 'bg-green-600',
-    'Contenido y Redes': 'bg-amber-600',
-    'Crecimiento e IA': 'bg-purple-600',
-  };
-
-  const parsedQuadrants = quadrantNames.map(name => {
-    const escapedName = name.replace(/[.*+?^${}()|[\\]/g, '\\$&');
-
-    ;
+      `##\\s*${escapedName}\\s*\\(Puntaje:\\s*(\\d+)\\/100\\)[\\s\\S]*?` + 
+      `\\*\\*Qué es:\\*\\*\\s*(.+?)\\n` + 
+      `[\\s\\S]*?` + 
+      `\\*\\*Por qué importa:\\*\\*\\s*(.+?)\\n` + 
+      `[\\s\\S]*?` + 
+      `\\*\\*Coordenadas Clave:\\*\\*\\s*([\\s\\S]+?)(?=\\n##|$)\\`;
 
     const quadrantRegex = new RegExp(pattern, 'i');
     const match = report.match(quadrantRegex);
 
     if (match) {
-      const coordenadas = match[4].split('-').map(c => c.trim()).filter(Boolean);
+      const coordenadas = match[4]?.split('-').map(c => c.trim()).filter(Boolean) || [];
       return {
         title: name,
         score: parseInt(match[1], 10) || 0,
         bgColor: bgColors[name],
-        queEs: match[2].trim(),
-        porQueImporta: match[3].trim(),
+        queEs: match[2]?.trim() || '',
+        porQueImporta: match[3]?.trim() || '',
         coordenadas,
       };
     }
     return { title: name, score: 0, bgColor: 'bg-gray-500', queEs: 'No se encontró análisis para este pilar.', porQueImporta: '-', coordenadas: [] };
   });
 
-  const scoreRegex = /\*\*Puntaje General:\*\*\s*(\d+)\/100/;
+  const scoreRegex = /\\*\\*Puntaje General:\\*\\*\\s*(\\d+)\\/100/;
   const scoreMatch = report.match(scoreRegex);
   const generalScore = scoreMatch ? parseInt(scoreMatch[1], 10) : 0;
 
