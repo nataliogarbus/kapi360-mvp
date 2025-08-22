@@ -42,55 +42,37 @@ Este documento define la estrategia, el objetivo y el flujo de usuario de la her
    Este playbook es la guía estratégica para la implementación técnica. El siguiente documento detalla cómo construirlo.
 
 Guía de Implementación Técnica: Agente Kapi 360°
-Este documento es el manual paso a paso para construir la herramienta de diagnóstico utilizando tu stack de herramientas, con un enfoque en la fiabilidad, la medición y la automatización del embudo de ventas.
+Este documento es el manual paso a paso que refleja la arquitectura final del proyecto Kapi 360.
 
-1. Arquitectura de la Solución (Conexión de Herramientas)
-   Interfaz de Usuario (Frontend): Un archivo `index.html` local con JavaScript (`main.js`) que maneja la lógica del formulario.
-   Servidor de Desarrollo Local: Se utiliza `Netlify Dev` para servir los archivos locales y actuar como un proxy para evitar problemas de CORS. Una regla en `netlify.toml` redirige las llamadas de `/api/get-report` al backend.
-   Lógica de Backend: Un script PHP (`kapi-endpoint.php`) alojado en WordPress. Este script recibe la petición, llama a la API de Gemini para generar el informe, envía datos a SureTriggers en segundo plano y devuelve el informe final al frontend.
-   Automatización en Segundo Plano: SureTriggers se utiliza para tareas que no necesitan bloquear al usuario, como enviar notificaciones o actualizar un CRM, recibiendo los datos desde el script PHP.
-2. Prompts para Gemini: Generación de Mockup y Código
-   Prompt para el "Gem de Diseño UX" (para generar el mockup):
-   "Quiero un diseño de interfaz de usuario para un informe que se despliegue en la misma landing page. El público objetivo son dueños y gerentes de PYMES manufactureras.
+1. Arquitectura de la Solución (Stack Tecnológico y Flujo de Datos)
+   - **Framework Frontend:** Next.js (React). El proyecto reside en el directorio `kapi360-mvp`.
+   - **Componentes:** La interfaz está construida con componentes de React (`.tsx`), ubicados en `kapi360-mvp/src/components`.
+   - **Lógica de Backend:** API Route de Next.js. La lógica principal se encuentra en `kapi360-mvp/src/app/api/diagnose/route.ts`.
+   - **Servicio de IA:** La API de Google Gemini (a través de la librería `@google/generative-ai`) se llama directamente desde la API Route para generar los análisis.
+   - **Base de Datos:** Supabase. Cada diagnóstico generado se almacena en una tabla `diagnostics` para registro y futuros análisis.
+   - **Despliegue:** Vercel. El repositorio de Git está conectado a Vercel para despliegue continuo.
 
-Utiliza la siguiente guía de estilos:
+   **Flujo de Datos:**
+   1. El usuario interactúa con la aplicación en la URL de Vercel.
+   2. Al enviar el formulario, el cliente (React) hace una llamada `fetch` a su propio backend (`/api/diagnose`).
+   3. La API Route en Next.js recibe la petición.
+   4. La API Route construye un prompt dinámico y se comunica con la API de Gemini.
+   5. La API Route recibe la respuesta de Gemini y la guarda en Supabase (en segundo plano).
+   6. La API Route devuelve el análisis al cliente.
+   7. El cliente (React) renderiza dinámicamente el informe en la interfaz.
 
-- Paleta de Colores: Primario #0057FF, Acento #00DD82, Fondo #1A1A1A, Texto #E5E7EB.
-- Tipografía: Poppins, sans-serif.
-- Botones: Fondo #0057FF, texto blanco, bordes redondeados.
+2. Prompts Clave para Gemini
+   - **Prompt del Sistema (en `route.ts`):** "Actúa como un analista experto en marketing digital y estrategia de negocio para PYMES. Tu cliente te ha proporcionado la URL de su sitio web para un diagnóstico rápido. URL del cliente: ${url}. Tipo de análisis solicitado: ${mode}. Por favor, genera un informe conciso y accionable en formato Markdown. El tono debe ser profesional, directo y orientado a resultados de negocio (KPIs), no solo a métricas técnicas."
+   - **Lógica de Modos:** El prompt se adapta dinámicamente según el modo seleccionado (`auto`, `custom`, `manual`, `consulta`), añadiendo instrucciones específicas para cada caso.
 
-El diseño debe incluir:
+3. Variables de Entorno
+   El correcto funcionamiento depende de las siguientes variables de entorno definidas en un archivo `.env.local` en la raíz de `kapi360-mvp`:
+   - `GEMINI_API_KEY`: Clave para la API de Google Gemini.
+   - `NEXT_PUBLIC_SUPABASE_URL`: URL del proyecto de Supabase.
+   - `SUPABASE_SERVICE_ROLE_KEY`: Clave de servicio de Supabase para operaciones de backend.
 
-- Una Puntuación General de 85/100 destacada en el color de acento.
-- Tres secciones modulares con títulos: 'Plataforma y UX', 'Contenido y Redes', 'Mercado y Competencia'.
-- Dentro de cada sección, muestra visualizaciones de datos simples (barras de progreso, listas de verificación) y un párrafo con un insight de negocio que conecte el problema con los servicios de Kapi.
-- Un área para solicitar datos de competidores, con un formulario simple.
-- Un botón de llamada a la acción al final que diga 'Agenda tu Reunión con un Experto'.
-
-Prompt para Gemini VSCode (para implementar la lógica del informe):
-// Objetivo: Escribe el código JavaScript para la landing page del agente de diagnóstico.
-// Tarea 1: El código debe manejar el envío de un formulario de una URL (sin recargar la página).
-// Tarea 2: Debe usar una llamada asíncrona (fetch) para enviar la URL a un endpoint de proxy local (`/api/get-report`).
-// Tarea 3: El proxy local (manejado por Netlify Dev) redirigirá la llamada a un script PHP en el backend de WordPress.
-// Tarea 4: Cuando la página reciba una respuesta JSON del script PHP, el código debe buscar el informe en `result.data.report_content`.
-// Tarea 5: El código debe 'pintar' de forma dinámica el contenido del informe en un div con el ID 'report-content'.
-// Tarea 6: Utiliza un estado de 'cargando' para mostrar un mensaje mientras el informe se genera.
-
-Prompt para SureWriter Pro (para generar el contenido del informe de forma dinámica):
-"Actúa como un analista experto en marketing digital. Genera un insight de negocio de 50 palabras para una PYME manufacturera. Basado en que su [KPI_analizado] tiene un resultado de [Dato_obtenido], explica brevemente cómo este dato afecta el [KPI_de_negocio] de la empresa. Conecta este problema con nuestro servicio de [Servicio_de_Kapi]."
-
-3. Flujo en SureTriggers Pro (Paso a Paso y Lógica Avanzada)
-   Disparador (Trigger): Configura el trigger para que escuche el "Webhook" de tu landing page.
-   Módulo 1: Conexión a API y Lógica de Reintento: Conecta un módulo de "HTTP Request" a la API de Google PageSpeed Insights. Configura la lógica de reintento automático para asegurar que el flujo no falle si la primera llamada falla.
-   Módulo 2: Lógica Condicional (Router): Crea un "Router" para manejar las dos fases del informe y las diferentes opciones de análisis. Esto garantiza un flujo modular según la selección del usuario.
-   Módulo 3: Procesamiento de Datos: Analiza la respuesta JSON de las APIs para extraer los datos relevantes.
-   Módulo 4: Generación de Contenido con IA: Llama a la API de SureWriter con el prompt dinámico y las variables extraídas de los datos.
-   Módulo 5: Notificaciones y Manejo de Errores:
-   Si el flujo es exitoso, notifica a tu equipo vía Slack o email.
-   Si la automatización falla, envía una notificación de error con los detalles para una pronta corrección.
-   Módulo 6: Lead Scoring y CRM: Asigna una puntuación al lead basado en los resultados del informe y el nivel de interacción, y luego envía los datos automáticamente a tu CRM.
-   Módulo 7: Respuesta (Response): Devuelve un JSON a la landing page con todos los datos y el texto generado para el informe, haciendo que la experiencia sea fluida e inmediata.
 4. Estrategia de Medición y Optimización
-   A/B Testing: Utiliza las capacidades de Astra Pro y Spectra Pro para crear diferentes versiones de la landing page y probar qué diseño, color o texto de llamada a la acción convierte mejor.
-   Analíticas de Conversión: Configura eventos en Google Analytics para medir con precisión las tasas de conversión de la Fase 1 a la Fase 2 del informe.
-   https://kapikinsta.kinsta.cloud/
+   - **Analíticas:** Se pueden configurar eventos en Vercel Analytics y/o Google Analytics para medir la interacción del usuario y las tasas de conversión.
+   - **A/B Testing:** Vercel permite realizar A/B testing para probar diferentes variantes de la interfaz o de los prompts de Gemini y optimizar los resultados.
+   - **Base de Datos:** La información guardada en Supabase es clave para analizar la calidad de los informes y el tipo de clientes que utilizan la herramienta.
+

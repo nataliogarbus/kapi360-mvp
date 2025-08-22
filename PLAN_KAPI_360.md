@@ -29,10 +29,10 @@ Este plan detalla la implementación del "Laboratorio de Estrategia Kapi" basado
 ---
 
 ### Etapa 3: Implementación del Registro - Fase 2
-*Objetivo: Mostrar el formulario de registro al hacer clic en el botón de desbloqueo.*
+*Objetivo: Mostrar el dashboard completo después del registro.*
 
 - [x] **Tarea 3.1:** Modificar `index.html` para añadir la estructura del módulo de registro (inicialmente oculta).
-- [x] **Tarea 3.2:** Implementar la lógica en `main.js` para que al hacer clic en "Desbloquear", se oculte el informe Fase 1 y se muestre el módulo de registro.
+- [x] **Tarea 3.2:** Implementar la lógica en `main.js` para que, tras un registro simulado, se oculte el módulo de registro y se muestre el dashboard.
 
 ---
 
@@ -48,45 +48,17 @@ Este plan detalla la implementación del "Laboratorio de Estrategia Kapi" basado
 
 ---
 
-### Etapa 5: Conexión Final y Pruebas
-*Objetivo: Reemplazar los datos de ejemplo con la llamada real al backend y pulir la experiencia.*
+### Etapa 5: Arquitectura Final y Despliegue
+*Objetivo: Implementar la arquitectura final con Next.js, desplegarla en Vercel y confirmar su funcionalidad.*
 
-- [x] **Tarea 5.1:** Reemplazar la lectura de `sample-data.json` en `main.js` por una llamada `fetch` real al webhook de OttoKit.
-- [x] **Tarea 5.2:** Implementar el manejo de errores y estados de la UI (ej. URL inválida).
-- [x] **Tarea 5.3:** Realizar pruebas funcionales completas del flujo completo.
-
----
-
-### Etapa 6: Preparación para Producción
-*Objetivo: Mover el agente de un entorno de prueba local a una configuración lista para producción.*
-
-- [x] **Tarea 6.1:** Reemplazar los datos de muestra en el backend (`kapi-endpoint.php`) con una llamada real a la API de Gemini para generar informes dinámicos.
-- [x] **Tarea 6.2:** Implementar el envío de notificaciones por email a `nataliogarbus@gmail.com` usando `wp_mail()` al completarse el registro.
-- [x] **Tarea 6.3:** Realizar pruebas de la integración con Gemini y el sistema de notificación por email.
-- [ ] **Tarea 6.4:** Documentar las variables de entorno y claves de API necesarias para el despliegue.
-
----
-
-### Etapa 7: Refactorización del Backend a Plugin Dedicado
-*Justificación: Durante la Etapa 6, se detectó un error persistente que corrompía la respuesta JSON del backend. La investigación concluyó que el error se originaba en el tema Astra, no en un plugin. Para solucionar el problema de raíz y seguir las mejores prácticas de WordPress, se decidió desacoplar el endpoint del tema, moviendo la lógica a un plugin dedicado.*
-
-- [x] **Tarea 7.1:** Crear la estructura de carpetas para el nuevo plugin en `wp-content/plugins/kapi-diagnostics-endpoint`.
-- [x] **Tarea 7.2:** Crear el archivo principal del plugin (`kapi-diagnostics-endpoint.php`) con la cabecera de WordPress requerida.
-- [x] **Tarea 7.3:** Implementar el endpoint usando la API REST de WordPress (`register_rest_route`) en lugar de un archivo PHP directo.
-- [x] **Tarea 7.4:** Migrar la lógica de generación de informes del antiguo `kapi-endpoint.php` a la nueva función de callback de la API REST.
-- [x] **Tarea 7.5:** Actualizar `netlify.toml` para que el proxy apunte a la nueva ruta de la API REST (ej: `/wp-json/kapi/v1/get_report`).
-- [x] **Tarea 7.6:** Actualizar la llamada `fetch` en `src/js/main.js` para que coincida con la nueva ruta del proxy.
-- [x] **Tarea 7.7:** Activar el nuevo plugin y realizar pruebas funcionales completas del nuevo flujo.
-
----
-
-### Etapa 8: Refinamiento de Interfaz y Experiencia de Usuario (UI/UX)
-*Objetivo: Pulir los detalles de la interfaz principal basándose en el feedback directo para mejorar la experiencia de usuario.*
-
-- [x] **Tarea 8.1:** Rediseñar el formulario principal aplicando nuevos estilos visuales (campos de texto, botones, selectores) sin alterar la funcionalidad base.
-- [x] **Tarea 8.2:** Corregir errores de implementación visual post-rediseño, incluyendo:
-    - [x] Reemplazo de palabra en la animación del título ("Liderazgo" por "Gestión").
-    - [x] Ajuste de CSS para el correcto centrado del título animado.
-    - [x] Reubicación de los selectores de modo para asegurar una posición fija y coherente.
-- [x] **Tarea 8.3:** Mejorar la UX de las tarjetas de "Análisis Personalizado", ocultando la descripción y mostrándola en un tooltip al pasar el cursor.
-- [x] **Tarea 8.4:** Implementar un efecto de "máquina de escribir" en el placeholder del campo de URL para una apariencia más dinámica.
+- [x] **Tarea 5.1:** Desarrollar la aplicación como un proyecto de Next.js (`kapi360-mvp`).
+- [x] **Tarea 5.2:** Crear un endpoint de API (`/api/diagnose`) dentro de Next.js para manejar la lógica de backend.
+- [x] **Tarea 5.3:** Integrar la API de Gemini directamente desde el endpoint de la API para generar los informes.
+- [x] **Tarea 5.4:** Integrar Supabase para almacenar los resultados de los diagnósticos.
+- [x] **Tarea 5.5:** Configurar el proyecto en Vercel para el despliegue continuo desde el repositorio de Git.
+- [x] **Tarea 5.6:** Configurar las variables de entorno (claves de API de Gemini y Supabase) en Vercel.
+- [x] **Tarea 5.7:** Realizar pruebas funcionales de extremo a extremo en el entorno de Vercel para validar el flujo completo.
+- [x] **Tarea 5.8:** Documentar la nueva arquitectura en los archivos `GEMINI.md` y `PLAN_KAPI_360.md`.
+- [x] **Tarea 5.9:** Implementar botón flotante de WhatsApp en el frontend.
+- [x] **Tarea 5.10:** Implementar formulario de contacto con campos extendidos.
+- [x] **Tarea 5.11:** Implementar backend para envío de correos del formulario de contacto.

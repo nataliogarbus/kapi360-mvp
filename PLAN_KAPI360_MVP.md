@@ -19,8 +19,7 @@
     - [x] Crear `Footer.tsx` para el pie de página.
 - [x] **Tarea 2.3:** Implementar la lógica de envío de formulario y manejo de estado.
     - [x] Implementar manejador `onSubmit` en el formulario para prevenir recarga de página.
-    - [x] Añadir estados para `url`, `isLoading`, `error` y `report`.
-    - [x] Deshabilitar controles y mostrar `spinner` durante la carga (`isLoading`).
+    - [x] Añadir estados para `url`, `isLoading`, `error` y `report`.n    - [x] Deshabilitar controles y mostrar `spinner` durante la carga (`isLoading`).
     - [x] Añadir marcador de posición para la llamada a la API (`setTimeout`).
     - [x] Conectar el estado `report` a un componente de visualización (`ReportSection.tsx`).
 - [x] **Tarea 2.4:** Validar el flujo de usuario inicial.
@@ -46,14 +45,19 @@
 - [x] **Dónde:** En el componente `DiagnosticForm` (`src/components/`).
 - [x] **Cómo:** Implementar la llamada `fetch` al endpoint `/api/diagnose`. Gestionar los estados de carga, éxito y error para mostrarlos en la interfaz.
 
-- [ ] **Qué:** Configurar el proyecto para el despliegue continuo.
-- [ ] **Dónde:** Plataforma de Vercel.
-- [ ] **Cómo:** Conectar el repositorio de Git al proyecto de Vercel. Configurar las variables de entorno (claves de Supabase y Gemini) para que el entorno de producción funcione correctamente.
+- [x] **Qué:** Configurar el proyecto para el despliegue continuo.
+- [x] **Dónde:** Plataforma de Vercel.
+- [x] **Cómo:** Conectar el repositorio de Git al proyecto de Vercel. Configurar las variables de entorno (claves de Supabase y Gemini) para que el entorno de producción funcione correctamente.
 
-- [ ] **Qué:** Realizar pruebas de extremo a extremo (E2E) y de calidad.
-- [ ] **Dónde:** En la URL de vista previa de Vercel.
-- [ ] **Cómo:** Realizar un flujo completo de diagnóstico. **Delegar a Natalio:** "Natalio, si durante las pruebas encontramos errores en la consola del navegador, te pediré que uses la extensión **DevTools AI Assistance** para obtener un análisis automático del problema."
+- [x] **Qué:** Realizar pruebas de extremo a extremo (E2E) y de calidad.
+- [x] **Dónde:** En la URL de vista previa de Vercel.
+- [x] **Cómo:** Realizar un flujo completo de diagnóstico. **Confirmado por Natalio el 2025-08-21.**
 
-- [ ] **Qué:** Desplegar a producción.
-- [ ] **Dónde:** Vercel.
-- [ ] **Cómo:** Hacer merge de la rama de desarrollo a la rama principal para activar el despliegue de producción.
+- [x] **Qué:** Desplegar a producción.
+- [x] **Dónde:** Vercel.
+- [x] **Cómo:** Hacer merge de la rama de desarrollo a la rama principal para activar el despliegue de producción. **Confirmado, la URL está en vivo.**
+
+- [x] **Tarea 4.7:** Implementar botón flotante de WhatsApp en el frontend.
+- [x] **Tarea 4.8:** Implementar formulario de contacto con campos extendidos.
+- [x] **Tarea 4.9:** Implementar backend para envío de correos del formulario de contacto.
+- [x] **Tarea 4.10:** Implementar componente interactivo de proceso (ValuePath).
