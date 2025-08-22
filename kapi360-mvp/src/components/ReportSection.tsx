@@ -19,25 +19,27 @@ interface ReportSectionProps {
   report: string;
 }
 
-// --- LÓGICA DE PARSEO (ACTUALIZADA) ---
-
+// --- LÓGICA DE PARSEO (CORREGIDA Y LIMPIA) ---
 const parseReport = (report: string) => {
-  // 1. Se actualizan los nombres de los pilares
-  const quadrantNames = ['Mercado y Competencia', 'Plataforma y UX', 'Contenido y Redes', 'Crecimiento y IA'];
+  const quadrantNames = ['Mercado y Competencia', 'Plataforma y UX', 'Contenido y Redes', 'Crecimiento e IA'];
   const bgColors: { [key: string]: string } = {
     'Mercado y Competencia': 'bg-indigo-600',
     'Plataforma y UX': 'bg-green-600',
     'Contenido y Redes': 'bg-amber-600',
-    'Crecimiento y IA': 'bg-purple-600',
+    'Crecimiento e IA': 'bg-purple-600',
   };
 
   const parsedQuadrants = quadrantNames.map(name => {
-    const parsedQuadrants = quadrantNames.map(name => {
+    // Escapamos el nombre para que sea seguro en la RegExp
+    const escapedName = name.replace(/[.*+?^${}()|[\\]/g, '\\$&');
+    
+    // Expresión regular corregida y robusta
     const quadrantRegex = new RegExp(
-      `##\s*${name}\s*\(Puntaje:\s*(\d+)\/100\)[\s\S]*?` + // Corregido: Añadido el paréntesis de cierre \)
-      `**Qué es:**\s*([\s\S]*?)\n` + // Corregido: Añadido el paréntesis de cierre \)
-      `**Por qué importa:**\s*([\s\S]*?)\n` + // Corregido: Añadido el paréntesis de cierre \)
-      `**Coordenadas Clave:**\s*([\s\S]*?)(?=\n##|$)`,
+      `##\\s*${escapedName}\\s*\\(Puntaje:\\s*(\\d+)\\/100)[\\s\\S]*?` +
+      `\\*\\*Qué es:\\*\\*\\s*([\\s\\S]*?)\\n[\\s\\S]*?` +
+      `\\*\\*Por qué importa:\\*\\*\\s*([\\s\\S]*?)\\n[\\s\\S]*?` +
+      `\\*\\*Coordenadas Clave:\\*\\*\\s*([\\s\\S]*?)(?=\\n##|$)
+`,
       'i'
     );
 
@@ -57,17 +59,14 @@ const parseReport = (report: string) => {
     return { title: name, score: 0, bgColor: 'bg-gray-500', queEs: 'No se encontró análisis para este pilar.', porQueImporta: '-', coordenadas: [] };
   });
 
-  const scoreRegex = /\*\*Puntaje General:\*\*\s*(\d+)\/100/; // Corrected: escaped backslash for asterisk
+  const scoreRegex = /\\*\\*Puntaje General:\\*\\*\\s*(\\d+)\\/100/; // Corrected: escaped backslash for asterisk
   const scoreMatch = report.match(scoreRegex);
   const generalScore = scoreMatch ? parseInt(scoreMatch[1], 10) : 0;
 
-  // 2. Se elimina la necesidad de parsear el "detailedAnalysis". El dashboard es el informe.
   return { quadrantsData: parsedQuadrants, generalScore };
 };
 
-
-// --- COMPONENTE PRINCIPAL (ACTUALIZADO) ---
-
+// --- COMPONENTE PRINCIPAL ---
 const ReportSection: React.FC<ReportSectionProps> = ({ report }) => {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [selectedQuadrant, setSelectedQuadrant] = useState<Omit<QuadrantData, 'score' | 'bgColor' | 'coordenadas'> | null>(null);
@@ -109,8 +108,6 @@ const ReportSection: React.FC<ReportSectionProps> = ({ report }) => {
         onClose={handlePanelClose} 
         quadrant={selectedQuadrant} 
       />
-
-      {/* 3. La sección de Análisis Detallado ha sido eliminada. */}
     </section>
   );
 };
