@@ -1,15 +1,111 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
+import ReactMarkdown from 'react-markdown';
+import ReportCard from './ReportCard';
+import StrategicCompass from './StrategicCompass';
+import MapaCentral from './MapaCentral';
+import PanelDeInteligencia from './PanelDeInteligencia';
 
-const ReportSection: React.FC = () => {
+// --- TIPOS DE DATOS ---
+interface QuadrantData {
+  title: string;
+  score: number;
+  bgColor: string;
+  queEs: string;
+  porQueImporta: string;
+  coordenadas: string[];
+}
+
+interface ReportSectionProps {
+  report: string;
+}
+
+// --- LÓGICA DE PARSEO (VERSIÓN FINAL Y ROBUSTA) ---
+const parseReport = (report: string) => {
+  const quadrantNames = ['Mercado y Competencia', 'Plataforma y UX', 'Contenido y Redes', 'Crecimiento e IA'];
+  const bgColors: { [key: string]: string } = {
+    'Mercado y Competencia': 'bg-indigo-600',
+    'Plataforma y UX': 'bg-green-600',
+    'Contenido y Redes': 'bg-amber-600',
+    'Crecimiento e IA': 'bg-purple-600',
+  };
+
+  const parsedQuadrants = quadrantNames.map(name => {
+    const escapedName = name.replace(/[.*+?^${}()|[\\]/g, '\\$&');
+
+    const pattern = [
+      `##\\s*${escapedName}\s*\\(Puntaje:\\s*(\\d+)\\/100\\)`,
+      `\\*\\*Qué es:\\*\\*\\s*(.+)\\n`, // Added \n to capture the next line correctly
+      `\\*\\*Por qué importa:\\*\\*\\s*(.+)\\n`, // Added \n to capture the next line correctly
+      `\\*\\*Coordenadas Clave:\\*\\*([\\s\\S]+?)(?=\\n##|$)'
+    ].join('[\\s\\S]*?'); // Une las partes permitiendo cualquier cosa entre ellas
+
+    const quadrantRegex = new RegExp(pattern, 'i');
+    const match = report.match(quadrantRegex);
+
+    if (match) {
+      const coordenadas = match[4].split('-').map(c => c.trim()).filter(Boolean);
+      return {
+        title: name,
+        score: parseInt(match[1], 10) || 0,
+        bgColor: bgColors[name],
+        queEs: match[2].trim(),
+        porQueImporta: match[3].trim(),
+        coordenadas,
+      };
+    }
+    return { title: name, score: 0, bgColor: 'bg-gray-500', queEs: 'No se encontró análisis para este pilar.', porQueImporta: '-', coordenadas: [] };
+  });
+
+  const scoreRegex = /\\**Puntaje General:\\**\\s*(\\d+)\\/100/; // Corrected regex for general score
+  const scoreMatch = report.match(scoreRegex);
+  const generalScore = scoreMatch ? parseInt(scoreMatch[1], 10) : 0;
+
+  return { quadrantsData: parsedQuadrants, generalScore };
+};
+
+// --- COMPONENTE PRINCIPAL ---
+const ReportSection: React.FC<ReportSectionProps> = ({ report }) => {
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [selectedQuadrant, setSelectedQuadrant] = useState<Omit<QuadrantData, 'score' | 'bgColor' | 'coordenadas'> | null>(null);
+
+  const { quadrantsData, generalScore } = useMemo(() => parseReport(report), [report]);
+
+  const handleQuadrantClick = (quadrantData: Omit<QuadrantData, 'score' | 'bgColor' | 'coordenadas'>) => {
+    setSelectedQuadrant(quadrantData);
+    setIsPanelOpen(true);
+  };
+
+  const handlePanelClose = () => {
+    setIsPanelOpen(false);
+  };
+
   return (
-    <div className="my-10 p-8 bg-yellow-900/20 border border-yellow-600 rounded-lg">
-      <h1 className="text-5xl font-bold text-center text-yellow-400">
-        VERSIÓN DE PRUEBA
-      </h1>
-      <p className="text-center text-white mt-4">
-        Si ves este mensaje, el despliegue está funcionando. El problema está en el código del componente anterior.
-      </p>
-    </div>
+    <section id="report-section" className="mt-10 w-full max-w-5xl mx-auto">
+      <h2 className="text-3xl font-bold mb-8 text-center text-white">Resultados del Diagnóstico</h2>
+      
+      {generalScore > 0 && (
+        <div className="mb-12">
+          <h3 className="text-center text-2xl font-bold text-white mb-4">Brújula Estratégica</h3>
+          <div className="relative mx-auto" style={{ width: '220px', height: '110px' }}>
+            <StrategicCompass score={generalScore} breakdown={quadrantsData.map(q => ({ title: q.title, score: q.score }))} />
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none" style={{ top: '-20px' }}>
+              <span className="text-5xl font-black text-white">{generalScore}</span>
+              <span className="text-sm font-semibold text-gray-400 tracking-wider">Puntaje General</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="mb-12">
+        <MapaCentral onQuadrantClick={handleQuadrantClick} quadrantsData={quadrantsData} />
+      </div>
+
+      <PanelDeInteligencia 
+        isOpen={isPanelOpen} 
+        onClose={handlePanelClose} 
+        quadrant={selectedQuadrant} 
+      />
+    </section>
   );
 };
 
