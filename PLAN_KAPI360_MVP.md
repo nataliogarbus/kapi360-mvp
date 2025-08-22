@@ -61,3 +61,9 @@
 - [x] **Tarea 4.8:** Implementar formulario de contacto con campos extendidos.
 - [x] **Tarea 4.9:** Implementar backend para envío de correos del formulario de contacto.
 - [x] **Tarea 4.10:** Implementar componente interactivo de proceso (ValuePath).
+
+#### **Fase 5: Paridad de Contenido con la Maqueta (Rol: Desarrollador Frontend)**
+- [x] **Tarea 5.1:** Crear el componente `ServicesSection.tsx` y añadirlo a la página principal.
+- [x] **Tarea 5.2:** Crear el componente `TestimonialsSection.tsx` y añadirlo a la página principal.
+- [x] **Tarea 5.3:** Crear el componente `NewsletterSection.tsx` y añadirlo a la página principal.
+- [ ] **Tarea 5.4:** Actualizar `Header.tsx` para incluir todos los enlaces de navegación.
