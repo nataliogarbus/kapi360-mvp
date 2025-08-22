@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import ReportCard from './ReportCard';
 import StrategicCompass from './StrategicCompass';
 import MapaCentral from './MapaCentral';
 import PanelDeInteligencia from './PanelDeInteligencia';
 
-// ... (interfaces sin cambios)
+// --- TIPOS DE DATOS ---
 interface QuadrantData {
   title: string;
-  queEs: string;
-  porQueImporta: string;
   score: number;
   bgColor: string;
+  queEs: string;
+  porQueImporta: string;
   coordenadas: string[];
 }
 
@@ -19,27 +19,62 @@ interface ReportSectionProps {
   report: string;
 }
 
+// --- LÓGICA DE PARSEO (Fuera del componente para que no se redeclare) ---
+
+const parseReport = (report: string) => {
+  const quadrantNames = ['Visibilidad', 'Plataforma', 'Contenido', 'Conversión'];
+  const bgColors: { [key: string]: string } = {
+    Visibilidad: 'bg-blue-600',
+    Plataforma: 'bg-green-600',
+    Contenido: 'bg-orange-500',
+    Conversión: 'bg-red-600',
+  };
+
+  const parsedQuadrants = quadrantNames.map(name => {
+    const quadrantRegex = new RegExp(
+      `##\s*${name}\s*\(Puntaje:\s*(\d+)\/100\)[\s\S]*?` +
+      `\*\*Qué es:\*\*\s*([\s\S]*?)\n` +
+      `\*\*Por qué importa:\*\*\s*([\s\S]*?)\n` +
+      `\*\*Coordenadas Clave:\*\*\s*([\s\S]*?)(?=\n##|$)`,
+      'i'
+    );
+
+    const match = report.match(quadrantRegex);
+
+    if (match) {
+      const coordenadas = match[4].split('-').map(c => c.trim()).filter(Boolean);
+      return {
+        title: name,
+        score: parseInt(match[1], 10) || 0,
+        bgColor: bgColors[name],
+        queEs: match[2].trim(),
+        porQueImporta: match[3].trim(),
+        coordenadas,
+      };
+    }
+    // Fallback por si un cuadrante no se encuentra en el reporte
+    return { title: name, score: 0, bgColor: 'bg-gray-500', queEs: 'No se encontró análisis.', porQueImporta: '-', coordenadas: [] };
+  });
+
+  const scoreRegex = /\*\*Puntaje General:\*\*\s*(\d+)\/100/;
+  const scoreMatch = report.match(scoreRegex);
+  const generalScore = scoreMatch ? parseInt(scoreMatch[1], 10) : 0;
+
+  const otherContentRegex = /(##\s*(Visibilidad|Plataforma|Contenido|Conversión)[\s\S]*?)(?=##|$)/gi;
+  const detailedAnalysis = report.replace(scoreRegex, '').replace(otherContentRegex, '').trim();
+
+  return { quadrantsData: parsedQuadrants, generalScore, detailedAnalysis };
+};
+
+
+// --- COMPONENTE PRINCIPAL ---
+
 const ReportSection: React.FC<ReportSectionProps> = ({ report }) => {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [selectedQuadrant, setSelectedQuadrant] = useState<Omit<QuadrantData, 'score' | 'bgColor' | 'coordenadas'> | null>(null);
 
-  // AHORA LOS DATOS VIVEN AQUÍ
-  // TODO: En el futuro, estos datos deberían generarse a partir del informe de la API
-  const quadrantsData: QuadrantData[] = [
-    { title: 'Visibilidad', score: 75, bgColor: 'bg-blue-600', queEs: 'Mide qué tan fácil es para los clientes potenciales encontrar tu sitio web.', porQueImporta: 'Si no te encuentran, no existes.', coordenadas: ['Posicionamiento SEO', 'Tráfico Orgánico', 'Autoridad de Dominio'] },
-    { title: 'Plataforma', score: 88, bgColor: 'bg-green-600', queEs: 'Evalúa la calidad técnica de tu sitio web: velocidad, seguridad, etc.', porQueImporta: 'Un sitio lento o inseguro frustra a los usuarios y daña tu marca.', coordenadas: ['Velocidad de Carga', 'Seguridad (HTTPS)', 'Adaptabilidad Móvil'] },
-    { title: 'Contenido', score: 62, bgColor: 'bg-orange-500', queEs: 'Analiza la calidad y relevancia de la información que presentas.', porQueImporta: 'El contenido es tu vendedor silencioso. Atrae, educa y persuade.', coordenadas: ['Frecuencia de Publicación', 'Calidad del Contenido', 'Activos de Conversión'] },
-    { title: 'Conversión', score: 45, bgColor: 'bg-red-600', queEs: 'Mide la eficacia de tu sitio para convertir visitantes en clientes.', porQueImporta: 'Es el KPI que impacta directamente en la facturación.', coordenadas: ['Llamadas a la Acción (CTAs)', 'Formularios de Contacto', 'Tasa de Rebote'] },
-  ];
-
-  if (!report) return null;
-
-  const scoreRegex = /\*\*Puntaje General:\*\*\s*(\d+)\/100/;
-  const match = report.match(scoreRegex);
-  const score = match ? parseInt(match[1], 10) : 0;
-  
-  const reportContent = report.replace(scoreRegex, '').trim();
-  const otherSections = reportContent.split('## ').filter(section => section.trim() !== '');
+  // Usamos useMemo para parsear el reporte solo una vez, a menos que el reporte cambie
+  const { quadrantsData, generalScore, detailedAnalysis } = useMemo(() => parseReport(report), [report]);
 
   const handleQuadrantClick = (quadrantData: Omit<QuadrantData, 'score' | 'bgColor' | 'coordenadas'>) => {
     setSelectedQuadrant(quadrantData);
@@ -54,14 +89,13 @@ const ReportSection: React.FC<ReportSectionProps> = ({ report }) => {
     <section id="report-section" className="mt-10 w-full max-w-5xl mx-auto">
       <h2 className="text-3xl font-bold mb-8 text-center text-white">Resultados del Diagnóstico</h2>
       
-      {match && (
+      {generalScore > 0 && (
         <div className="mb-12">
           <h3 className="text-center text-2xl font-bold text-white mb-4">Brújula Estratégica</h3>
           <div className="relative mx-auto" style={{ width: '220px', height: '110px' }}>
-            {/* Pasamos los datos del desglose a la Brújula */}
-            <StrategicCompass score={score} breakdown={quadrantsData.map(q => ({ title: q.title, score: q.score }))} />
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none" style={{ top: '-20px'}}>
-              <span className="text-5xl font-black text-white">{score}</span>
+            <StrategicCompass score={generalScore} breakdown={quadrantsData.map(q => ({ title: q.title, score: q.score }))} />
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none" style={{ top: '-20px' }}>
+              <span className="text-5xl font-black text-white">{generalScore}</span>
               <span className="text-sm font-semibold text-gray-400 tracking-wider">Puntaje General</span>
             </div>
           </div>
@@ -69,7 +103,6 @@ const ReportSection: React.FC<ReportSectionProps> = ({ report }) => {
       )}
 
       <div className="mb-12">
-        {/* Pasamos los datos completos al Mapa Central */}
         <MapaCentral onQuadrantClick={handleQuadrantClick} quadrantsData={quadrantsData} />
       </div>
 
@@ -79,10 +112,10 @@ const ReportSection: React.FC<ReportSectionProps> = ({ report }) => {
         quadrant={selectedQuadrant} 
       />
 
-      <div>
-        <h3 className="text-center text-2xl font-bold text-white mb-6">Análisis Detallado</h3>
-        {otherSections.map((section, index) => (
-          <ReportCard key={index}>
+      {detailedAnalysis && (
+        <div>
+          <h3 className="text-center text-2xl font-bold text-white mb-6">Análisis Detallado</h3>
+          <ReportCard>
             <ReactMarkdown
               components={{
                 h2: ({node, ...props}) => <h2 className="text-2xl font-semibold text-cyan-400 mb-4" {...props} />,
@@ -92,11 +125,11 @@ const ReportSection: React.FC<ReportSectionProps> = ({ report }) => {
                 strong: ({node, ...props}) => <strong className="text-green-400" {...props} />,
               }}
             >
-              {`## ${section}`}
+              {detailedAnalysis}
             </ReactMarkdown>
           </ReportCard>
-        ))}
-      </div>
+        </div>
+      )}
     </section>
   );
 };
