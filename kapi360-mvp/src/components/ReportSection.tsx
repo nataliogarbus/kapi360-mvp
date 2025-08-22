@@ -32,12 +32,13 @@ const parseReport = (report: string) => {
   const parsedQuadrants = quadrantNames.map(name => {
     const escapedName = name.replace(/[.*+?^${}()|[\\]/g, '\\$&');
 
-    const pattern = [
-      `##\\s*${escapedName}\s*\\(Puntaje:\\s*(\\d+)\\/100\\)`,
-      `\\*\\*Qué es:\\*\\*\\s*(.+)\\n`, // Added \n to capture the next line correctly
-      `\\*\\*Por qué importa:\\*\\*\\s*(.+)\\n`, // Added \n to capture the next line correctly
-      `\\*\\*Coordenadas Clave:\\*\\*([\\s\\S]+?)(?=\\n##|$)'
-    ].join('[\\s\\S]*?'); // Une las partes permitiendo cualquier cosa entre ellas
+    const pattern = 
+      `##\\s*${escapedName}\\s*\\(Puntaje:\\s*(\\d+)\\/100\\)[\\s\\S]*?` + 
+      `\\*\\*Qué es:\\*\\*\\s*(.+?)\\n` + 
+      `[\\s\\S]*?` + 
+      `\\*\\*Por qué importa:\\*\\*\\s*(.+?)\\n` + 
+      `[\\s\\S]*?` + 
+      `\\*\\*Coordenadas Clave:\\*\\*\\s*([\\s\\S]+?)(?=\\n##|$)\\`;
 
     const quadrantRegex = new RegExp(pattern, 'i');
     const match = report.match(quadrantRegex);
@@ -56,7 +57,7 @@ const parseReport = (report: string) => {
     return { title: name, score: 0, bgColor: 'bg-gray-500', queEs: 'No se encontró análisis para este pilar.', porQueImporta: '-', coordenadas: [] };
   });
 
-  const scoreRegex = /\\**Puntaje General:\\**\\s*(\\d+)\\/100/; // Corrected regex for general score
+  const scoreRegex = /\\**Puntaje General:\\**\\s*(\\d+)\\/100/;
   const scoreMatch = report.match(scoreRegex);
   const generalScore = scoreMatch ? parseInt(scoreMatch[1], 10) : 0;
 
