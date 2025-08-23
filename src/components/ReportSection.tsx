@@ -1,105 +1,231 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
-import ReportCard from './ReportCard';
-import StrategicCompass from './StrategicCompass';
-import RutaOptimaCard from './RutaOptimaCard';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, HelpCircle } from 'lucide-react';
 
-// --- Iconos SVG como componentes para simplicidad ---
-const SeoIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"/></svg>;
-const UxIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="M7 12h10M7 7h10M7 17h5"/></svg>;
-const ConversionIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>;
-const DefaultIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>;
+// --- NUEVAS INTERFACES DE DATOS (v2.2) ---
+type Solucion = {
+  texto: string;
+  seleccionada: boolean;
+};
 
+type PlanDeAccion = {
+  loHagoYo: string[];
+  loHaceKapi: Solucion[];
+};
+
+type Coordenada = {
+  titulo: string;
+  score: number;
+  tooltip: string;
+  diagnostico: string;
+  planDeAccion: PlanDeAccion;
+  impacto: string;
+};
+
+type Pilar = {
+  titulo: string;
+  score: number;
+  tooltip: string;
+  benchmark: string;
+  coordenadas: Coordenada[];
+  contratarTodas: boolean;
+};
+
+type Reporte = {
+  puntajeGeneral: number;
+  tooltipGeneral: string;
+  pilares: Pilar[];
+  resumenSoluciones: string[];
+};
 
 interface ReportSectionProps {
   report: string;
 }
 
-const ReportSection: React.FC<ReportSectionProps> = ({ report }) => {
-  if (!report) return null;
+// --- NUEVO PARSER (v2.2) ---
+const parseReport = (markdown: string): Reporte => {
+  if (!markdown) {
+    return {
+      puntajeGeneral: 0,
+      tooltipGeneral: '',
+      pilares: [],
+      resumenSoluciones: [],
+    };
+  }
 
-  const scoreRegex = /\*\*Puntaje General:\*\*\s*(\d+)\/100/;
-  const match = report.match(scoreRegex);
-  const score = match ? parseInt(match[1], 10) : 0;
-  const reportContent = report.replace(scoreRegex, '').trim();
+  const getScore = (text: string | undefined) => text ? parseInt(text, 10) : 0;
 
-  const allSections = reportContent.split('## ').filter(section => section.trim() !== '');
+  const sections = markdown.split(/\n---\n/);
+  const header = sections.shift() || '';
 
-  const rutasOptimas: any[] = [];
-  const otherSections: string[] = [];
+  const generalScoreMatch = header.match(/\$\*\*Puntaje General de Madurez Digital:\*\* \[(\d+)\]\/100 \`\(\?\)\`/);
+  const puntajeGeneral = getScore(generalScoreMatch?.[1]);
+  // En una implementación futura, el tooltip se extraería también.
+  const tooltipGeneral = "Este es el puntaje general de madurez digital de tu empresa.";
 
-  const rutaRegex = /^Ruta Óptima: (.*?) \(Puntaje: (\d+)\/100\)/;
+  const pilares: Pilar[] = sections.map(pilarText => {
+    const pilarTitleMatch = pilarText.match(/## (.*?)\(Puntaje: \[(\d+)\]\/100\) \`\(\?\)\`/);
+    const pilarTitle = pilarTitleMatch?.[1]?.trim() || 'Pilar no encontrado';
+    const pilarScore = getScore(pilarTitleMatch?.[2]);
 
-  allSections.forEach(section => {
-    const rutaMatch = section.match(rutaRegex);
-    if (rutaMatch) {
-      const title = rutaMatch[1];
-      const score = parseInt(rutaMatch[2], 10);
-      const content = section.replace(rutaRegex, '').trim();
-      rutasOptimas.push({ title, score, content });
-    } else {
-      otherSections.push(section);
-    }
+    const benchmarkMatch = pilarText.match(/\* \*Benchmark del Sector:\* (.*)/);
+    const benchmark = benchmarkMatch?.[1]?.trim() || '';
+
+    const coordenadasText = pilarText.split(/### \*\*Coordenada:/).slice(1);
+    const coordenadas: Coordenada[] = coordenadasText.map(coordText => {
+      const coordTitleMatch = coordText.match(/(.*?)\( \[\.\.\.\]\/100\) \`\(\?\)\`/);
+      const coordTitle = coordTitleMatch?.[1]?.trim() || 'Coordenada no encontrada';
+      
+      // Se asume que el puntaje vendrá en el texto, por ahora se usa un mock.
+      const coordScore = Math.floor(Math.random() * 30) + 65;
+
+      const diagnosticoMatch = coordText.match(/\* \*Diagnóstico:\* (.*)/);
+      const diagnostico = diagnosticoMatch?.[1]?.trim() || '';
+
+      const impactoMatch = coordText.match(/\* \*Impacto en el Negocio:\* (.*)/);
+      const impacto = impactoMatch?.[1]?.trim() || '';
+
+      const planAccionMatch = coordText.match(/\* \*Plan de Acción:\*([\s\S]*?)(\n\* \*Impacto en el Negocio:\*|$)/);
+      const planAccionText = planAccionMatch?.[1] || '';
+
+      const loHagoYoMatch = planAccionText.match(/\* \*Lo Hago Yo:\*([\s\S]*?)(?=\* \*Lo Hace Kapi:\*|$)/);
+      const loHagoYo = loHagoYoMatch ? loHagoYoMatch[1].split(/\n\s*\*/).map(s => s.trim()).filter(Boolean) : [];
+
+      const loHaceKapiMatch = planAccionText.match(/\* \*Lo Hace Kapi:\*([\s\S]*)/);
+      const loHaceKapi: Solucion[] = loHaceKapiMatch ? loHaceKapiMatch[1].split(/\n\s*\*/).map(s => ({
+        texto: s.replace(/\s*\[ \] \*\*Solución:\* /,'').trim(),
+        seleccionada: false
+      })).filter(s => s.texto) : [];
+
+      return {
+        titulo: coordTitle,
+        score: coordScore,
+        tooltip: `Tooltip para ${coordTitle}`,
+        diagnostico,
+        planDeAccion: { loHagoYo, loHaceKapi },
+        impacto,
+      };
+    });
+
+    return {
+      titulo: pilarTitle,
+      score: pilarScore,
+      tooltip: `Tooltip para ${pilarTitle}`,
+      benchmark,
+      coordenadas,
+      contratarTodas: false,
+    };
   });
 
-  const getIconForTitle = (title: string) => {
-    if (title.toLowerCase().includes('seo')) return <SeoIcon />;
-    if (title.toLowerCase().includes('ux') || title.toLowerCase().includes('experiencia')) return <UxIcon />;
-    if (title.toLowerCase().includes('conversión')) return <ConversionIcon />;
-    return <DefaultIcon />;
+  return {
+    puntajeGeneral,
+    tooltipGeneral,
+    pilares,
+    resumenSoluciones: [], // Lógica a implementar
   };
+};
+
+// --- NUEVOS COMPONENTES DE UI (v2.2) ---
+
+const Tooltip: React.FC<{ text: string }> = ({ text }) => (
+  <div className="relative group">
+    <HelpCircle size={16} className="text-gray-400 cursor-pointer" />
+    <div className="absolute bottom-full mb-2 w-64 bg-gray-800 text-white text-xs rounded py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+      {text}
+    </div>
+  </div>
+);
+
+const CoordenadaCard: React.FC<{ coordenada: Coordenada }> = ({ coordenada }) => {
+  return (
+    <div className="bg-gray-800/50 p-4 rounded-lg mb-4">
+      <div className="flex justify-between items-center mb-2">
+        <h4 className="font-bold text-lg text-white flex items-center gap-2">{coordenada.titulo} <Tooltip text={coordenada.tooltip} /></h4>
+        <span className="font-bold text-xl text-green-400">{coordenada.score}/100</span>
+      </div>
+      <p className="text-sm text-gray-300 mb-3"><strong className="text-white">Diagnóstico:</strong> {coordenada.diagnostico}</p>
+      <div className="text-sm text-gray-300 mb-3">
+        <strong className="text-white">Plan de Acción:</strong>
+        <ul className="list-disc list-inside pl-2 mt-1">
+          {coordenada.planDeAccion.loHagoYo.map((paso, i) => <li key={i}>{paso}</li>)}
+        </ul>
+        <div className="mt-2 bg-gray-700/50 p-3 rounded">
+          {coordenada.planDeAccion.loHaceKapi.map((solucion, i) => (
+             <label key={i} className="flex items-start cursor-pointer">
+              <input type="checkbox" className="mt-1 mr-3 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+              <ReactMarkdown components={{ p: ({node, ...props}) => <p className="text-sm text-white" {{...props}} /> }}>{solucion.texto}</ReactMarkdown>
+            </label>
+          ))}
+        </div>
+      </div>
+      <p className="text-sm text-gray-300"><strong className="text-white">Impacto en el Negocio:</strong> {coordenada.impacto}</p>
+    </div>
+  );
+};
+
+const PilarAccordion: React.FC<{ pilar: Pilar }> = ({ pilar }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <section id="report-section" className="mt-10 w-full">
-      <h2 className="text-3xl font-bold mb-8 text-center text-white">Resultados del Diagnóstico</h2>
-      
-      {match && (
-        <div className="mb-12">
-          <h3 className="text-center text-2xl font-bold text-white mb-4">Brújula Estratégica</h3>
-          <div className="relative mx-auto" style={{ width: '220px', height: '110px' }}>
-            <StrategicCompass score={score} />
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none" style={{ top: '-20px'}}>
-              <span className="text-5xl font-black text-white">{score}</span>
-              <span className="text-sm font-semibold text-gray-400 tracking-wider">Puntaje General</span>
+    <div className="border border-gray-700 rounded-xl mb-4 overflow-hidden">
+      <button 
+        onClick={() => setIsOpen(!isOpen)} 
+        className="w-full p-5 bg-gray-800 hover:bg-gray-700 transition-colors flex justify-between items-center"
+      >
+        <div className="flex items-center">
+          <h3 className="text-xl font-bold text-white flex items-center gap-2">{pilar.titulo} <Tooltip text={pilar.tooltip} /></h3>
+        </div>
+        <div className="flex items-center gap-4">
+          <span className="text-2xl font-bold text-white">{pilar.score}/100</span>
+          <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
+            <ChevronDown size={24} className="text-white" />
+          </motion.div>
+        </div>
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="bg-gray-900/50"
+          >
+            <div className="p-5">
+              <p className="text-gray-300 text-sm mb-4">{pilar.benchmark}</p>
+              {pilar.coordenadas.map((coord, i) => <CoordenadaCard key={i} coordenada={coord} />)}
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
-      {/* Contenedor para las Rutas Óptimas */}
-      {rutasOptimas.length > 0 && (
-        <div className="mb-12">
-          <h3 className="text-center text-2xl font-bold text-white mb-6">Rutas Óptimas</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {rutasOptimas.map((ruta, index) => (
-              <RutaOptimaCard 
-                key={index} 
-                title={ruta.title} 
-                score={ruta.score} 
-                icon={getIconForTitle(ruta.title)} 
-              />
-            ))}
-          </div>
-        </div>
-      )}
+// --- COMPONENTE PRINCIPAL (v2.2) ---
+const ReportSection: React.FC<ReportSectionProps> = ({ report }) => {
+  // OJO: Usando datos MOCK por ahora. El parser real es complejo.
+  const reporteData = useMemo(() => parseReport(report), [report]);
 
-      {/* Contenedor para el resto del informe */}
-      <div>
-        {otherSections.map((section, index) => (
-          <ReportCard key={index}>
-            <ReactMarkdown
-              components={{
-                h2: ({node, ...props}) => <h2 className="text-2xl font-semibold text-cyan-400 mb-4" {...props} />,
-                p: ({node, ...props}) => <p className="text-slate-300 mb-4" {...props} />,
-                ul: ({node, ...props}) => <ul className="list-disc pl-6 space-y-2" {...props} />,
-                li: ({node, ...props}) => <li className="text-slate-300" {...props} />,
-                strong: ({node, ...props}) => <strong className="text-green-400" {...props} />,
-              }}
-            >
-              {`## ${section}`}
-            </ReactMarkdown>
-          </ReportCard>
-        ))}
+  return (
+    <section id="report-section" className="mt-10 w-full max-w-4xl mx-auto px-4">
+      <div className="text-center mb-12">
+        <h2 className="text-4xl font-extrabold mb-2 text-white">Informe Estratégico Avanzado</h2>
+        <p className="text-lg text-gray-400">Un análisis 360° de tu presencia digital.</p>
+        <div className="mt-6 inline-block bg-gray-800 p-4 rounded-xl">
+            <span className="text-base font-semibold text-gray-400 tracking-wider">Puntaje General de Madurez Digital</span>
+            <span className="text-7xl font-black text-white block">{reporteData.puntajeGeneral}</span>
+        </div>
+      </div>
+
+      {reporteData.pilares.map((pilar, i) => (
+        <PilarAccordion key={i} pilar={pilar} />
+      ))}
+
+      <div className="mt-10 text-center">
+          <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition-colors mr-4">Ver Resumen y Contratar</button>
+          <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg transition-colors">Enviar por Correo</button>
       </div>
     </section>
   );
