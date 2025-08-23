@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kapi | Consultoría Tecnológica y Estrategia de Datos</title>
+    <meta name="description" content="Genera un Informe Ejecutivo Confidencial sobre tu presencia online en 90 segundos. Kapi convierte los datos de tu web en un plan de acción para directores y gerentes.">
+    <meta property="og:title" content="Kapi | Diagnóstico Digital Gratuito con IA">
+    <meta property="og:description" content="Analiza tu web con nuestra IA y obtén un plan de acción estratégico para crecer.">
+    <meta property="og:image" content="https://staging2.kapi.com.ar/wp-content/uploads/2023/03/Logotipo-·-Banda-de-rock-·-Neon-psicodelico-2-1.png">
+    <meta property="og:url" content="https://staging2.kapi.com.ar/">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="https://staging2.kapi.com.ar/wp-content/uploads/2023/03/Logotipo-·-Banda-de-rock-·-Neon-psicodelico-2-1-100x100.png" sizes="32x32">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración del Sistema de Diseño para Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'abyss-night': '#0A101E',
+                        'steel-gray': '#1E293B',
+                        'titanium-white': '#F8FAFC',
+                        'mist-gray': '#94A3B8',
+                        'structural-gray': '#334155',
+                        'neon-green': '#00DD82',
+                        'electric-blue': '#0057FF',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'body': ['IBM Plex Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Inter:wght@700;900&display=swap" rel="stylesheet">
+    
+    <!-- Estilos personalizados menores (si fueran necesarios) -->
+    <style>
+        body {
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+        .text-shadow-custom { /* Ejemplo si se mantiene una clase custom */
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="bg-abyss-night text-mist-gray antialiased">
+
+    <!-- Contenedor principal sin 'particles.js' -->
+    <div class="content-container">
+        <!-- SECCIÓN HERO (Herramienta) -->
+        <div id="hero-section" class="w-full flex flex-col min-h-screen py-16 sm:py-24">
+             <header class="w-full p-4 absolute top-0 left-0 z-20">
+                <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center">
+                    <a href="#" class="flex items-center space-x-2">
+                        <img src="https://staging2.kapi.com.ar/wp-content/uploads/2025/08/logo-kapi_Mesa-de-trabajo-1-1024x287-1.png" alt="Logo de Kapi" class="h-8">
+                    </a>
+                    <div class="hidden md:flex items-center space-x-8 font-medium">
+                        <a href="#servicios" class="text-mist-gray hover:text-titanium-white transition-colors duration-300">Servicios</a>
+                        <a href="#como-funciona" class="text-mist-gray hover:text-titanium-white transition-colors duration-300">Cómo Funciona</a>
+                        <a href="#casos-exito" class="text-mist-gray hover:text-titanium-white transition-colors duration-300">Casos de Éxito</a>
+                        <a href="#faq" class="text-mist-gray hover:text-titanium-white transition-colors duration-300">FAQ</a>
+                        <a href="#contacto" class="border border-electric-blue text-electric-blue py-2 px-5 rounded-lg hover:bg-electric-blue hover:text-titanium-white transition-colors duration-300">Contacto</a>
+                    </div>
+                </nav>
+            </header>
+            <main class="flex-grow flex items-center p-4">
+                <div class="max-w-4xl w-full mx-auto text-center">
+                    <h1 class="font-sans font-black text-4xl sm:text-5xl md:text-6xl lg:text-7xl uppercase tracking-tight text-titanium-white text-shadow-custom">Deje de adivinar. Obtenga su Plan de Acción.</h1>
+                    <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto font-body text-mist-gray">Nuestro Agente IA 360° analiza su presencia online y genera un <strong>Informe Ejecutivo Confidencial</strong> en 90 segundos.</p>
+                    
+                    <div class="mt-10 max-w-3xl mx-auto">
+                        <form id="diagnosticoForm" class="flex flex-col gap-4" novalidate>
+                            <div id="main-input-wrapper" class="flex flex-col sm:flex-row gap-2">
+                                <label for="main-input" class="sr-only">URL de su sitio web</label>
+                                <input type="text" id="main-input" placeholder="Ingrese la URL de su sitio web" required class="w-full flex-grow bg-steel-gray border border-structural-gray text-titanium-white px-5 py-4 rounded-lg focus:border-electric-blue focus:ring-2 focus:ring-electric-blue/50 focus:outline-none transition-shadow duration-200">
+                                <button type="submit" id="main-cta-button" class="w-full sm:w-auto bg-neon-green text-abyss-night font-sans font-bold text-base uppercase py-4 px-8 rounded-lg hover:-translate-y-0.5 transition-transform duration-200 shadow-lg shadow-green-500/10 hover:shadow-neon-green/30">Generar mi Diagnóstico</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- SECCIÓN CÓMO FUNCIONA -->
+        <section id="como-funciona" class="py-20 sm:py-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="font-sans font-semibold text-neon-green tracking-wider uppercase">Nuestra Metodología</h2>
+                    <p class="mt-2 font-sans text-3xl sm:text-4xl font-black text-titanium-white tracking-tight">Su Estrategia en 3 Pasos Claros</p>
+                </div>
+                <div class="mt-20 grid gap-8 md:grid-cols-3 text-center relative">
+                    <!-- Card 1 -->
+                    <div class="bg-steel-gray p-8 rounded-2xl border border-structural-gray">
+                        <div class="text-3xl font-sans font-black text-neon-green mb-4">1</div>
+                        <h3 class="font-sans text-xl font-bold text-titanium-white">Análisis de Datos</h3>
+                        <p class="mt-2 font-body text-mist-gray">Nuestra IA audita +50 variables clave de su ecosistema digital.</p>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="bg-steel-gray p-8 rounded-2xl border border-structural-gray">
+                        <div class="text-3xl font-sans font-black text-neon-green mb-4">2</div>
+                        <h3 class="font-sans text-xl font-bold text-titanium-white">Inteligencia Competitiva</h3>
+                        <p class="mt-2 font-body text-mist-gray">Mapeamos su posicionamiento frente a sus competidores directos.</p>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="bg-steel-gray p-8 rounded-2xl border border-structural-gray">
+                        <div class="text-3xl font-sans font-black text-neon-green mb-4">3</div>
+                        <h3 class="font-sans text-xl font-bold text-titanium-white">Informe Ejecutivo</h3>
+                        <p class="mt-2 font-body text-mist-gray">Entregamos un resumen con puntajes y áreas de mejora priorizadas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN SERVICIOS -->
+        <section id="servicios" class="py-20 sm:py-32 bg-steel-gray">
+             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                 <div class="text-center">
+                     <h2 class="font-sans font-semibold text-neon-green tracking-wider uppercase">Nuestra Expertise</h2>
+                     <p class="mt-2 font-sans text-3xl sm:text-4xl font-black text-titanium-white tracking-tight">Convertimos datos en ventajas competitivas</p>
+                </div>
+                 <div class="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                     <!-- Card de Servicio -->
+                     <div class="bg-abyss-night/50 p-8 rounded-2xl border border-structural-gray">
+                         <h3 class="font-sans text-xl font-bold text-titanium-white">Consultoría IA & Big Data</h3>
+                         <p class="mt-2 font-body text-mist-gray">Implementamos soluciones de IA para optimizar procesos, predecir tendencias y personalizar la experiencia del cliente.</p>
+                    </div>
+                     <!-- Card de Servicio -->
+                     <div class="bg-abyss-night/50 p-8 rounded-2xl border border-structural-gray">
+                         <h3 class="font-sans text-xl font-bold text-titanium-white">Business Intelligence</h3>
+                         <p class="mt-2 font-body text-mist-gray">Transformamos datos crudos en dashboards interactivos y reportes claros que facilitan la toma de decisiones estratégicas.</p>
+                    </div>
+                     <!-- Card de Servicio -->
+                     <div class="bg-abyss-night/50 p-8 rounded-2xl border border-structural-gray">
+                         <h3 class="font-sans text-xl font-bold text-titanium-white">Ventaja Competitiva</h3>
+                         <p class="mt-2 font-body text-mist-gray">Analizamos su mercado y competidores para identificar oportunidades únicas y crear estrategias que lo diferencien.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECCIÓN CASOS DE ÉXITO -->
+        <section id="casos-exito" class="py-20 sm:py-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center">
+                    <h2 class="font-sans font-semibold text-neon-green tracking-wider uppercase">Resultados, no promesas</h2>
+                    <p class="mt-2 font-sans text-3xl sm:text-4xl font-black text-titanium-white tracking-tight">Casos de Éxito</p>
+                </div>
+                <div class="mt-16 grid gap-8 md:grid-cols-1 lg:grid-cols-2">
+                    <!-- Caso de Éxito -->
+                    <article class="bg-steel-gray rounded-2xl p-8 flex flex-col border border-structural-gray">
+                        <figure class="flex-grow">
+                             <img src="https://placehold.co/150x50/1E293B/F8FAFC?text=TechSolutions" alt="Logo de la empresa TechSolutions" class="h-8 mb-6">
+                             <blockquote class="text-xl font-medium text-titanium-white">
+                                <p>«Kapi no es una agencia, es un socio estratégico. Su enfoque en datos nos dio la claridad que necesitábamos para duplicar nuestro crecimiento.»</p>
+                             </blockquote>
+                             <figcaption class="mt-8">
+                                <cite class="not-italic">
+                                    <span class="block font-sans text-lg font-bold text-titanium-white">Juana Pérez</span>
+                                    <span class="block text-base text-mist-gray">CEO, TechSolutions</span>
+                                </cite>
+                             </figcaption>
+                        </figure>
+                        <a href="#" class="font-sans font-semibold text-electric-blue hover:text-blue-400 transition-colors duration-300 mt-6 inline-block">Ver caso completo &rarr;</a>
+                    </article>
+                    <!-- Caso de Éxito -->
+                    <article class="bg-steel-gray rounded-2xl p-8 flex flex-col border border-structural-gray">
+                         <figure class="flex-grow">
+                            <img src="https://placehold.co/150x50/1E293B/F8FAFC?text=InnovaCorp" alt="Logo de la empresa InnovaCorp" class="h-8 mb-6">
+                             <blockquote class="text-xl font-medium text-titanium-white">
+                                <p>«El dashboard de BI que desarrollaron se convirtió en el centro de nuestras reuniones directivas. Decisiones más rápidas y acertadas.»</p>
+                             </blockquote>
+                            <figcaption class="mt-8">
+                                <cite class="not-italic">
+                                    <span class="block font-sans text-lg font-bold text-titanium-white">Marcos González</span>
+                                    <span class="block text-base text-mist-gray">Director de Operaciones, InnovaCorp</span>
+                                </cite>
+                            </figcaption>
+                        </figure>
+                        <a href="#" class="font-sans font-semibold text-electric-blue hover:text-blue-400 transition-colors duration-300 mt-6 inline-block">Ver caso completo &rarr;</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN CONTACTO -->
+        <section id="contacto" class="py-20 sm:py-32 bg-steel-gray">
+             <div class="max-w-4xl mx-auto text-center px-4">
+                <h2 class="font-sans text-3xl sm:text-4xl font-black text-titanium-white tracking-tight">¿Listo para transformar sus datos en decisiones?</h2>
+                <p class="mt-4 text-lg text-mist-gray">Hablemos de su proyecto. Complete el formulario o agende una llamada directamente.</p>
+                <div class="mt-10 text-left max-w-xl mx-auto">
+                    <form action="#" method="POST" class="space-y-4">
+                        <div>
+                            <label for="contact-name" class="sr-only">Nombre</label>
+                            <input type="text" id="contact-name" placeholder="Tu Nombre" required class="w-full bg-abyss-night border border-structural-gray text-titanium-white px-5 py-3 rounded-lg focus:border-electric-blue focus:ring-2 focus:ring-electric-blue/50 focus:outline-none transition-shadow duration-200">
+                        </div>
+                        <div>
+                             <label for="contact-email" class="sr-only">Email de Trabajo</label>
+                            <input type="email" id="contact-email" placeholder="Email de Trabajo" required class="w-full bg-abyss-night border border-structural-gray text-titanium-white px-5 py-3 rounded-lg focus:border-electric-blue focus:ring-2 focus:ring-electric-blue/50 focus:outline-none transition-shadow duration-200">
+                        </div>
+                        <div>
+                            <label for="contact-message" class="sr-only">Mensaje</label>
+                            <textarea id="contact-message" placeholder="Cuéntenos sobre su desafío..." rows="4" required class="w-full bg-abyss-night border border-structural-gray text-titanium-white px-5 py-3 rounded-lg focus:border-electric-blue focus:ring-2 focus:ring-electric-blue/50 focus:outline-none transition-shadow duration-200"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-electric-blue text-titanium-white font-sans font-bold text-base uppercase py-4 px-8 rounded-lg hover:bg-blue-600 transition-colors hover:-translate-y-0.5 transform duration-200">Enviar Mensaje</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <footer class="py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-t border-structural-gray pt-8">
+                <p class="text-mist-gray">&copy; 2025 Kapi. Todos los derechos reservados.</p>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Scripts con 'defer' para optimizar la carga -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script src="src/js/main.js" defer></script>
+    
+</body>
+</html>

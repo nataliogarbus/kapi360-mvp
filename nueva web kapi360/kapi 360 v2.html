@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kapi | Consultoría Estratégica Potenciada por IA</title>
+    <meta name="description" content="Somos un equipo de consultores senior que utiliza IA para crear planes de acción que generan resultados de negocio. Obtenga su diagnóstico inicial gratuito.">
+    <!-- Meta tags... -->
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración del Sistema de Diseño para Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'abyss-night': '#0A101E',
+                        'steel-gray': '#1E293B',
+                        'titanium-white': '#F8FAFC',
+                        'mist-gray': '#94A3B8',
+                        'structural-gray': '#334155',
+                        'neon-green': '#00DD82',
+                        'electric-blue': '#0057FF',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'body': ['IBM Plex Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Inter:wght@700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'IBM Plex Sans', sans-serif; }
+        .text-glow { text-shadow: 0 0 8px rgba(0, 221, 130, 0.4); }
+    </style>
+</head>
+<body class="bg-abyss-night text-mist-gray antialiased">
+
+    <div class="content-container">
+        <!-- SECCIÓN HERO -->
+        <section id="hero-section" class="relative w-full flex flex-col min-h-screen justify-center py-16 sm:py-24 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-abyss-night via-abyss-night to-steel-gray/30"></div>
+             <header class="w-full p-4 absolute top-0 left-0 z-20">
+                <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center">
+                    <a href="#" aria-label="Página de inicio de Kapi">
+                        <img src="https://staging2.kapi.com.ar/wp-content/uploads/2025/08/logo-kapi_Mesa-de-trabajo-1-1024x287-1.png" alt="Logo de Kapi" class="h-8">
+                    </a>
+                    <div class="hidden md:flex items-center space-x-8 font-medium">
+                        <a href="#servicios" class="text-mist-gray hover:text-titanium-white transition-colors duration-300">Servicios</a>
+                        <a href="#metodologia" class="text-mist-gray hover:text-titanium-white transition-colors duration-300">Metodología</a>
+                        <a href="#casos-exito" class="text-mist-gray hover:text-titanium-white transition-colors duration-300">Clientes</a>
+                        <a href="#contacto" class="border border-electric-blue text-electric-blue py-2 px-5 rounded-lg hover:bg-electric-blue hover:text-titanium-white transition-all duration-300">Agendar Llamada</a>
+                    </div>
+                </nav>
+            </header>
+            <main class="relative z-10 flex-grow flex items-center p-4">
+                <div class="max-w-4xl w-full mx-auto text-center">
+                    <h1 class="font-sans font-black text-4xl sm:text-5xl md:text-6xl text-titanium-white tracking-tight">Datos para su Directorio, no para sus Analistas.</h1>
+                    <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto font-body text-mist-gray">Obtenga un <strong class="text-titanium-white">Diagnóstico Ejecutivo Gratuito</strong> de su presencia online, generado por nuestra IA y validado por nuestro equipo de consultores senior.</p>
+                    
+                    <div class="mt-10 max-w-3xl mx-auto">
+                        <form id="diagnosticoForm" class="flex flex-col sm:flex-row gap-2" novalidate>
+                            <label for="main-input" class="sr-only">URL de su sitio web</label>
+                            <input type="url" id="main-input" placeholder="Ingrese la URL de su sitio web" required class="w-full flex-grow bg-steel-gray/80 border border-structural-gray text-titanium-white px-5 py-4 rounded-lg focus:border-electric-blue focus:ring-2 focus:ring-electric-blue/50 focus:outline-none transition-all duration-200 backdrop-blur-sm">
+                            <button type="submit" id="main-cta-button" class="w-full sm:w-auto bg-neon-green text-abyss-night font-sans font-bold text-base uppercase py-4 px-8 rounded-lg hover:-translate-y-1 transition-transform duration-200 shadow-lg shadow-neon-green/10 hover:shadow-neon-green/40">Generar Diagnóstico</button>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </section>
+
+        <!-- NUEVA SECCIÓN: RESPUESTA RÁPIDA -->
+        <section id="urgencia" class="py-12 bg-steel-gray/50">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
+                <h2 class="font-sans font-bold text-xl text-titanium-white">¿Tiene una urgencia de directorio?</h2>
+                <a href="#contacto" class="border border-mist-gray text-mist-gray font-sans font-bold text-sm py-3 px-6 rounded-lg hover:bg-mist-gray hover:text-abyss-night transition-all duration-300">Hable con un consultor ahora</a>
+            </div>
+        </section>
+
+        <!-- NUEVA SECCIÓN: EQUIPO + IA -->
+        <section id="equipo-ia" class="py-20 sm:py-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-16 items-center">
+                <div class="text-left">
+                    <h2 class="font-sans font-semibold text-neon-green tracking-wider uppercase text-glow">Nuestro Diferencial</h2>
+                    <p class="mt-2 font-sans text-3xl sm:text-4xl font-black text-titanium-white tracking-tight">Inteligencia Artificial Potenciada por Experiencia Humana</p>
+                    <p class="mt-6 font-body text-mist-gray max-w-xl">No somos una herramienta de software. Somos un equipo de consultores con décadas de experiencia en estrategia de negocios, y utilizamos la IA como un bisturí de precisión para identificar oportunidades de crecimiento que otros no ven. El informe es nuestra carta de presentación; la estrategia es nuestro servicio.</p>
+                </div>
+                <div class="bg-steel-gray p-8 rounded-2xl border border-structural-gray">
+                    <div class="flex items-center gap-4">
+                        <img src="https://placehold.co/100x100/0A101E/F8FAFC?text=Consultor" alt="Foto de un consultor senior de Kapi" class="rounded-full h-24 w-24 border-2 border-neon-green">
+                        <div>
+                            <h3 class="font-sans text-xl font-bold text-titanium-white">Su Socio Estratégico</h3>
+                            <p class="font-body text-mist-gray">Cada análisis es supervisado por un director de proyecto para asegurar que los datos se traduzcan en un plan de acción viable y alineado con sus objetivos de negocio.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE SERVICIOS (REDISEÑADA) -->
+        <section id="servicios" class="py-20 sm:py-32 bg-steel-gray">
+             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                 <div class="text-center">
+                     <h2 class="font-sans font-semibold text-neon-green tracking-wider uppercase text-glow">Nuestras Soluciones</h2>
+                     <p class="mt-2 font-sans text-3xl sm:text-4xl font-black text-titanium-white tracking-tight">Un Socio Integral para su Crecimiento</p>
+                </div>
+                 <div class="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+                     <!-- Servicio 1: Consultoría -->
+                     <div class="bg-abyss-night/50 p-8 rounded-2xl border border-structural-gray transition-all duration-300 hover:border-neon-green hover:-translate-y-2">
+                         <h3 class="font-sans text-xl font-bold text-titanium-white">Consultoría y Estrategia</h3>
+                         <p class="mt-2 font-body text-mist-gray">Definimos hojas de ruta claras y planes de inversión basados en datos para maximizar su ROI.</p>
+                    </div>
+                     <!-- Servicio 2: Proyectos -->
+                     <div class="bg-abyss-night/50 p-8 rounded-2xl border border-structural-gray transition-all duration-300 hover:border-neon-green hover:-translate-y-2">
+                         <h3 class="font-sans text-xl font-bold text-titanium-white">Gestión de Proyectos</h3>
+                         <p class="mt-2 font-body text-mist-gray">Lideramos la ejecución de sus iniciativas digitales, coordinando equipos y asegurando la entrega a tiempo.</p>
+                    </div>
+                     <!-- Servicio 3: Desarrollo -->
+                     <div class="bg-abyss-night/50 p-8 rounded-2xl border border-structural-gray transition-all duration-300 hover:border-neon-green hover:-translate-y-2">
+                         <h3 class="font-sans text-xl font-bold text-titanium-white">Desarrollo de Activos</h3>
+                         <p class="mt-2 font-body text-mist-gray">Construimos las herramientas y plataformas digitales que su estrategia necesita para tener éxito.</p>
+                    </div>
+                     <!-- Servicio 4: Crecimiento -->
+                     <div class="bg-abyss-night/50 p-8 rounded-2xl border border-structural-gray transition-all duration-300 hover:border-neon-green hover:-translate-y-2">
+                         <h3 class="font-sans text-xl font-bold text-titanium-white">Crecimiento y Prospección</h3>
+                         <p class="mt-2 font-body text-mist-gray">Implementamos sistemas de prospección y generación de demanda para alimentar su pipeline comercial.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DASHBOARD - PLAN DE ACCIÓN (ESTRUCTURA NUEVA) -->
+        <section id="dashboard-section" class="py-20 sm:py-32 hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="font-sans text-3xl sm:text-4xl font-black text-titanium-white tracking-tight">Su Plan de Acción Personalizado</h2>
+                    <p id="dashboard-url" class="mt-4 text-lg text-mist-gray">Análisis de [URL del Cliente]</p>
+                </div>
+
+                <div id="action-plan-container" class="space-y-12 max-w-4xl mx-auto">
+                    <!-- EJEMPLO DE UN PUNTO DE ACCIÓN - ESTRUCTURA REPETIBLE -->
+                    <div class="action-item bg-steel-gray/50 border border-structural-gray rounded-xl p-8">
+                        <div class="mb-6">
+                            <span class="inline-block bg-red-500/10 text-red-400 font-bold text-sm px-3 py-1 rounded-full mb-2">Punto Crítico</span>
+                            <h3 class="font-sans text-2xl font-bold text-titanium-white">Baja Velocidad de Carga en Móviles</h3>
+                            <p class="text-mist-gray mt-2">Su sitio tarda más de 5 segundos en cargar en dispositivos móviles, lo que resulta en una alta tasa de abandono y afecta negativamente su ranking en Google.</p>
+                        </div>
+                        
+                        <h4 class="font-sans font-bold text-titanium-white mb-4">Opciones de Solución:</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                            
+                            <!-- Opción 1: DIY (HÁGALO USTED MISMO) -->
+                            <div class="bg-abyss-night/40 border border-structural-gray rounded-lg p-6 flex flex-col">
+                                <h5 class="font-sans font-bold text-lg text-titanium-white">Solución Guiada (DIY)</h5>
+                                <p class="text-mist-gray text-sm flex-grow mt-2">Le proporcionamos una checklist técnica con 5 optimizaciones clave (compresión de imágenes, minificación de CSS/JS, etc.) para que su equipo técnico las implemente.</p>
+                                <button class="mt-6 w-full text-center font-sans font-semibold text-electric-blue text-sm py-2 px-4 rounded-md hover:underline">Ver Checklist Gratuita</button>
+                            </div>
+
+                            <!-- Opción 2: DWY (HECHO CON USTED) -->
+                            <div class="bg-abyss-night/60 border-2 border-electric-blue rounded-lg p-6 flex flex-col shadow-lg shadow-electric-blue/10">
+                                <h5 class="font-sans font-bold text-lg text-titanium-white">Asesoría Estratégica (DWY)</h5>
+                                <p class="text-mist-gray text-sm flex-grow mt-2">Agende una sesión de 2 horas con nuestro especialista en rendimiento web. Auditamos juntos su código y definimos un plan de optimización priorizado.</p>
+                                <button class="mt-6 w-full text-center bg-electric-blue text-titanium-white font-sans font-bold text-sm py-3 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-300">Agendar Asesoría</button>
+                            </div>
+
+                            <!-- Opción 3: DFY (HECHO PARA USTED) -->
+                            <div class="bg-abyss-night/40 border border-structural-gray rounded-lg p-6 flex flex-col">
+                                <h5 class="font-sans font-bold text-lg text-titanium-white">Gestión Integral (DFY)</h5>
+                                <p class="text-mist-gray text-sm flex-grow mt-2">Nuestro equipo se encarga de todo el proceso de optimización de principio a fin, garantizando una mejora medible en sus Core Web Vitals y tiempos de carga.</p>
+                                <button class="mt-6 w-full text-center bg-neon-green text-abyss-night font-sans font-bold text-sm py-3 px-4 rounded-lg hover:brightness-110 transition-all duration-300">Solicitar Gestión Integral</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FIN DEL EJEMPLO DE PUNTO DE ACCIÓN -->
+                </div>
+            </div>
+        </section>
+
+        <footer class="py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-t border-structural-gray pt-8">
+                <p class="text-mist-gray">&copy; 2025 Kapi Consultores. Todos los derechos reservados.</p>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script src="src/js/main.js" defer></script>
+    
+</body>
+</html>```

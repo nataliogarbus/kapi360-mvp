@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animación de Pulso Vital (EKG)</title>
+    <style>
+        /* Estilo base para la demostración */
+        body {
+            background-color: #1A1A1A; /* Negro Suave de fondo */
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Contenedor de la animación */
+        .pulse-container {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            transform: translateY(-50%);
+            overflow: hidden;
+            pointer-events: none; /* Asegura que no interfiera con otros elementos */
+        }
+
+        /* Animación que mueve el SVG */
+        @keyframes scroll-left {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-50%); /* Mueve el SVG una pantalla a la izquierda */
+            }
+        }
+
+        /* Estilo del SVG (el lienzo móvil) */
+        .pulse-svg {
+            width: 200%; /* El doble del ancho para un bucle perfecto */
+            height: 100%;
+            animation: scroll-left 10s linear infinite;
+        }
+
+        /* Estilo de la línea del pulso */
+        .pulse-line {
+            stroke: #00DD82; /* Verde Menta */
+            stroke-width: 2;
+            opacity: 0.6;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CÓDIGO HTML DE LA ANIMACIÓN -->
+    <div class="pulse-container">
+        <svg class="pulse-svg" preserveAspectRatio="none" viewBox="0 0 2000 100">
+            <!-- CORRECCIÓN: El atributo 'd' ahora es una sola línea limpia sin espacios extraños -->
+            <path class="pulse-line" d="M0,50 L200,50 L225,35 L250,65 L275,20 L300,75 L325,45 L350,50 L550,50 L575,60 L600,40 L625,50 L800,50 L825,30 L850,70 L875,50 L1000,50 L1200,50 L1225,35 L1250,65 L1275,20 L1300,75 L1325,45 L1350,50 L1550,50 L1575,60 L1600,40 L1625,50 L1800,50 L1825,30 L1850,70 L1875,50 L2000,50" />
+        </svg>
+    </div>
+
+    <!-- Puedes añadir aquí el resto del contenido de tu página.
+         La animación permanecerá en el fondo. -->
+    
+</body>
+</html>

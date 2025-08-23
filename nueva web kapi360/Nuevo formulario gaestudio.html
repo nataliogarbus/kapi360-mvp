@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario - Motor de Diagnóstico Digital</title>
+    
+    <!-- Importar la fuente Poppins de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Estilos Generales y de Entorno --- */
+        body {
+            background-color: #1A1A1A;
+            font-family: 'Poppins', sans-serif;
+            color: #E5E7EB;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .form-wrapper {
+            max-width: 600px;
+            width: 100%;
+            background-color: #1F1F1F;
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid #2d2d2d;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 24px; /* Espacio entre los elementos del formulario */
+        }
+
+        .form-header h2 {
+            margin: 0 0 8px 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .form-header p {
+            margin: 0;
+            color: #9CA3AF;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group > label {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        /* --- Estilo Campo de Texto URL con Icono --- */
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon .icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9CA3AF;
+        }
+
+        .form-input-field {
+            background-color: #2B2B2B;
+            border: 1px solid #4A4A4A;
+            color: #E5E7EB;
+            padding: 14px 18px 14px 50px; /* Padding izquierdo para el icono */
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .form-input-field:focus {
+            outline: none;
+            border-color: #0057FF;
+            box-shadow: 0 0 0 3px rgba(0, 87, 255, 0.3);
+        }
+        .form-input-field.valid {
+             border-color: #00DD82;
+        }
+
+        /* --- Botones de Radio Estilizados --- */
+        .radio-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .mode-selector-label {
+            display: block;
+            background-color: transparent;
+            border: 2px solid #4A4A4A;
+            padding: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        .mode-selector-label:hover {
+            border-color: #6a6a6a;
+        }
+        .mode-selector-label.selected {
+            border-color: #0057FF;
+            background-color: rgba(0, 87, 255, 0.1);
+        }
+        .mode-selector-label h4 {
+            margin: 0 0 4px 0;
+            color: #E5E7EB;
+            font-weight: 500;
+        }
+        .mode-selector-label p {
+            margin: 0;
+            color: #9CA3AF;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        /* Ocultar el input de radio real */
+        .radio-group input[type="radio"] {
+            display: none;
+        }
+
+        /* --- Checkboxes Condicionales --- */
+        #conditional-options {
+            display: none; /* Oculto por defecto */
+            animation: fadeInDown 0.5s ease;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .custom-checkbox-label {
+            display: flex;
+            align-items: center;
+            background-color: #2B2B2B;
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid #4A4A4A;
+            transition: all 0.3s ease;
+        }
+        .custom-checkbox-label:hover {
+            border-color: #0057FF;
+        }
+        
+        .custom-checkbox-label span {
+            font-size: 14px;
+        }
+
+        .custom-checkbox-display {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            background-color: transparent;
+            border: 2px solid #6a6a6a;
+            border-radius: 6px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        /* Ocultar el input de checkbox real */
+        .custom-checkbox-input {
+            display: none;
+        }
+        
+        .custom-checkbox-input:checked + .custom-checkbox-display {
+            background-color: #0057FF;
+            border-color: #0057FF;
+        }
+
+        .custom-checkbox-input:checked + .custom-checkbox-display svg {
+           opacity: 1;
+        }
+        
+        .custom-checkbox-display svg {
+            width: 14px;
+            height: 14px;
+            stroke: white;
+            stroke-width: 3;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        /* --- Botón Principal (CTA) y Estado de Carga --- */
+        .cta-submit-button {
+            background-color: #0057FF;
+            color: #FFFFFF;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .cta-submit-button:hover {
+            background-color: #0048D1;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 87, 255, 0.2);
+        }
+        
+        .spinner {
+            display: none; /* Oculto por defecto */
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #FFFFFF;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        .cta-submit-button.loading {
+            cursor: wait;
+            background-color: #0048D1;
+        }
+        .cta-submit-button.loading .button-text {
+            display: none;
+        }
+        .cta-submit-button.loading .spinner {
+            display: block;
+        }
+        
+        .privacy-text {
+            text-align: center;
+            font-size: 13px;
+            color: #9CA3AF;
+            margin-top: -12px;
+        }
+        
+        /* --- Animaciones --- */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="form-wrapper">
+        
+        <div class="form-header">
+            <h2>Obtén tu Diagnóstico Digital Ejecutivo.</h2>
+            <p>Ingresa la web de tu empresa y recibe un Informe Confidencial generado por IA sobre tu posicionamiento online.</p>
+        </div>
+
+        <form id="diagnostic-form">
+            <!-- CAMPO URL -->
+            <div class="form-group">
+                <label for="website-url">Sitio Web de tu Empresa</label>
+                <div class="input-with-icon">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    <input type="url" id="website-url" name="website-url" class="form-input-field" placeholder="https://tuempresa.com" required>
+                </div>
+            </div>
+
+            <!-- SELECTOR DE MODO -->
+            <div class="form-group">
+                <label>Elige tu tipo de análisis</label>
+                <div class="radio-group">
+                    <div>
+                        <input type="radio" id="auto-mode" name="analysis-mode" value="auto" checked>
+                        <label for="auto-mode" class="mode-selector-label selected">
+                            <h4>Análisis Automático</h4>
+                            <p>Nuestra IA evaluará los pilares clave de tu presencia digital.</p>
+                        </label>
+                    </div>
+                    <div>
+                        <input type="radio" id="custom-mode" name="analysis-mode" value="custom">
+                        <label for="custom-mode" class="mode-selector-label">
+                            <h4>Análisis Personalizado</h4>
+                            <p>Selecciona áreas específicas para un informe enfocado.</p>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CHECKBOXES CONDICIONALES -->
+            <div class="form-group" id="conditional-options">
+                <label>Selecciona las áreas de enfoque:</label>
+                <div class="checkbox-grid">
+                    <label class="custom-checkbox-label">
+                        <input type="checkbox" name="focus[]" value="market" class="custom-checkbox-input">
+                        <div class="custom-checkbox-display">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <span>Mercado y Competencia</span>
+                    </label>
+                    <label class="custom-checkbox-label">
+                        <input type="checkbox" name="focus[]" value="ux" class="custom-checkbox-input">
+                        <div class="custom-checkbox-display">
+                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <span>Plataforma y UX</span>
+                    </label>
+                    <label class="custom-checkbox-label">
+                        <input type="checkbox" name="focus[]" value="content" class="custom-checkbox-input">
+                        <div class="custom-checkbox-display">
+                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <span>Contenido y Redes</span>
+                    </label>
+                    <label class="custom-checkbox-label">
+                        <input type="checkbox" name="focus[]" value="growth" class="custom-checkbox-input">
+                        <div class="custom-checkbox-display">
+                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17L4 12" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <span>Crecimiento e IA</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- BOTÓN DE ENVÍO (CTA) -->
+            <button type="submit" class="cta-submit-button">
+                <span class="button-text">Generar Mi Informe Ejecutivo</span>
+                <div class="spinner"></div>
+            </button>
+            
+            <p class="privacy-text">🔒 100% Confidencial. Tu información es privada.</p>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('diagnostic-form');
+            const radioButtons = document.querySelectorAll('input[name="analysis-mode"]');
+            const conditionalOptions = document.getElementById('conditional-options');
+            const submitButton = form.querySelector('.cta-submit-button');
+
+            // 1. Lógica para mostrar/ocultar los checkboxes condicionales
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    // Actualizar estilos visuales de los labels de radio
+                    document.querySelectorAll('.mode-selector-label').forEach(label => {
+                        label.classList.remove('selected');
+                    });
+                    this.nextElementSibling.classList.add('selected');
+                    
+                    // Mostrar u ocultar las opciones
+                    if (this.value === 'custom') {
+                        conditionalOptions.style.display = 'block';
+                    } else {
+                        conditionalOptions.style.display = 'none';
+                    }
+                });
+            });
+
+            // 2. Simulación del estado de carga en el botón de envío
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Previene el envío real para ver el efecto
+                
+                if (submitButton.classList.contains('loading')) {
+                    return; // Evita múltiples clics mientras carga
+                }
+
+                submitButton.classList.add('loading');
+                
+                // Simula un trabajo de IA durante 3 segundos
+                setTimeout(() => {
+                    submitButton.classList.remove('loading');
+                    // Aquí iría la lógica de éxito, como mostrar un mensaje o redirigir.
+                    alert('¡Informe generado!'); 
+                }, 3000);
+            });
+            
+            // 3. (Bonus) Validación visual del campo URL
+            const urlInput = document.getElementById('website-url');
+            urlInput.addEventListener('input', function() {
+                if (this.validity.valid && this.value.length > 0) {
+                    this.classList.add('valid');
+                } else {
+                    this.classList.remove('valid');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

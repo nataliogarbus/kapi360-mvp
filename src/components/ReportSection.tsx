@@ -154,7 +154,7 @@ const CoordenadaCard: React.FC<{ coordenada: Coordenada }> = ({ coordenada }) =>
           {coordenada.planDeAccion.loHaceKapi.map((solucion, i) => (
              <label key={i} className="flex items-start cursor-pointer">
               <input type="checkbox" className="mt-1 mr-3 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-              <ReactMarkdown components={{ p: ({node, ...props}) => <p className="text-sm text-white" {{...props}} /> }}>{solucion.texto}</ReactMarkdown>
+              <ReactMarkdown components={{ p: ({node, ...props}) => <p className="text-sm text-white" {...props} /> }}>{solucion.texto}</ReactMarkdown>
             </label>
           ))}
         </div>

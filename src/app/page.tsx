@@ -71,7 +71,7 @@ export default function Home() {
           {isLoading ? (
             <LoadingState />
           ) : (
-            <DiagnosticForm onSubmit={handleDiagnose} />
+            <DiagnosticForm onSubmit={handleDiagnose} isLoading={isLoading} />
           )}
 
           {error && (

@@ -28,21 +28,23 @@ const modeDescriptions: { [key: string]: string } = {
   consulta: 'Envíanos tu inquietud directamente. Un estratega de nuestro equipo se pondrá en contacto contigo.',
 };
 
+// --- PROPS CORREGIDAS ---
 interface DiagnosticFormProps {
   onSubmit: (url: string, mode: string, context?: string) => void;
+  isLoading: boolean; // isLoading ahora es una prop
 }
 
-const DiagnosticForm: React.FC<DiagnosticFormProps> = ({ onSubmit }) => {
+// --- COMPONENTE CORREGIDO ---
+const DiagnosticForm: React.FC<DiagnosticFormProps> = ({ onSubmit, isLoading }) => {
   const [mode, setMode] = useState('auto');
   const [url, setUrl] = useState('');
   const [context, setContext] = useState('');
-  const [isLoading, setIsLoading] = useState(false); // Manejo de carga local al formulario
+  // El estado de carga local ha sido eliminado.
 
-  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsLoading(true);
-    await onSubmit(url, mode, context);
-    setIsLoading(false);
+    // Ya no se gestiona setIsLoading aquí. Se pasa directamente a onSubmit.
+    onSubmit(url, mode, context);
   };
 
   return (
