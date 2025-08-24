@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "kapi360-mvp/next.config.mjs",
+      "use": "@vercel/next",
+      "config": {
+        "workPath": "kapi360-mvp"
+      }
+    }
+  ]
+}
