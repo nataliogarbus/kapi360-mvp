@@ -174,7 +174,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     // Los datos ahora vienen en un objeto 'context'
     const { url, mode, context } = body;
-
+const url_prospecto = url;
     if (!mode) {
       return NextResponse.json({ error: 'El modo es requerido' }, { status: 400 });
     }
