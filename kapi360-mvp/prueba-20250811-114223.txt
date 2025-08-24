@@ -1,0 +1,273 @@
+Loaded cached credentials.
+┬íHola, colega! Como desarrollador senior de WordPress, me complace enormemente que quieras adentrarte en el mundo de las pruebas automatizadas. Es la diferencia fundamental entre un aficionado y un profesional. Implementar pruebas no solo previene errores, sino que te da la confianza para refactorizar, actualizar y a├▒adir funcionalidades sin romper lo que ya funciona.
+
+Aqu├¡ tienes una gu├¡a completa, paso a paso, pensada para un desarrollador que trabaja en sus propios proyectos de plugins o temas.
+
+---
+
+### **Gu├¡a de Pruebas en WordPress para el Desarrollador Individual**
+
+Esta gu├¡a se divide en dos grandes ├íreas, que cubren los aspectos m├ís importantes de tu desarrollo:
+
+1.  **Pruebas Unitarias (Unit Testing) con PHPUnit:** Para probar la l├│gica de tu c├│digo PHP (funciones, clases, m├®todos) de forma aislada. Es ideal para asegurar que tus funciones hacen exactamente lo que esperas.
+2.  **Pruebas de Extremo a Extremo (E2E Testing) con Cypress:** Para simular las acciones de un usuario real en un navegador. Es perfecto para verificar que la interfaz de usuario, los formularios, los flujos de trabajo y la integraci├│n con el core de WordPress funcionan correctamente.
+
+┬íManos a la obra!
+
+---
+
+### **0. Prerrequisitos: Tu Entorno de Desarrollo**
+
+Antes de empezar, necesitas un entorno de desarrollo local de WordPress. Si ya tienes uno, genial. Si no, aqu├¡ tienes algunas opciones populares:
+
+*   **Local (de Flywheel):** Muy f├ícil de usar y configurar.
+*   **Docker con WP-ENV:** Potente y reproducible.
+*   **XAMPP/MAMP/WAMP:** La configuraci├│n manual cl├ísica.
+
+Adem├ís, es **fundamental** que tengas instalado **WP-CLI**, la interfaz de l├¡nea de comandos de WordPress. La usaremos para configurar el entorno de pruebas de PHPUnit.
+
+---
+
+### **Parte 1: Pruebas Unitarias con PHPUnit**
+
+Vamos a configurar un entorno para probar un plugin. El proceso es similar para un tema.
+
+#### **Paso 1: Generar los Archivos de Prueba con WP-CLI**
+
+WP-CLI hace que el proceso de configuraci├│n sea incre├¡blemente sencillo. Navega en tu terminal hasta el directorio de tu plugin y ejecuta el siguiente comando. Reemplaza `mi-plugin` con el slug (el nombre del directorio) de tu plugin.
+
+```bash
+wp scaffold plugin-tests mi-plugin
+```
+
+Este comando crear├í varios archivos y directorios nuevos en tu plugin:
+
+*   `.github/workflows/ci.yml`: Un archivo de ejemplo para integraci├│n continua con GitHub Actions (puedes ignorarlo por ahora).
+*   `bin/install-wp-tests.sh`: Un script para instalar WordPress y la base de datos de pruebas.
+*   `tests/bootstrap.php`: El archivo que carga el entorno de pruebas y tu plugin.
+*   `tests/test-sample.php`: Un archivo de prueba de ejemplo.
+*   `.phpunit.xml.dist`: El archivo de configuraci├│n para PHPUnit.
+
+#### **Paso 2: Configurar y Crear la Base de Datos de Pruebas**
+
+El script `install-wp-tests.sh` necesita saber c├│mo conectarse a tu base de datos para crear una base de datos separada *exclusivamente para las pruebas*. Esto es genial porque tus datos de desarrollo nunca se ver├ín afectados.
+
+Ejecuta el script pas├índole el nombre de tu base de datos de pruebas, el usuario y la contrase├▒a.
+
+```bash
+bash bin/install-wp-tests.sh wordpress_tests root '' localhost
+```
+
+*   `wordpress_tests`: El nombre que le daremos a la base de datos de pruebas.
+*   `root`: Tu usuario de MySQL.
+*   `''`: Tu contrase├▒a de MySQL (en mi caso es vac├¡a, aj├║stala a la tuya).
+*   `localhost`: El host de tu base de datos.
+
+Este script descargar├í una copia de WordPress y de la librer├¡a de pruebas en un directorio temporal de tu sistema operativo y configurar├í todo lo necesario.
+
+#### **Paso 3: Escribir tu Primera Prueba Unitaria**
+
+Imagina que en tu archivo principal del plugin (`mi-plugin.php`) tienes una funci├│n sencilla que quieres probar:
+
+```php
+// en mi-plugin/mi-plugin.php
+
+/**
+ * Suma dos n├║meros.
+ *
+ * @param int $a El primer n├║mero.
+ * @param int $b El segundo n├║mero.
+ * @return int La suma de los dos n├║meros.
+ */
+function mi_plugin_suma( $a, $b ) {
+    return $a + $b;
+}
+```
+
+Ahora, vamos a crear una prueba para esta funci├│n. Crea un nuevo archivo en el directorio `tests/`, por ejemplo `tests/test-funciones-basicas.php`.
+
+```php
+// en mi-plugin/tests/test-funciones-basicas.php
+
+/**
+ * Clase de prueba para las funciones b├ísicas de mi plugin.
+ */
+class Funciones_Basicas_Test extends WP_UnitTestCase {
+
+    /**
+     * Prueba la funci├│n mi_plugin_suma().
+     *
+     * @covers ::mi_plugin_suma
+     */
+    public function test_suma_positivos() {
+        // Comprueba que 2 + 3 es igual a 5.
+        $this->assertEquals( 5, mi_plugin_suma( 2, 3 ) );
+    }
+
+    /**
+     * Prueba la funci├│n con n├║meros negativos.
+     *
+     * @covers ::mi_plugin_suma
+     */
+    public function test_suma_negativos() {
+        // Comprueba que -5 + -10 es igual a -15.
+        $this->assertEquals( -15, mi_plugin_suma( -5, -10 ) );
+    }
+
+    /**
+     * Prueba la funci├│n con cero.
+     *
+     * @covers ::mi_plugin_suma
+     */
+    public function test_suma_con_cero() {
+        $this->assertEquals( 10, mi_plugin_suma( 10, 0 ) );
+    }
+}
+```
+
+**Explicaci├│n:**
+
+*   `WP_UnitTestCase`: Es una clase especial de WordPress que nos da acceso a muchas herramientas ├║tiles, como "factories" para crear posts, usuarios, etc.
+*   `test_...`: Cada m├®todo que empieza con `test_` es una prueba individual.
+*   `$this->assertEquals()`: Esto es una "aserci├│n". Le dice a PHPUnit: "Espero que el primer valor sea igual al segundo". Si no lo son, la prueba falla. Hay muchas otras aserciones como `assertTrue()`, `assertFalse()`, `assertCount()`, etc.
+
+#### **Paso 4: Ejecutar las Pruebas**
+
+Vuelve a tu terminal, aseg├║rate de estar en el directorio de tu plugin, y simplemente ejecuta:
+
+```bash
+phpunit
+```
+
+Si todo ha ido bien, ver├ís una salida en verde que te indica que todas las pruebas han pasado. Si algo falla, te mostrar├í exactamente qu├® prueba fall├│ y por qu├®.
+
+---
+
+### **Parte 2: Pruebas de Extremo a Extremo (E2E) con Cypress**
+
+Ahora vamos a probar la parte visible de nuestro sitio, simulando a un usuario.
+
+#### **Paso 1: Instalar y Configurar Cypress**
+
+Cypress se gestiona a trav├®s de Node.js. Si no tienes un archivo `package.json` en tu plugin, crea uno:
+
+```bash
+npm init -y
+```
+
+Ahora, instala Cypress como una dependencia de desarrollo:
+
+```bash
+npm install cypress --save-dev
+```
+
+Para configurar Cypress, ejec├║talo una vez. Esto crear├í la estructura de carpetas necesaria.
+
+```bash
+npx cypress open
+```
+
+Se abrir├í la interfaz de Cypress y ver├ís que ha creado una carpeta `cypress` y un archivo `cypress.config.js` en tu plugin.
+
+Abre `cypress.config.js` y config├║ralo. Lo m├ís importante es decirle cu├íl es la URL de tu sitio de desarrollo.
+
+```javascript
+// en mi-plugin/cypress.config.js
+
+const { defineConfig } = require("cypress");
+
+module.exports = defineConfig({
+  e2e: {
+    // La URL base de tu sitio de WordPress local. ┬íAj├║stala a la tuya!
+    baseUrl: 'http://mi-sitio-wordpress.local',
+    
+    // Recomendado para evitar problemas con cookies de sesi├│n de WP
+    experimentalSessionAndOrigin: true,
+    
+    setupNodeEvents(on, config) {
+      // implement node event listeners here
+    },
+  },
+});
+```
+
+#### **Paso 2: Escribir tu Primera Prueba E2E**
+
+Vamos a escribir una prueba que verifique que un usuario puede iniciar sesi├│n en el panel de administraci├│n.
+
+Crea un nuevo archivo en `cypress/e2e/`, por ejemplo `auth.cy.js`.
+
+```javascript
+// en mi-plugin/cypress/e2e/auth.cy.js
+
+// Describe el conjunto de pruebas
+describe('Flujo de Autenticaci├│n de WordPress', () => {
+
+  // La prueba individual
+  it('deber├¡a permitir a un administrador iniciar sesi├│n correctamente', () => {
+    // 1. Visitar la p├ígina de login
+    cy.visit('/wp-login.php');
+
+    // 2. Encontrar el campo de usuario, escribir el nombre de usuario
+    // Reemplaza 'tu_usuario' con tu usuario admin de WP
+    cy.get('#user_login').type('tu_usuario');
+
+    // 3. Encontrar el campo de contrase├▒a, escribir la contrase├▒a
+    // Reemplaza 'tu_contrase├▒a' con tu contrase├▒a
+    cy.get('#user_pass').type('tu_contrase├▒a');
+
+    // 4. Hacer clic en el bot├│n de "Acceder"
+    cy.get('#wp-submit').click();
+
+    // 5. Aserci├│n: Verificar que estamos en el Escritorio
+    // Buscamos un elemento que solo exista en el dashboard, como el H1 "Escritorio"
+    cy.get('h1').should('contain.text', 'Escritorio');
+  });
+
+});
+```
+
+**Explicaci├│n:**
+
+*   `describe()`: Agrupa pruebas relacionadas.
+*   `it()`: Define una prueba individual con una descripci├│n de lo que deber├¡a hacer.
+*   `cy.visit()`: Navega a una URL (relativa a tu `baseUrl`).
+*   `cy.get()`: Selecciona un elemento del DOM usando selectores de CSS (como en jQuery).
+*   `cy.type()`: Escribe en un campo de texto.
+*   `cy.click()`: Hace clic en un elemento.
+*   `.should()`: Es la aserci├│n de Cypress. Aqu├¡ verificamos que el `<h1>` contiene el texto "Escritorio".
+
+#### **Paso 3: Ejecutar las Pruebas E2E**
+
+Tienes dos maneras de ejecutar las pruebas de Cypress:
+
+1.  **Con la Interfaz Gr├ífica (para depurar):**
+    ```bash
+    npx cypress open
+    ```
+    Esto abre el panel de Cypress. Haz clic en "E2E testing", luego en tu navegador preferido, y finalmente en `auth.cy.js`. Ver├ís c├│mo un navegador se abre y ejecuta los pasos de tu prueba en tiempo real. ┬íEs casi m├ígico!
+
+2.  **Desde la Terminal (para automatizaci├│n):**
+    ```bash
+    npx cypress run
+    ```
+    Esto ejecutar├í todas tus pruebas en segundo plano (headless) e imprimir├í los resultados en la consola. Es ideal para una verificaci├│n r├ípida.
+
+---
+
+### **Buenas Pr├ícticas y Pr├│ximos Pasos**
+
+*   **Pruebas Unitarias:**
+    *   **Factories:** `WP_UnitTestCase` te da acceso a "factories" para crear datos falsos. Por ejemplo, para crear un post para una prueba: `$post_id = $this->factory->post->create();`. Esto es mucho m├ís fiable que usar posts existentes.
+    *   **No pruebes el Core:** No escribas pruebas para ver si `get_post()` funciona. Eso ya lo prueba el equipo de WordPress. Prueba *tu* c├│digo que usa `get_post()`.
+    *   **Mocking:** Para funciones complejas que dependen de APIs externas, aprende a usar "Mocks". Te permiten simular respuestas de esas APIs sin tener que conectarte a ellas realmente.
+
+*   **Pruebas E2E:**
+    *   **Selectores robustos:** Evita usar selectores CSS muy gen├®ricos o que puedan cambiar. Si puedes, a├▒ade un atributo `data-cy="mi-boton-especial"` a tu HTML y selecci├│nalo con `cy.get('[data-cy="mi-boton-especial"]')`.
+    *   **Comandos personalizados:** Cypress te permite crear comandos personalizados para acciones repetitivas, como el inicio de sesi├│n.
+
+### **Conclusi├│n**
+
+Adoptar las pruebas automatizadas es un viaje. Empieza poco a poco. Escribe una prueba para cada nuevo bug que corrijas. Escribe pruebas para cada nueva funcionalidad que a├▒adas. Al principio puede parecer lento, pero la tranquilidad y la calidad que ganas a largo plazo son invaluables.
+
+┬íFelicidades por dar este paso hacia un desarrollo m├ís profesional y robusto en WordPress

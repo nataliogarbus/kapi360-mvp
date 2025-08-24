@@ -25,7 +25,7 @@ Este plan detalla la implementación del "Laboratorio de Estrategia Kapi" basado
 ### Etapa 7: Evolución a Informe Detallado (v2.2)
 *Objetivo: Implementar la visión detallada del informe, con múltiples capas de interactividad y nuevas funcionalidades.*
 
-- [ ] **Tarea 7.1 (Bug Fix):** Corregir el CSS del efecto `hover` en los cuadrantes para que el texto se muestre correctamente.
+- [x] **Tarea 7.1 (Bug Fix):** Corregir el CSS del efecto `hover` en los cuadrantes para que el texto se muestre correctamente.
 - [ ] **Tarea 7.2 (Flujo Principal):** Reemplazar el panel lateral por un sistema de acordeón, donde cada cuadrante se expande "en el sitio" para mostrar los detalles.
 - [ ] **Tarea 7.3 (Micro-Dashboards):** Diseñar e implementar "mini-brújulas" para cada coordenada dentro de un pilar.
 - [ ] **Tarea 7.4 (Planes Anidados):** Implementar un segundo nivel de acordeón dentro de las "Rutas de Solución" (`Lo Hago Yo`, etc.) para mostrar el plan de acción específico de cada una.

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kapi | Monitor de Diagnóstico Estratégico v5</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Poppins & Roboto Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0A101E; /* Abismo Nocturno */
+        }
+        
+        /* ============================================================
+        ANIMACIÓN DE PULSO VITAL (SCROLLING)
+        ============================================================
+        */
+        .pulse-container {
+            position: absolute;
+            /* CAMBIO: Posicionado arriba para enmarcar el título */
+            top: 35%; 
+            left: 0;
+            width: 100%;
+            height: 100px; /* Reducido para ser más sutil */
+            transform: translateY(-50%);
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        @keyframes scroll-left {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        .pulse-svg {
+            width: 200%;
+            height: 100%;
+            animation: scroll-left 15s linear infinite; /* Más lento */
+        }
+
+        .pulse-line {
+            stroke: #00DD82; /* Verde Menta */
+            /* CAMBIO: Línea más fina */
+            stroke-width: 1; 
+            opacity: 0.6;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 0 4px #00DD82);
+        }
+
+        /* Estilo para el prompt de consola */
+        .typewriter-text {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid #00DD82;
+            animation: typewriter 3.5s steps(44, end), blink-caret .75s step-end infinite;
+        }
+        @keyframes typewriter {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #00DD82; }
+        }
+    </style>
+</head>
+<body class="bg-soft-black text-medium-gray antialiased">
+
+    <section class="relative min-h-screen flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        
+        <!-- ANIMACIÓN DE FONDO "PULSO VITAL" -->
+        <div class="pulse-container">
+            <svg class="pulse-svg" preserveAspectRatio="none" viewBox="0 0 2000 100">
+                <path class="pulse-line" d="M0,50 L200,50 L225,35 L250,65 L275,20 L300,75 L325,45 L350,50 L550,50 L575,60 L600,40 L625,50 L800,50 L825,30 L850,70 L875,50 L1000,50 L1200,50 L1225,35 L1250,65 L1275,20 L1300,75 L1325,45 L1350,50 L1550,50 L1575,60 L1600,40 L1625,50 L1800,50 L1825,30 L1850,70 L1875,50 L2000,50" />
+            </svg>
+        </div>
+        
+        <!-- CAMBIO: Contenido centrado y con más espacio vertical -->
+        <div class="relative z-10 w-full max-w-4xl mx-auto text-center mt-16">
+            
+            <h1 class="font-sans font-black text-4xl md:text-5xl lg:text-6xl text-[#E5E7EB] leading-tight">
+                Datos para su <span class="text-[#00DD82]">Directorio</span>, no para sus <span class="text-[#00DD82]">Analistas</span>.
+            </h1>
+            <p class="mt-6 max-w-3xl mx-auto font-sans text-lg text-[#9CA3AF]" style="line-height: 1.65;">
+                Obtenga un Diagnóstico Ejecutivo Gratuito de su presencia online, generado por nuestra IA y validado por nuestro equipo de consultores senior.
+            </p>
+
+            <div class="mt-12 font-mono text-[#00DD82] text-left max-w-3xl mx-auto text-lg">
+                <span class="opacity-60">KAPI_DIAGNOSTICS_v3.0:></span>
+                <span class="typewriter-text">Ingrese URL para iniciar diagnóstico...</span>
+            </div>
+
+            <!-- 
+            ============================================================
+            MÓDULO DE COMANDO CON BOTÓN REDISEÑADO
+            ============================================================
+            -->
+            <div class="mt-4 w-full max-w-3xl mx-auto bg-black/30 border border-[#4B5563]/50 rounded-xl p-2 backdrop-blur-sm shadow-2xl shadow-black/30">
+                <form id="diagnosticoForm" class="flex items-center" novalidate>
+                    <label for="url-input" class="sr-only">Ingrese la URL de su sitio web</label>
+                    <input 
+                        type="url" 
+                        id="url-input"
+                        name="url"
+                        placeholder="https://" 
+                        required 
+                        class="w-full h-14 px-6 bg-transparent border-l-4 border-transparent text-white text-lg font-medium placeholder:text-[#9CA3AF]/60 focus:outline-none focus:border-[#00DD82] transition-all duration-300"
+                    >
+                    <!-- CAMBIO: Botón rediseñado a estilo "ghost" con borde de neón -->
+                    <button 
+                        type="submit" 
+                        class="group relative w-auto h-14 shrink-0 bg-transparent border-2 border-[#0057FF] text-white font-sans font-bold text-lg px-8 rounded-lg overflow-hidden transition-all duration-300 hover:bg-[#0057FF] hover:text-white hover:shadow-[0_0_20px_rgba(0,87,255,0.5)]"
+                    >
+                        <span class="relative z-10 flex items-center">
+                            Generar Diagnóstico
+                            <span class="ml-2 transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="mt-12">
+                <p class="font-sans text-sm tracking-widest uppercase text-[#9CA3AF]">
+                    CON LA CONFIANZA DE LÍDERES DEL SECTOR INDUSTRIAL Y TECNOLÓGICO
+                </p>
+                <div class="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+                    <img src="https://placehold.co/120x40/transparent/white?text=TechCorp" alt="Logo del cliente TechCorp" class="h-7 grayscale opacity-40 transition-all duration-300 hover:grayscale-0 hover:opacity-100">
+                    <img src="https://placehold.co/120x40/transparent/white?text=InnovaInd" alt="Logo del cliente InnovaInd" class="h-7 grayscale opacity-40 transition-all duration-300 hover:grayscale-0 hover:opacity-100">
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

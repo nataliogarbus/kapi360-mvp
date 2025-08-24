@@ -1,0 +1,20 @@
+{
+	"geolocation": {
+		"data": {
+			"city": "Mariano Moreno",
+			"country": {
+				"code": "AR",
+				"name": "Argentina"
+			},
+			"subdivision": {
+				"code": "B",
+				"name": "Buenos Aires"
+			},
+			"timezone": "America/Argentina/Buenos_Aires",
+			"latitude": -34.4615,
+			"longitude": -58.9319,
+			"postalCode": "1744"
+		},
+		"timestamp": 1755696032193
+	}
+}

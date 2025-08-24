@@ -34,6 +34,7 @@ Este es el nuevo prompt diseñado para generar la estructura de datos completa y
 		- **[Nombre de Métrica 1]:** [Puntaje de 0 a 100]/100
 		- **[Nombre de Métrica 2]:** [Puntaje de 0 a 100]/100
 		- **[Nombre de Métrica 3]:** [Puntaje de 0 a 100]/100
+		- **[Nombre de Métrica 4]:** [Puntaje de 0 a 100]/100
 		**Plan de Acción:**
 		- **Lo Hago Yo:**
 		  - [Paso 1 a realizar por el usuario]

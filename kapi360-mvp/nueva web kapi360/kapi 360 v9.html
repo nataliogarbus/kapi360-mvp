@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kapi | Monitor de Diagnóstico Estratégico</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 
+    ============================================================
+    SISTEMA DE DISEÑO Y CONFIGURACIÓN UI - KAPI VITAL SIGNS
+    ============================================================
+    Configuración extendida para incluir la animación del "pulso"
+    del SVG y el prompt de consola.
+    ============================================================
+    -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'electric-blue': '#0057FF',
+                        'electric-blue-dark': '#0044CC',
+                        'mint-green': '#00DD82',
+                        'soft-black': '#1A1A1A',
+                        'card-black': 'rgba(30, 30, 30, 0.5)',
+                        'light-gray': '#E5E7EB',
+                        'medium-gray': '#9CA3AF',
+                        'dark-gray': '#4B5563',
+                    },
+                    fontFamily: {
+                        'sans': ['Poppins', 'sans-serif'],
+                    },
+                    keyframes: {
+                        'draw-pulse': {
+                            'to': { 'stroke-dashoffset': '0' },
+                        },
+                        'typewriter': {
+                            'from': { 'width': '0' },
+                            'to': { 'width': '100%' }
+                        },
+                        'blink-caret': {
+                            'from, to': { 'border-color': 'transparent' },
+                            '50%': { 'border-color': '#00DD82' },
+                        }
+                    },
+                    animation: {
+                        'draw-pulse': 'draw-pulse 8s linear infinite',
+                        'typewriter': 'typewriter 3.5s steps(40, end), blink-caret .75s step-end infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display-swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1A1A1A; /* Negro Suave */
+        }
+        /* Estilo para la animación del SVG */
+        .pulse-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+    </style>
+</head>
+<body class="bg-soft-black text-medium-gray antialiased">
+
+    <!-- 
+    ============================================================
+    INICIO DE LA SECCIÓN HERO - MONITOR DE SIGNOS VITALES
+    ============================================================
+    Diseño inmersivo con animación de "pulso" en SVG y un módulo
+    de comando unificado.
+    ============================================================
+    -->
+    <section class="relative min-h-screen flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        
+        <!-- ANIMACIÓN DE FONDO "PULSO VITAL" -->
+        <div class="absolute inset-0 z-0 flex items-center justify-center opacity-20">
+            <svg width="100%" height="200" viewBox="0 0 1000 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path class="pulse-line" d="M0 100 L200 100 L220 80 L240 120 L260 40 L280 110 L300 100 L700 100 L720 110 L740 90 L760 100 L1000 100" 
+                      fill="none" 
+                      stroke="#00DD82" 
+                      stroke-width="2"
+                      vector-effect="non-scaling-stroke" />
+            </svg>
+        </div>
+        
+        <!-- Contenido Principal -->
+        <div class="relative z-10 w-full max-w-4xl mx-auto text-center">
+            
+            <!-- Jerarquía y Copywriting -->
+            <h1 class="font-sans font-black text-4xl md:text-5xl lg:text-6xl text-light-gray leading-tight">
+                Datos para su <span class="text-mint-green">Directorio</span>, no para sus <span class="text-mint-green">Analistas</span>.
+            </h1>
+            <p class="mt-6 max-w-3xl mx-auto font-sans text-lg text-medium-gray" style="line-height: 1.65;">
+                Obtenga un Diagnóstico Ejecutivo Gratuito de su presencia online, generado por nuestra IA y validado por nuestro equipo de consultores senior.
+            </p>
+
+            <!-- Prompt de Consola -->
+            <div class="mt-12 font-mono text-mint-green text-left max-w-3xl mx-auto text-lg">
+                <span class="opacity-60">KAPI_DIAGNOSTICS_v3.0:></span>
+                <span class="inline-block align-middle overflow-hidden whitespace-nowrap border-r-4 border-r-mint-green animate-typewriter">
+                    Ingrese URL para iniciar diagnóstico...
+                </span>
+            </div>
+
+            <!-- MÓDULO DE COMANDO INTEGRADO -->
+            <div class="mt-4 w-full max-w-3xl mx-auto bg-card-black border border-dark-gray/50 rounded-xl p-2 backdrop-blur-sm">
+                <form id="diagnosticoForm" class="flex items-center" novalidate>
+                    <label for="url-input" class="sr-only">Ingrese la URL de su sitio web</label>
+                    <input 
+                        type="url" 
+                        id="url-input"
+                        name="url"
+                        placeholder="https://" 
+                        required 
+                        class="w-full h-16 px-6 bg-transparent border-l-4 border-mint-green/50 text-light-gray text-lg font-medium placeholder:text-medium-gray/60 focus:outline-none focus:border-mint-green focus:shadow-[inset_4px_0_15px_-5px_rgba(0,221,130,0.5)] transition-all duration-300"
+                    >
+                    <button 
+                        type="submit" 
+                        class="group relative w-auto h-16 shrink-0 bg-electric-blue text-white font-sans font-bold text-lg px-8 rounded-r-lg overflow-hidden transition-all duration-300 hover:bg-electric-blue-dark hover:shadow-2xl hover:shadow-electric-blue/30"
+                    >
+                        <span class="absolute inset-0 bg-white/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"></span>
+                        <span class="relative z-10">Generar Diagnóstico</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Prueba Social -->
+            <div class="mt-12">
+                <p class="font-sans text-sm tracking-widest uppercase text-medium-gray">
+                    CON LA CONFIANZA DE LÍDERES DEL SECTOR INDUSTRIAL Y TECNOLÓGICO
+                </p>
+                <div class="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+                    <img src="https://placehold.co/120x40/transparent/white?text=TechCorp" alt="Logo del cliente TechCorp" class="h-7 grayscale opacity-40 transition-all duration-300 hover:grayscale-0 hover:opacity-100">
+                    <img src="https://placehold.co/120x40/transparent/white?text=InnovaInd" alt="Logo del cliente InnovaInd" class="h-7 grayscale opacity-40 transition-all duration-300 hover:grayscale-0 hover:opacity-100">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- FIN DE LA SECCIÓN HERO -->
+
+</body>
+</html>

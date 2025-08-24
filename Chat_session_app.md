@@ -98,3 +98,48 @@
 
 **Próximo Paso Acordado:**
 - Actualizar la documentación restante para reflejar la visión v2.2.
+
+---
+
+### **Bitácora - Sesión 2025-08-22 (Continuación - Tarea en Paralelo)**
+
+**Fase Actual:** 7 - Planificación de la Visión Detallada (v2.2)
+**Rol Actual:** Desarrollador Frontend
+
+**Resumen de Avances:**
+- Se ha corregido el bug visual del efecto `hover` en los cuadrantes del `MapaCentral.tsx`. El texto ahora debería mostrarse correctamente.
+
+**Próximo Paso Acordado:**
+- El agente queda a la espera de que el usuario proporcione el prompt final para la API de Gemini, trabajado con su gem personalizado.
+
+---
+
+### **Bitácora - Sesión 2025-08-23 (Depuración de Despliegue v2.2)**
+
+**Fase Actual:** 4 - Integración y Despliegue (Bloqueado)
+**Rol Actual:** Ingeniero DevOps / QA
+
+**Resumen de la Sesión:**
+El objetivo era implementar la arquitectura v2.2 del informe, que incluía un nuevo "Prompt Maestro" para la IA y una refactorización completa del frontend para mostrar un informe anidado tipo acordeón.
+
+**Avances Realizados:**
+1.  **Backend:** Se actualizó la API Route (`/api/diagnose`) con el nuevo "Prompt Maestro".
+2.  **Frontend:** Se reescribió por completo el componente `ReportSection.tsx`, implementando una nueva estructura de datos, un parser avanzado para el Markdown del informe y una nueva UI con acordeones.
+
+**Problema y Proceso de Depuración:**
+Tras subir los cambios a GitHub, se detectó que la aplicación desplegada en Vercel no reflejaba las modificaciones. Esto inició una larga sesión de depuración:
+- **Error Inicial (Local):** El build local fallaba con un error de TypeScript (`Property 'isLoading' is missing`).
+- **Intentos de Solución (Fallidos):**
+    - Se corrigió el código en `page.tsx` y se refactorizó el estado en `DiagnosticForm.tsx`.
+    - Se descubrió y eliminó un archivo `.eslintrc.json` conflictivo en el directorio raíz.
+    - Se limpió la caché de Next.js (`.next`).
+    - Se reinstalaron todas las dependencias (`node_modules`).
+- **Descubrimiento Clave:** El error local era un "fantasma". Al analizar los logs de Vercel, se encontró el **verdadero error**: `ESLint: Failed to load config "next/core-web-vitals"`.
+- **Solución Final Aplicada:** Se regeneró el archivo `.eslintrc.json` del proyecto con la configuración estándar de Next.js y se subió a GitHub.
+
+**Estado Actual y Bloqueo:**
+- A pesar de que el último build en Vercel (commit `8a66afb`) se ejecuta con el código y la configuración correctos, y se fuerza a no usar la caché, el log de Vercel **sigue mostrando el mismo error de ESLint**.
+- **Conclusión:** El problema no reside en el código, sino en la plataforma de Vercel, que parece tener un estado de caché corrupto o inconsistente para este proyecto en particular, imposible de purgar con las herramientas disponibles.
+
+**Próximo Paso Acordado:**
+- **BLOQUEO:** El usuario contactará al **soporte técnico de Vercel** con los logs detallados y un resumen del problema para que investiguen el fallo en su plataforma. El proyecto queda en espera de la resolución por parte de Vercel.
