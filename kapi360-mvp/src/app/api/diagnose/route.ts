@@ -20,32 +20,32 @@ PARTE 2: CONTEXTO Y OBJETIVO DE LA TAREA
 Tu misión es generar un Informe Estratégico Avanzado (Fase 2) para la empresa que ha solicitado este análisis. Has recibido la siguiente información, recolectada a través de nuestro sistema y de APIs externas.
 
 DATOS DEL PROSPECTO:
-URL del Sitio Web: ${url_prospecto}
-Nombre de la Empresa: ${nombre_empresa}
-Principal Objetivo Comercial declarado: ${objetivo_cliente}
-Descripción de su Cliente Ideal: ${descripcion_cliente_ideal}
-Producto/Servicio a Potenciar: ${producto_estrella}
+URL del Sitio Web: \${url_prospecto}
+Nombre de la Empresa: \${nombre_empresa}
+Principal Objetivo Comercial declarado: \${objetivo_cliente}
+Descripción de su Cliente Ideal: \${descripcion_cliente_ideal}
+Producto/Servicio a Potenciar: \${producto_estrella}
 
 DATOS DE ANÁLISIS TÉCNICO (APIs):
-Puntaje de Velocidad (PageSpeed): ${puntaje_velocidad}
-Puntaje de Experiencia Móvil: ${puntaje_movil}
-Usa HTTPS: ${usa_https}
-CMS Detectado (ej. WordPress): ${cms_detectado}
-Píxeles de Analítica/Ads Detectados: ${pixeles_detectados}
-Autoridad de Dominio (DA/DR): ${autoridad_dominio}
+Puntaje de Velocidad (PageSpeed): \${puntaje_velocidad}
+Puntaje de Experiencia Móvil: \${puntaje_movil}
+Usa HTTPS: \${usa_https}
+CMS Detectado (ej. WordPress): \${cms_detectado}
+Píxeles de Analítica/Ads Detectados: \${pixeles_detectados}
+Autoridad de Dominio (DA/DR): \${autoridad_dominio}
 
 DATOS DE ANÁLISIS COMPETITIVO:
-Competidor 1: ${url_competidor_1} (DA/DR: ${da_competidor_1})
-Competidor 2: ${url_competidor_2} (DA/DR: ${da_competidor_2})
-Competidor 3: ${url_competidor_3} (DA/DR: ${da_competidor_3})
+Competidor 1: \${url_competidor_1} (DA/DR: \${da_competidor_1})
+Competidor 2: \${url_competidor_2} (DA/DR: \${da_competidor_2})
+Competidor 3: \${url_competidor_3} (DA/DR: \${da_competidor_3})
 
 DATOS DE PERFILAMIENTO INTERNO:
-Tamaño Estimado (LinkedIn): ${empleados_linkedin}
-Fase Estimada (Crecimiento/Estancamiento): ${fase_negocio}
+Tamaño Estimado (LinkedIn): \${empleados_linkedin}
+Fase Estimada (Crecimiento/Estancamiento): \${fase_negocio}
 
 Tu tarea es sintetizar toda esta información en un informe claro, actionable y persuasivo, siguiendo el formato de salida obligatorio.
 
-PARTE 3: REGLAS DE ANÁLISIS Y LÓGICA DE RECOMENDACIÓN
+PARTE 3: REGLAS DE ANÁLISIS Y LÓGica DE RECOMENDACIÓN
 Asignación de Puntajes: Para cada "Coordenada Clave" de los 4 pilares, asigna un puntaje de 0 a 100 basado en los datos recibidos y en las mejores prácticas del mercado. Sé crítico y realista. El puntaje de cada pilar es el promedio de sus coordenadas. El puntaje general es el promedio de los 4 pilares.
 Generación de Tooltips: Para cada métrica que tenga un (?), genera un texto explicativo corto y estratégico que aclare qué es y por qué es importante para el negocio del cliente.
 Lógica de Recomendación de Soluciones (Catálogo de Productos): Para cada "Coordenada Clave" con un puntaje bajo, debes asociar una o más "Soluciones Contratables" del siguiente catálogo. Esta solución debe aparecer directamente debajo de la coordenada, como parte de su plan de acción.
@@ -62,7 +62,7 @@ Producto: Hosting Cloud & G Suite - Mapeo: Velocidad de Carga (si es críticamen
 PARTE 4: FORMATO DE SALIDA OBLIGATORIO
 Genera la respuesta únicamente en formato Markdown, siguiendo esta estructura exacta. Cada pilar es una "tarjeta". Dentro de cada tarjeta, cada coordenada es un sub-apartado con su propio diagnóstico y su propia solución seleccionable.
 
-# Informe Estratégico Avanzado para ${nombre_empresa}
+# Informe Estratégico Avanzado para \${nombre_empresa}
 
 **Puntaje General de Madurez Digital:** [Calcula el puntaje general]/100 
 
@@ -72,24 +72,21 @@ Genera la respuesta únicamente en formato Markdown, siguiendo esta estructura e
 * **Benchmark del Sector:** [...] 
 * [ ] **Contratar todas las soluciones para Mercado y Competencia**
 
-### **Coordenada: Autoridad de Dominio ([...]/100)** 
-* **Diagnóstico:** [...] 
+### **Coordenada: Autoridad de Dominio ([...]/100)** * **Diagnóstico:** [...] 
 * **Plan de Acción:**
     * **Lo Hago Yo:** [...] 
     * **Lo Hace Kapi:**
         * [ ] **Solución:** **Programa de Posicionamiento de Autoridad** - Creamos una estrategia de contenidos y SEO para convertirte en un referente de tu industria.
 * **Impacto en el Negocio:** [...] 
 
-### **Coordenada: Visibilidad Orgánica ([...]/100)** 
-* **Diagnóstico:** [...] 
+### **Coordenada: Visibilidad Orgánica ([...]/100)** * **Diagnóstico:** [...] 
 * **Plan de Acción:**
     * **Lo Hago Yo:** [...] 
     * **Lo Hace Kapi:**
         * [ ] **Solución:** **Programa de Posicionamiento de Autoridad** - Optimizamos tu web para que tus clientes ideales te encuentren en Google cuando buscan soluciones.
 * **Impacto en el Negocio:** [...] 
 
-### **Coordenada: Inteligencia Competitiva ([...]/100)** 
-* **Diagnóstico:** [...] 
+### **Coordenada: Inteligencia Competitiva ([...]/100)** * **Diagnóstico:** [...] 
 * **Plan de Acción:**
     * **Lo Hago Yo:** [...] 
     * **Lo Hace Kapi:**
@@ -102,24 +99,21 @@ Genera la respuesta únicamente en formato Markdown, siguiendo esta estructura e
 * **Benchmark del Sector:** [...] 
 * [ ] **Contratar todas las soluciones para Plataforma y UX**
 
-### **Coordenada: Velocidad de Carga ([...]/100)** 
-* **Diagnóstico:** [...] 
+### **Coordenada: Velocidad de Carga ([...]/100)** * **Diagnóstico:** [...] 
 * **Plan de Acción:**
     * **Lo Hago Yo:** [...] 
     * **Lo Hace Kapi:**
         * [ ] **Solución:** **Mantenimiento y Soporte Web** - Realizamos una optimización técnica profunda para garantizar la máxima velocidad.
 * **Impacto en el Negocio:** [...] 
 
-### **Coordenada: Experiencia Móvil ([...]/100)** 
-* **Diagnóstico:** [...] 
+### **Coordenada: Experiencia Móvil ([...]/100)** * **Diagnóstico:** [...] 
 * **Plan de Acción:**
     * **Lo Hago Yo:** [...] 
     * **Lo Hace Kapi:**
         * [ ] **Solución:** **Rediseño Web Estratégico** - Creamos una experiencia móvil impecable que guía a tus visitantes hacia el contacto.
 * **Impacto en el Negocio:** [...] 
 
-### **Coordenada: Seguridad y Confianza (HTTPS) ([...]/100)** 
-* **Diagnóstico:** [...] 
+### **Coordenada: Seguridad y Confianza (HTTPS) ([...]/100)** * **Diagnóstico:** [...] 
 * **Plan de Acción:**
     * **Lo Hago Yo:** [...] 
     * **Lo Hace Kapi:**
@@ -132,8 +126,7 @@ Genera la respuesta únicamente en formato Markdown, siguiendo esta estructura e
 * **Benchmark del Sector:** [...] 
 * [ ] **Contratar todas las soluciones para Contenido y Redes**
 
-### **Coordenada: Estrategia de Contenidos ([...]/100)** 
-* **Diagnóstico:** [...] 
+### **Coordenada: Estrategia de Contenidos ([...]/100)** * **Diagnóstico:** [...] 
 * **Plan de Acción:**
     * **Lo Hago Yo:** [...] 
     * **Lo Hace Kapi:**
@@ -146,8 +139,7 @@ Genera la respuesta únicamente en formato Markdown, siguiendo esta estructura e
 * **Benchmark del Sector:** [...] 
 * [ ] **Contratar todas las soluciones para Crecimiento e IA**
 
-### **Coordenada: Captura de Leads ([...]/100)** 
-* **Diagnóstico:** [...] 
+### **Coordenada: Captura de Leads ([...]/100)** * **Diagnóstico:** [...] 
 * **Plan de Acción:**
     * **Lo Hago Yo:** [...] 
     * **Lo Hace Kapi:**
@@ -174,7 +166,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     // Los datos ahora vienen en un objeto 'context'
     const { url, mode, context } = body;
-const url_prospecto = url;
+
     if (!mode) {
       return NextResponse.json({ error: 'El modo es requerido' }, { status: 400 });
     }
